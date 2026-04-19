@@ -1,0 +1,23 @@
+{
+  "projectName": "un-app-fe",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "yarn",
+  "includeExamples": true,
+  "tailwind": true,
+  "addOnOptions": {},
+  "envVarValues": {},
+  "git": true,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "biome",
+    "tanstack-query",
+    "shadcn",
+    "sentry",
+    "table",
+    "t3env",
+    "paraglide"
+  ]
+}
