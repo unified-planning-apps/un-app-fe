@@ -11,14 +11,18 @@ import { useState } from 'react'
 import { FloatingLabelSelect } from '#/components/ui/floating-label-select'
 import { Region, Role } from '#/shared/constants'
 import { SelectItem } from '#/components/ui/select'
+import { PhoneInput } from '#/components/ui/phone-input'
 
 export const Route = createFileRoute('/auth/register')({
     component: RouteComponent,
 })
 
 const formSchema = z.object({
-    fullname: z.string().min(2, { message: 'Full name must be at least 2 characters.', }),
-    email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address."),
+    fullname: z.string().min(2, { message: 'Full name must be at least 2 characters.' }),
+    phoneNumber: z.string()
+        .min(8, { message: 'Phone number must be at least 8 digits.' })
+        .max(15, { message: 'Phone number must be at most 15 digits.' }),
+    email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address.").optional(),
     region: z.enum(Region, { message: 'Please select a valid region.' }),
     role: z.enum(Role, { message: 'Please select a valid role.' }),
     password: z.string().min(6, { message: 'Password must be at least 6 characters.', })
@@ -26,7 +30,7 @@ const formSchema = z.object({
         .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
         .regex(/[0-9]/, "Password must contain at least one number.")
         .regex(/[^a-zA-Z0-9]/, "Password must contain at least one special character.")
-    });
+});
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -35,11 +39,11 @@ function RouteComponent() {
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
-        defaultValues: { fullname: '', email: '', region: Region.AlaotraMangoro, role: Role.Guest, password: '' }
+        defaultValues: { fullname: '', email: '', phoneNumber: '', region: Region.AlaotraMangoro, role: Role.Guest, password: '' }
     });
 
     const nextStep = async () => {
-        const isStepValid = await form.trigger(['fullname', 'email']);
+        const isStepValid = await form.trigger(['fullname', 'phoneNumber']);
         if (isStepValid) {
             setStep(2);
         }
@@ -73,10 +77,20 @@ function RouteComponent() {
                                             <FormItem>
                                                 <div className='relative'>
                                                     <FormControl>
-                                                        <FloatingInput {...field} id="floating-customize" />
+                                                        <FloatingInput {...field} id="floating-fullname" />
                                                     </FormControl>
-                                                    <FloatingLabel htmlFor="floating-customize">Name and Firstname</FloatingLabel>
+                                                    <FloatingLabel htmlFor="floating-fullname">Name and Firstname</FloatingLabel>
                                                 </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name='phoneNumber'
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <PhoneInput placeholder="Enter a phone number" {...field} id="floating-phone" />
                                                 <FormMessage />
                                             </FormItem>
                                         )}
