@@ -22,9 +22,9 @@ const formSchema = z.object({
     phoneNumber: z.string()
         .min(8, { message: 'Phone number must be at least 8 digits.' })
         .max(15, { message: 'Phone number must be at most 15 digits.' }),
-    email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address.").optional(),
-    region: z.enum(Region, { message: 'Please select a valid region.' }),
-    role: z.enum(Role, { message: 'Please select a valid role.' }),
+    email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address."),
+    region: z.enum(Region, { message: 'Select a valid region.' }),
+    role: z.enum(Role, { message: 'Select a valid role.' }),
     password: z.string().min(6, { message: 'Password must be at least 6 characters.', })
         .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
         .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
@@ -43,7 +43,7 @@ function RouteComponent() {
     });
 
     const nextStep = async () => {
-        const isStepValid = await form.trigger(['fullname', 'phoneNumber']);
+        const isStepValid = await form.trigger(['fullname','email', 'phoneNumber']);
         if (isStepValid) {
             setStep(2);
         }
@@ -90,7 +90,7 @@ function RouteComponent() {
                                         name='phoneNumber'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <PhoneInput placeholder="Enter a phone number" {...field} id="floating-phone" />
+                                                <PhoneInput defaultCountry='MG' placeholder="Enter a phone number" {...field} id="floating-phone" />
                                                 <FormMessage />
                                             </FormItem>
                                         )}
