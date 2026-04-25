@@ -2,6 +2,12 @@ Welcome to your new TanStack Start app!
 
 # Getting Started
 
+Update Yarn version if there's an issue using "yarn dlx" (Optional):
+```bash
+yarn set version berry
+yarn install
+```
+
 To run this application:
 
 ```bash

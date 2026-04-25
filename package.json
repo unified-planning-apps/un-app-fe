@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "dotenv -e .env.local -- cross-env NODE_OPTIONS=\"--import ./instrument.server.mjs\" vite dev --port 3000",
     "build": "vite build && npx shx cp instrument.server.mjs .output/server",
-    "preview": "vite preview",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+    "preview": "vite preview",
     "test": "vitest run",
     "format": "biome format",
     "lint": "biome lint",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^10.3.0",
+    "@hookform/resolvers": "^5.2.2",
     "@sentry/tanstackstart-react": "^10.42.0",
     "@t3-oss/env-core": "^0.13.10",
     "@tailwindcss/vite": "^4.1.18",
@@ -34,8 +35,10 @@
     "clsx": "^2.1.1",
     "dotenv-cli": "^11.0.0",
     "lucide-react": "^0.577.0",
+    "radix-ui": "^1.4.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.72.1",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.1.18",
     "tw-animate-css": "^1.3.6",
@@ -64,5 +67,6 @@
       "esbuild",
       "lightningcss"
     ]
-  }
+  },
+  "packageManager": "yarn@4.14.1"
 }
