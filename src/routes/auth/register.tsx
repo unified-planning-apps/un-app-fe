@@ -5,40 +5,23 @@ import { FloatingInput, FloatingLabel } from '#/components/ui/floating-label-inp
 import { Form, FormControl, FormField, FormItem, FormMessage } from '#/components/ui/form'
 import { createFileRoute } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from 'react'
 import { FloatingLabelSelect } from '#/components/ui/floating-label-select'
 import { Region, Role } from '#/shared/constants'
 import { SelectItem } from '#/components/ui/select'
 import { PhoneInput } from '#/components/ui/phone-input'
+import { RegisterFormSchema, type RegisterFormValues } from '#/lib/validations/auth'
 
 export const Route = createFileRoute('/auth/register')({
     component: RouteComponent,
 })
 
-const formSchema = z.object({
-    fullname: z.string().min(2, { message: 'Full name must be at least 2 characters.' }),
-    phoneNumber: z.string()
-        .min(8, { message: 'Phone number must be at least 8 digits.' })
-        .max(15, { message: 'Phone number must be at most 15 digits.' }),
-    email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address."),
-    region: z.enum(Region, { message: 'Select a valid region.' }),
-    role: z.enum(Role, { message: 'Select a valid role.' }),
-    password: z.string().min(6, { message: 'Password must be at least 6 characters.', })
-        .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
-        .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
-        .regex(/[0-9]/, "Password must contain at least one number.")
-        .regex(/[^a-zA-Z0-9]/, "Password must contain at least one special character.")
-});
-
-type FormValues = z.infer<typeof formSchema>;
-
 function RouteComponent() {
     const [step, setStep] = useState(1);
 
-    const form = useForm<FormValues>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<RegisterFormValues>({
+        resolver: zodResolver(RegisterFormSchema),
         defaultValues: { fullname: '', email: '', phoneNumber: '', region: Region.AlaotraMangoro, role: Role.Guest, password: '' }
     });
 

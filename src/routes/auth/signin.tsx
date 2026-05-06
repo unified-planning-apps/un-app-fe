@@ -5,23 +5,16 @@ import { FloatingInput, FloatingLabel } from '#/components/ui/floating-label-inp
 import { Form, FormControl, FormField, FormItem, FormMessage } from '#/components/ui/form'
 import { createFileRoute } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
+import { SigninFormSchema, type SigninFormValues  } from '#/lib/validations/auth'
 
 export const Route = createFileRoute('/auth/signin')({
     component: RouteComponent,
 })
 
-const formSchema = z.object({
-    email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address."),
-    password: z.string().min(6, { message: 'Invalid password.', })
-});
-
-type FormValues = z.infer<typeof formSchema>;
-
 function RouteComponent() {
-    const form = useForm<FormValues>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<SigninFormValues>({
+        resolver: zodResolver(SigninFormSchema),
         defaultValues: { email: '', password: '' }
     });
 
