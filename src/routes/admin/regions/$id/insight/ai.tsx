@@ -5,5 +5,7 @@ export const Route = createFileRoute('/admin/regions/$id/insight/ai')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/admin/regions/$id/insight/ai"!</div>
+  const regionName = Route.useParams().id;
+  
+  return <div>Hello "/admin/regions/{regionName}/insight/ai"!</div>
 }
