@@ -1,6 +1,6 @@
 import NavLinkComponent from '#/components/NavLinkComponent';
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { ChevronLeft, Rows3, Sparkle, Sparkles } from 'lucide-react';
+import { ChevronLeft, Rows3, Sparkle, Sparkles, Users } from 'lucide-react';
 
 export const Route = createFileRoute('/admin/regions/$id/insight')({
   component: InsightLayout,
@@ -34,6 +34,13 @@ function InsightLayout() {
           to='/admin/regions/$id/insight/reports'
           displayName='Reports'
           icon={<Rows3 size={18} />}
+          className='font-medium bg-transparent p-2.5'
+          activeClassName='font-bold bg-blue-100  border-b-2 border-blue-800'
+        />
+        <NavLinkComponent
+          to='/admin/regions/$id/insight/agents'
+          displayName='Agents'
+          icon={<Users size={18} />}
           className='font-medium bg-transparent p-2.5'
           activeClassName='font-bold bg-blue-100  border-b-2 border-blue-800'
         />

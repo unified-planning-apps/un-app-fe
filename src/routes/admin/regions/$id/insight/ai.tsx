@@ -1,3 +1,4 @@
+import WeatherDetail from '#/components/WeatherDetail';
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/admin/regions/$id/insight/ai')({
@@ -7,8 +8,22 @@ export const Route = createFileRoute('/admin/regions/$id/insight/ai')({
 function RouteComponent() {
   const regionName = Route.useParams().id;
   return (
-    <div>
-      
+    <div className='flex flex-wrap'>
+      <WeatherDetail 
+        name='Temperature'
+        description={`The current temperature in ${regionName[0].toUpperCase() + regionName.slice(1)}`}>
+        <p>Current temperature: 25°C</p>
+      </WeatherDetail>
+      <WeatherDetail 
+        name='Humidity'
+        description={`The current humidity in ${regionName[0].toUpperCase() + regionName.slice(1)}`}>
+        <p>Current humidity: 60%</p>
+      </WeatherDetail>
+      <WeatherDetail 
+        name='Wind Speed'
+        description={`The current wind speed in ${regionName[0].toUpperCase() + regionName.slice(1)}`}>
+        <p>Current wind speed: 10 km/h</p>
+      </WeatherDetail>
     </div>
   )
 }

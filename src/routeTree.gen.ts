@@ -18,6 +18,7 @@ import { Route as AdminAdminDashboardIndexRouteImport } from './routes/admin/_ad
 import { Route as AdminRegionsIdInsightRouteImport } from './routes/admin/regions/$id/insight'
 import { Route as AdminRegionsIdInsightReportsRouteImport } from './routes/admin/regions/$id/insight/reports'
 import { Route as AdminRegionsIdInsightAiRouteImport } from './routes/admin/regions/$id/insight/ai'
+import { Route as AdminRegionsIdInsightAgentsRouteImport } from './routes/admin/regions/$id/insight/agents'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -66,6 +67,12 @@ const AdminRegionsIdInsightAiRoute = AdminRegionsIdInsightAiRouteImport.update({
   path: '/ai',
   getParentRoute: () => AdminRegionsIdInsightRoute,
 } as any)
+const AdminRegionsIdInsightAgentsRoute =
+  AdminRegionsIdInsightAgentsRouteImport.update({
+    id: '/agents',
+    path: '/agents',
+    getParentRoute: () => AdminRegionsIdInsightRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/admin/regions/$id/insight': typeof AdminRegionsIdInsightRouteWithChildren
   '/admin/dashboard/': typeof AdminAdminDashboardIndexRoute
   '/admin/regions/': typeof AdminAdminRegionsIndexRoute
+  '/admin/regions/$id/insight/agents': typeof AdminRegionsIdInsightAgentsRoute
   '/admin/regions/$id/insight/ai': typeof AdminRegionsIdInsightAiRoute
   '/admin/regions/$id/insight/reports': typeof AdminRegionsIdInsightReportsRoute
 }
@@ -86,6 +94,7 @@ export interface FileRoutesByTo {
   '/admin/regions/$id/insight': typeof AdminRegionsIdInsightRouteWithChildren
   '/admin/dashboard': typeof AdminAdminDashboardIndexRoute
   '/admin/regions': typeof AdminAdminRegionsIndexRoute
+  '/admin/regions/$id/insight/agents': typeof AdminRegionsIdInsightAgentsRoute
   '/admin/regions/$id/insight/ai': typeof AdminRegionsIdInsightAiRoute
   '/admin/regions/$id/insight/reports': typeof AdminRegionsIdInsightReportsRoute
 }
@@ -98,6 +107,7 @@ export interface FileRoutesById {
   '/admin/regions/$id/insight': typeof AdminRegionsIdInsightRouteWithChildren
   '/admin/_admin/dashboard/': typeof AdminAdminDashboardIndexRoute
   '/admin/_admin/regions/': typeof AdminAdminRegionsIndexRoute
+  '/admin/regions/$id/insight/agents': typeof AdminRegionsIdInsightAgentsRoute
   '/admin/regions/$id/insight/ai': typeof AdminRegionsIdInsightAiRoute
   '/admin/regions/$id/insight/reports': typeof AdminRegionsIdInsightReportsRoute
 }
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/admin/regions/$id/insight'
     | '/admin/dashboard/'
     | '/admin/regions/'
+    | '/admin/regions/$id/insight/agents'
     | '/admin/regions/$id/insight/ai'
     | '/admin/regions/$id/insight/reports'
   fileRoutesByTo: FileRoutesByTo
@@ -122,6 +133,7 @@ export interface FileRouteTypes {
     | '/admin/regions/$id/insight'
     | '/admin/dashboard'
     | '/admin/regions'
+    | '/admin/regions/$id/insight/agents'
     | '/admin/regions/$id/insight/ai'
     | '/admin/regions/$id/insight/reports'
   id:
@@ -133,6 +145,7 @@ export interface FileRouteTypes {
     | '/admin/regions/$id/insight'
     | '/admin/_admin/dashboard/'
     | '/admin/_admin/regions/'
+    | '/admin/regions/$id/insight/agents'
     | '/admin/regions/$id/insight/ai'
     | '/admin/regions/$id/insight/reports'
   fileRoutesById: FileRoutesById
@@ -210,6 +223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRegionsIdInsightAiRouteImport
       parentRoute: typeof AdminRegionsIdInsightRoute
     }
+    '/admin/regions/$id/insight/agents': {
+      id: '/admin/regions/$id/insight/agents'
+      path: '/agents'
+      fullPath: '/admin/regions/$id/insight/agents'
+      preLoaderRoute: typeof AdminRegionsIdInsightAgentsRouteImport
+      parentRoute: typeof AdminRegionsIdInsightRoute
+    }
   }
 }
 
@@ -228,11 +248,13 @@ const AdminAdminRouteWithChildren = AdminAdminRoute._addFileChildren(
 )
 
 interface AdminRegionsIdInsightRouteChildren {
+  AdminRegionsIdInsightAgentsRoute: typeof AdminRegionsIdInsightAgentsRoute
   AdminRegionsIdInsightAiRoute: typeof AdminRegionsIdInsightAiRoute
   AdminRegionsIdInsightReportsRoute: typeof AdminRegionsIdInsightReportsRoute
 }
 
 const AdminRegionsIdInsightRouteChildren: AdminRegionsIdInsightRouteChildren = {
+  AdminRegionsIdInsightAgentsRoute: AdminRegionsIdInsightAgentsRoute,
   AdminRegionsIdInsightAiRoute: AdminRegionsIdInsightAiRoute,
   AdminRegionsIdInsightReportsRoute: AdminRegionsIdInsightReportsRoute,
 }
