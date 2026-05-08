@@ -3,7 +3,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 
 const LazyMap = lazy(() => import('@/components/Map'))
 
-export const Route = createFileRoute('/admin/regions/')({
+export const Route = createFileRoute('/admin/_admin/regions/')({
   component: RouteComponent,
 })
 

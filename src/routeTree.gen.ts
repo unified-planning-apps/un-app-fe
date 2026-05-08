@@ -9,31 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AuthSigninRouteImport } from './routes/auth/signin'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
-import { Route as AdminRegionsIndexRouteImport } from './routes/admin/regions/index'
-import { Route as AdminDashboardIndexRouteImport } from './routes/admin/dashboard/index'
-import { Route as AdminRegionsIdIndexRouteImport } from './routes/admin/regions/$id/index'
+import { Route as AdminAdminRouteImport } from './routes/admin/_admin'
+import { Route as AdminAdminRegionsIndexRouteImport } from './routes/admin/_admin/regions/index'
+import { Route as AdminAdminDashboardIndexRouteImport } from './routes/admin/_admin/dashboard/index'
+import { Route as AdminRegionsIdInsightRouteImport } from './routes/admin/regions/$id/insight'
 import { Route as AdminRegionsIdInsightReportsRouteImport } from './routes/admin/regions/$id/insight/reports'
 import { Route as AdminRegionsIdInsightAiRouteImport } from './routes/admin/regions/$id/insight/ai'
 
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AdminRoute,
 } as any)
 const AuthSigninRoute = AuthSigninRouteImport.update({
   id: '/auth/signin',
@@ -45,66 +34,70 @@ const AuthRegisterRoute = AuthRegisterRouteImport.update({
   path: '/auth/register',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminRegionsIndexRoute = AdminRegionsIndexRouteImport.update({
+const AdminAdminRoute = AdminAdminRouteImport.update({
+  id: '/admin/_admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAdminRegionsIndexRoute = AdminAdminRegionsIndexRouteImport.update({
   id: '/regions/',
   path: '/regions/',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => AdminAdminRoute,
 } as any)
-const AdminDashboardIndexRoute = AdminDashboardIndexRouteImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminRegionsIdIndexRoute = AdminRegionsIdIndexRouteImport.update({
-  id: '/regions/$id/',
-  path: '/regions/$id/',
-  getParentRoute: () => AdminRoute,
+const AdminAdminDashboardIndexRoute =
+  AdminAdminDashboardIndexRouteImport.update({
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => AdminAdminRoute,
+  } as any)
+const AdminRegionsIdInsightRoute = AdminRegionsIdInsightRouteImport.update({
+  id: '/admin/regions/$id/insight',
+  path: '/admin/regions/$id/insight',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRegionsIdInsightReportsRoute =
   AdminRegionsIdInsightReportsRouteImport.update({
-    id: '/regions/$id/insight/reports',
-    path: '/regions/$id/insight/reports',
-    getParentRoute: () => AdminRoute,
+    id: '/reports',
+    path: '/reports',
+    getParentRoute: () => AdminRegionsIdInsightRoute,
   } as any)
 const AdminRegionsIdInsightAiRoute = AdminRegionsIdInsightAiRouteImport.update({
-  id: '/regions/$id/insight/ai',
-  path: '/regions/$id/insight/ai',
-  getParentRoute: () => AdminRoute,
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => AdminRegionsIdInsightRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminAdminRouteWithChildren
   '/auth/register': typeof AuthRegisterRoute
   '/auth/signin': typeof AuthSigninRoute
-  '/admin/': typeof AdminIndexRoute
-  '/admin/dashboard/': typeof AdminDashboardIndexRoute
-  '/admin/regions/': typeof AdminRegionsIndexRoute
-  '/admin/regions/$id/': typeof AdminRegionsIdIndexRoute
+  '/admin/regions/$id/insight': typeof AdminRegionsIdInsightRouteWithChildren
+  '/admin/dashboard/': typeof AdminAdminDashboardIndexRoute
+  '/admin/regions/': typeof AdminAdminRegionsIndexRoute
   '/admin/regions/$id/insight/ai': typeof AdminRegionsIdInsightAiRoute
   '/admin/regions/$id/insight/reports': typeof AdminRegionsIdInsightReportsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminAdminRouteWithChildren
   '/auth/register': typeof AuthRegisterRoute
   '/auth/signin': typeof AuthSigninRoute
-  '/admin': typeof AdminIndexRoute
-  '/admin/dashboard': typeof AdminDashboardIndexRoute
-  '/admin/regions': typeof AdminRegionsIndexRoute
-  '/admin/regions/$id': typeof AdminRegionsIdIndexRoute
+  '/admin/regions/$id/insight': typeof AdminRegionsIdInsightRouteWithChildren
+  '/admin/dashboard': typeof AdminAdminDashboardIndexRoute
+  '/admin/regions': typeof AdminAdminRegionsIndexRoute
   '/admin/regions/$id/insight/ai': typeof AdminRegionsIdInsightAiRoute
   '/admin/regions/$id/insight/reports': typeof AdminRegionsIdInsightReportsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin/_admin': typeof AdminAdminRouteWithChildren
   '/auth/register': typeof AuthRegisterRoute
   '/auth/signin': typeof AuthSigninRoute
-  '/admin/': typeof AdminIndexRoute
-  '/admin/dashboard/': typeof AdminDashboardIndexRoute
-  '/admin/regions/': typeof AdminRegionsIndexRoute
-  '/admin/regions/$id/': typeof AdminRegionsIdIndexRoute
+  '/admin/regions/$id/insight': typeof AdminRegionsIdInsightRouteWithChildren
+  '/admin/_admin/dashboard/': typeof AdminAdminDashboardIndexRoute
+  '/admin/_admin/regions/': typeof AdminAdminRegionsIndexRoute
   '/admin/regions/$id/insight/ai': typeof AdminRegionsIdInsightAiRoute
   '/admin/regions/$id/insight/reports': typeof AdminRegionsIdInsightReportsRoute
 }
@@ -115,66 +108,51 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth/register'
     | '/auth/signin'
-    | '/admin/'
+    | '/admin/regions/$id/insight'
     | '/admin/dashboard/'
     | '/admin/regions/'
-    | '/admin/regions/$id/'
     | '/admin/regions/$id/insight/ai'
     | '/admin/regions/$id/insight/reports'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/auth/register'
     | '/auth/signin'
-    | '/admin'
+    | '/admin/regions/$id/insight'
     | '/admin/dashboard'
     | '/admin/regions'
-    | '/admin/regions/$id'
     | '/admin/regions/$id/insight/ai'
     | '/admin/regions/$id/insight/reports'
   id:
     | '__root__'
     | '/'
-    | '/admin'
+    | '/admin/_admin'
     | '/auth/register'
     | '/auth/signin'
-    | '/admin/'
-    | '/admin/dashboard/'
-    | '/admin/regions/'
-    | '/admin/regions/$id/'
+    | '/admin/regions/$id/insight'
+    | '/admin/_admin/dashboard/'
+    | '/admin/_admin/regions/'
     | '/admin/regions/$id/insight/ai'
     | '/admin/regions/$id/insight/reports'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRouteWithChildren
+  AdminAdminRoute: typeof AdminAdminRouteWithChildren
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthSigninRoute: typeof AuthSigninRoute
+  AdminRegionsIdInsightRoute: typeof AdminRegionsIdInsightRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/admin/': {
-      id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRoute
     }
     '/auth/signin': {
       id: '/auth/signin'
@@ -190,69 +168,86 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/regions/': {
-      id: '/admin/regions/'
+    '/admin/_admin': {
+      id: '/admin/_admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/_admin/regions/': {
+      id: '/admin/_admin/regions/'
       path: '/regions'
       fullPath: '/admin/regions/'
-      preLoaderRoute: typeof AdminRegionsIndexRouteImport
-      parentRoute: typeof AdminRoute
+      preLoaderRoute: typeof AdminAdminRegionsIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
     }
-    '/admin/dashboard/': {
-      id: '/admin/dashboard/'
+    '/admin/_admin/dashboard/': {
+      id: '/admin/_admin/dashboard/'
       path: '/dashboard'
       fullPath: '/admin/dashboard/'
-      preLoaderRoute: typeof AdminDashboardIndexRouteImport
-      parentRoute: typeof AdminRoute
+      preLoaderRoute: typeof AdminAdminDashboardIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
     }
-    '/admin/regions/$id/': {
-      id: '/admin/regions/$id/'
-      path: '/regions/$id'
-      fullPath: '/admin/regions/$id/'
-      preLoaderRoute: typeof AdminRegionsIdIndexRouteImport
-      parentRoute: typeof AdminRoute
+    '/admin/regions/$id/insight': {
+      id: '/admin/regions/$id/insight'
+      path: '/admin/regions/$id/insight'
+      fullPath: '/admin/regions/$id/insight'
+      preLoaderRoute: typeof AdminRegionsIdInsightRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/regions/$id/insight/reports': {
       id: '/admin/regions/$id/insight/reports'
-      path: '/regions/$id/insight/reports'
+      path: '/reports'
       fullPath: '/admin/regions/$id/insight/reports'
       preLoaderRoute: typeof AdminRegionsIdInsightReportsRouteImport
-      parentRoute: typeof AdminRoute
+      parentRoute: typeof AdminRegionsIdInsightRoute
     }
     '/admin/regions/$id/insight/ai': {
       id: '/admin/regions/$id/insight/ai'
-      path: '/regions/$id/insight/ai'
+      path: '/ai'
       fullPath: '/admin/regions/$id/insight/ai'
       preLoaderRoute: typeof AdminRegionsIdInsightAiRouteImport
-      parentRoute: typeof AdminRoute
+      parentRoute: typeof AdminRegionsIdInsightRoute
     }
   }
 }
 
-interface AdminRouteChildren {
-  AdminIndexRoute: typeof AdminIndexRoute
-  AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
-  AdminRegionsIndexRoute: typeof AdminRegionsIndexRoute
-  AdminRegionsIdIndexRoute: typeof AdminRegionsIdIndexRoute
+interface AdminAdminRouteChildren {
+  AdminAdminDashboardIndexRoute: typeof AdminAdminDashboardIndexRoute
+  AdminAdminRegionsIndexRoute: typeof AdminAdminRegionsIndexRoute
+}
+
+const AdminAdminRouteChildren: AdminAdminRouteChildren = {
+  AdminAdminDashboardIndexRoute: AdminAdminDashboardIndexRoute,
+  AdminAdminRegionsIndexRoute: AdminAdminRegionsIndexRoute,
+}
+
+const AdminAdminRouteWithChildren = AdminAdminRoute._addFileChildren(
+  AdminAdminRouteChildren,
+)
+
+interface AdminRegionsIdInsightRouteChildren {
   AdminRegionsIdInsightAiRoute: typeof AdminRegionsIdInsightAiRoute
   AdminRegionsIdInsightReportsRoute: typeof AdminRegionsIdInsightReportsRoute
 }
 
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminIndexRoute: AdminIndexRoute,
-  AdminDashboardIndexRoute: AdminDashboardIndexRoute,
-  AdminRegionsIndexRoute: AdminRegionsIndexRoute,
-  AdminRegionsIdIndexRoute: AdminRegionsIdIndexRoute,
+const AdminRegionsIdInsightRouteChildren: AdminRegionsIdInsightRouteChildren = {
   AdminRegionsIdInsightAiRoute: AdminRegionsIdInsightAiRoute,
   AdminRegionsIdInsightReportsRoute: AdminRegionsIdInsightReportsRoute,
 }
 
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+const AdminRegionsIdInsightRouteWithChildren =
+  AdminRegionsIdInsightRoute._addFileChildren(
+    AdminRegionsIdInsightRouteChildren,
+  )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRouteWithChildren,
+  AdminAdminRoute: AdminAdminRouteWithChildren,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthSigninRoute: AuthSigninRoute,
+  AdminRegionsIdInsightRoute: AdminRegionsIdInsightRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

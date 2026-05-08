@@ -1,14 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/admin/regions/$id/insight/ai')({
+export const Route = createFileRoute('/admin/_admin/dashboard/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const regionName = Route.useParams().id;
   return (
-    <div>
-      
+    <div className="space-y-4 h-full">
+        Dashboard
     </div>
   )
 }

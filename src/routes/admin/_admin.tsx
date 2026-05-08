@@ -1,7 +1,7 @@
-import LinkComponent from '#/components/LinkComponent'
+import NavLinkComponent from '#/components/NavLinkComponent'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/admin')({
+export const Route = createFileRoute('/admin/_admin')({
   component: AdminLayout,
 })
 
@@ -9,8 +9,8 @@ function AdminLayout() {
   return (
     <div className="flex h-screen w-full">
       <aside className="w-64 border-r">
-        <LinkComponent to="/admin/dashboard" displayName='Dashboard'/>
-        <LinkComponent to="/admin/regions" displayName='Regions'/>
+        <NavLinkComponent to="/admin/dashboard" className='p-2' displayName='Dashboard'/>
+        <NavLinkComponent to="/admin/regions" className='p-2' displayName='Regions'/>
       </aside>
 
       <div className="flex flex-col flex-1">
