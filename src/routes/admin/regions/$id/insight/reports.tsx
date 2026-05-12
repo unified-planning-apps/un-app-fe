@@ -7,7 +7,7 @@ export const Route = createFileRoute('/admin/regions/$id/insight/reports')({
 
 function RouteComponent() {
   return (
-    <div className='flex flex-wrap gap-4'>
+    <div className='flex flex-wrap gap-4 p-3.5'>
       <ReportDetail
         agentName="John Doe"
         region="North America"

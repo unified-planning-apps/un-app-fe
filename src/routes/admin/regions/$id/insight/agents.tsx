@@ -5,5 +5,5 @@ export const Route = createFileRoute('/admin/regions/$id/insight/agents')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/admin/regions/$id/insight/agents"!</div>
+  return <div className='p-3.5'>Hello "/admin/regions/$id/insight/agents"!</div>
 }

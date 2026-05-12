@@ -8,7 +8,7 @@ export const Route = createFileRoute('/admin/regions/$id/insight/ai')({
 function RouteComponent() {
   const regionName = Route.useParams().id;
   return (
-    <div className='flex flex-wrap'>
+    <div className='flex flex-wrap gap-4 p-3.5'>
       <WeatherDetail 
         name='Temperature'
         description={`The current temperature in ${regionName[0].toUpperCase() + regionName.slice(1)}`}>
