@@ -6,18 +6,25 @@ type NavLinkComponentProps = {
     to: string;
     className?: string;
     activeClassName?: string;
+    style?: React.CSSProperties;
 }
 
-export default function NavLinkComponent({ icon, displayName, to, className, activeClassName }: NavLinkComponentProps) {
+export default function NavLinkComponent({ icon, displayName, to, className, activeClassName, style }: NavLinkComponentProps) {
     return (
         <Link
             to={to}
-            className={`font-medium  flex items-center ${className || ''}`}
+            className={`font-medium flex items-center gap-1.5 transition-colors ${className || ''}`}
+            style={style}
             activeProps={{
-                className: activeClassName || 'font-bold bg-blue-100'
+                className: activeClassName || 'font-bold',
+                style: { color: 'var(--primary)', borderColor: 'var(--primary)' }
+            }}
+            inactiveProps={{
+                style: { color: 'var(--texte-gray)' }
             }}
         >
-            {icon && <span className="mr-2">{icon}</span>} {displayName}
+            {icon && <span className="flex-shrink-0">{icon}</span>}
+            {displayName}
         </Link>
     )
 }

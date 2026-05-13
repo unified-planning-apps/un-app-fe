@@ -1,6 +1,6 @@
 import NavLinkComponent from '#/components/NavLinkComponent';
-import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { ChevronLeft, Rows3, Sparkle, Sparkles, Users } from 'lucide-react';
+import { createFileRoute, Outlet, Link } from '@tanstack/react-router'
+import { ChevronLeft, Rows3, Sparkles, Users, MapPin } from 'lucide-react';
 
 export const Route = createFileRoute('/admin/regions/$id/insight')({
   component: InsightLayout,
@@ -8,46 +8,84 @@ export const Route = createFileRoute('/admin/regions/$id/insight')({
 
 function InsightLayout() {
   const regionName = Route.useParams().id;
+  const displayName = regionName.charAt(0).toUpperCase() + regionName.slice(1).replace(/-/g, ' ');
+
   return (
-    <div>
-      <div className='flex flex-row items-center gap-2'>
-        <NavLinkComponent
+    <div className="space-y-0">
+      {/* Breadcrumb */}
+      <div className='flex flex-row items-center gap-2 px-6 pt-4 pb-3'>
+        <Link
           to='/admin/regions'
-          icon={<ChevronLeft size={18} />}
-          displayName='Back'
-          className='font-medium bg-transparent underline underline-offset-4'
-        />
-        | {regionName} | Insights
-      </div>
-      <div className='w-full bg-primary h-30 flex flex-row items-center justify-space-between'>
-        <h1>{regionName} region Insight</h1>
-      </div>
-      <div className='w-full flex flex-row items-center justify-center gap-10 border-b-2 border-gray-200'>
-        <NavLinkComponent
-          to='/admin/regions/$id/insight/ai'
-          displayName='AI Insights'
-          icon={<Sparkles size={18} />}
-          className='font-medium bg-transparent p-2.5'
-          activeClassName='font-bold bg-black-100  border-b-2 border-blue-800'
-        />
-        <NavLinkComponent
-          to='/admin/regions/$id/insight/reports'
-          displayName='Reports'
-          icon={<Rows3 size={18} />}
-          className='font-medium bg-transparent p-2.5'
-          activeClassName='font-bold bg-blue-100  border-b-2 border-blue-800'
-        />
-        <NavLinkComponent
-          to='/admin/regions/$id/insight/agents'
-          displayName='Agents'
-          icon={<Users size={18} />}
-          className='font-medium bg-transparent p-2.5'
-          activeClassName='font-bold bg-blue-100  border-b-2 border-blue-800'
-        />
+          className='flex items-center gap-1.5 text-sm font-medium transition-colors'
+          style={{ color: 'var(--texte-gray)' }}
+        >
+          <ChevronLeft size={16} />
+          Retour
+        </Link>
+        <span style={{ color: 'var(--stroke-gray)' }}>|</span>
+        <div className="flex items-center gap-1.5 text-sm" style={{ color: 'var(--texte-gray)' }}>
+          <MapPin size={14} />
+          <span className="font-medium" style={{ color: 'var(--texte-extra-black)' }}>{displayName}</span>
+          <span>· Insights</span>
+        </div>
       </div>
 
-      <Outlet />
+      {/* Hero banner */}
+      <div
+        className="mx-6 rounded-2xl p-6 flex items-center justify-between overflow-hidden relative mb-4"
+        style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)' }}
+      >
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: 'radial-gradient(circle at 80% 50%, white 0%, transparent 60%)'
+        }} />
+        <div className="relative z-10">
+          <h1
+            className="text-2xl font-bold text-white mb-1"
+            style={{ fontFamily: 'Fraunces, serif' }}
+          >
+            Région {displayName}
+          </h1>
+          <p className="text-sm text-white/70">Analyse détaillée des données sanitaires et climatiques</p>
+        </div>
+        <div className="relative z-10 hidden sm:flex items-center gap-4">
+          <div className="text-center">
+            <p className="text-white/70 text-xs">Superficie</p>
+            <p className="text-white font-bold text-lg">~12 500 km²</p>
+          </div>
+          <div className="w-px h-10 bg-white/30" />
+          <div className="text-center">
+            <p className="text-white/70 text-xs">Population</p>
+            <p className="text-white font-bold text-lg">~3.2M</p>
+          </div>
+        </div>
+      </div>
 
+      {/* Tab navigation */}
+      <div
+        className='mx-6 flex flex-row items-center gap-1 border-b'
+        style={{ borderColor: 'var(--stroke-dark)' }}
+      >
+        {[
+          { to: `/admin/regions/${regionName}/insight/ai`, label: 'Analyse IA', icon: <Sparkles size={15} /> },
+          { to: `/admin/regions/${regionName}/insight/reports`, label: 'Rapports', icon: <Rows3 size={15} /> },
+          { to: `/admin/regions/${regionName}/insight/agents`, label: 'Agents', icon: <Users size={15} /> },
+        ].map(({ to, label, icon }) => (
+          <NavLinkComponent
+            key={to}
+            to={to}
+            displayName={label}
+            icon={icon}
+            className='flex items-center gap-1.5 px-4 py-3 text-sm font-medium transition-colors rounded-t-lg'
+            activeClassName='font-semibold border-b-2 -mb-px'
+            style={{ color: 'var(--texte-gray)' }}
+          />
+        ))}
+      </div>
+
+      {/* Content */}
+      <div className="px-6 pt-4">
+        <Outlet />
+      </div>
     </div>
   )
 }

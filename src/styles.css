@@ -239,3 +239,31 @@ pre code {
     color: var(--foreground);
   }
 }
+
+/* Brand button overrides */
+[data-slot="button"][data-variant="default"] {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%);
+  color: white;
+  border: none;
+}
+
+[data-slot="button"][data-variant="default"]:hover {
+  opacity: 0.9;
+}
+
+/* Insight tab active link */
+.insight-tab-active {
+  color: var(--primary) !important;
+  border-bottom: 2px solid var(--primary);
+  margin-bottom: -1px;
+}
+
+/* Smooth transitions */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fraunces for headings */
+h1, h2, h3 {
+  font-family: 'Fraunces', serif;
+}
