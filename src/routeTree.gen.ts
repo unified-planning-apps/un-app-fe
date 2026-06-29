@@ -12,13 +12,24 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthSigninRouteImport } from './routes/auth/signin'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
+import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as AdminAdminRouteImport } from './routes/admin/_admin'
+import { Route as AdminAdminWeatherIndexRouteImport } from './routes/admin/_admin/weather/index'
+import { Route as AdminAdminUsersIndexRouteImport } from './routes/admin/_admin/users/index'
+import { Route as AdminAdminStocksIndexRouteImport } from './routes/admin/_admin/stocks/index'
+import { Route as AdminAdminReportsIndexRouteImport } from './routes/admin/_admin/reports/index'
 import { Route as AdminAdminRegionsIndexRouteImport } from './routes/admin/_admin/regions/index'
+import { Route as AdminAdminRecipesIndexRouteImport } from './routes/admin/_admin/recipes/index'
+import { Route as AdminAdminProfileIndexRouteImport } from './routes/admin/_admin/profile/index'
+import { Route as AdminAdminModelsIndexRouteImport } from './routes/admin/_admin/models/index'
 import { Route as AdminAdminDashboardIndexRouteImport } from './routes/admin/_admin/dashboard/index'
-import { Route as AdminRegionsIdInsightRouteImport } from './routes/admin/regions/$id/insight'
-import { Route as AdminRegionsIdInsightReportsRouteImport } from './routes/admin/regions/$id/insight/reports'
-import { Route as AdminRegionsIdInsightAiRouteImport } from './routes/admin/regions/$id/insight/ai'
-import { Route as AdminRegionsIdInsightAgentsRouteImport } from './routes/admin/regions/$id/insight/agents'
+import { Route as AdminAdminUsersCreateRouteImport } from './routes/admin/_admin/users/create'
+import { Route as AdminAdminRegionsIdInsightRouteImport } from './routes/admin/_admin/regions/$id/insight'
+import { Route as AdminAdminRegionsIdInsightScenarioRouteImport } from './routes/admin/_admin/regions/$id/insight/scenario'
+import { Route as AdminAdminRegionsIdInsightReportsRouteImport } from './routes/admin/_admin/regions/$id/insight/reports'
+import { Route as AdminAdminRegionsIdInsightHistoryRouteImport } from './routes/admin/_admin/regions/$id/insight/history'
+import { Route as AdminAdminRegionsIdInsightAiRouteImport } from './routes/admin/_admin/regions/$id/insight/ai'
+import { Route as AdminAdminRegionsIdInsightAgentsRouteImport } from './routes/admin/_admin/regions/$id/insight/agents'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -35,14 +46,54 @@ const AuthRegisterRoute = AuthRegisterRouteImport.update({
   path: '/auth/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
+  id: '/auth/forgot-password',
+  path: '/auth/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminAdminRoute = AdminAdminRouteImport.update({
   id: '/admin/_admin',
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAdminWeatherIndexRoute = AdminAdminWeatherIndexRouteImport.update({
+  id: '/weather/',
+  path: '/weather/',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminUsersIndexRoute = AdminAdminUsersIndexRouteImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminStocksIndexRoute = AdminAdminStocksIndexRouteImport.update({
+  id: '/stocks/',
+  path: '/stocks/',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminReportsIndexRoute = AdminAdminReportsIndexRouteImport.update({
+  id: '/reports/',
+  path: '/reports/',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
 const AdminAdminRegionsIndexRoute = AdminAdminRegionsIndexRouteImport.update({
   id: '/regions/',
   path: '/regions/',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminRecipesIndexRoute = AdminAdminRecipesIndexRouteImport.update({
+  id: '/recipes/',
+  path: '/recipes/',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminProfileIndexRoute = AdminAdminProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminModelsIndexRoute = AdminAdminModelsIndexRouteImport.update({
+  id: '/models/',
+  path: '/models/',
   getParentRoute: () => AdminAdminRoute,
 } as any)
 const AdminAdminDashboardIndexRoute =
@@ -51,111 +102,196 @@ const AdminAdminDashboardIndexRoute =
     path: '/dashboard/',
     getParentRoute: () => AdminAdminRoute,
   } as any)
-const AdminRegionsIdInsightRoute = AdminRegionsIdInsightRouteImport.update({
-  id: '/admin/regions/$id/insight',
-  path: '/admin/regions/$id/insight',
-  getParentRoute: () => rootRouteImport,
+const AdminAdminUsersCreateRoute = AdminAdminUsersCreateRouteImport.update({
+  id: '/users/create',
+  path: '/users/create',
+  getParentRoute: () => AdminAdminRoute,
 } as any)
-const AdminRegionsIdInsightReportsRoute =
-  AdminRegionsIdInsightReportsRouteImport.update({
+const AdminAdminRegionsIdInsightRoute =
+  AdminAdminRegionsIdInsightRouteImport.update({
+    id: '/regions/$id/insight',
+    path: '/regions/$id/insight',
+    getParentRoute: () => AdminAdminRoute,
+  } as any)
+const AdminAdminRegionsIdInsightScenarioRoute =
+  AdminAdminRegionsIdInsightScenarioRouteImport.update({
+    id: '/scenario',
+    path: '/scenario',
+    getParentRoute: () => AdminAdminRegionsIdInsightRoute,
+  } as any)
+const AdminAdminRegionsIdInsightReportsRoute =
+  AdminAdminRegionsIdInsightReportsRouteImport.update({
     id: '/reports',
     path: '/reports',
-    getParentRoute: () => AdminRegionsIdInsightRoute,
+    getParentRoute: () => AdminAdminRegionsIdInsightRoute,
   } as any)
-const AdminRegionsIdInsightAiRoute = AdminRegionsIdInsightAiRouteImport.update({
-  id: '/ai',
-  path: '/ai',
-  getParentRoute: () => AdminRegionsIdInsightRoute,
-} as any)
-const AdminRegionsIdInsightAgentsRoute =
-  AdminRegionsIdInsightAgentsRouteImport.update({
+const AdminAdminRegionsIdInsightHistoryRoute =
+  AdminAdminRegionsIdInsightHistoryRouteImport.update({
+    id: '/history',
+    path: '/history',
+    getParentRoute: () => AdminAdminRegionsIdInsightRoute,
+  } as any)
+const AdminAdminRegionsIdInsightAiRoute =
+  AdminAdminRegionsIdInsightAiRouteImport.update({
+    id: '/ai',
+    path: '/ai',
+    getParentRoute: () => AdminAdminRegionsIdInsightRoute,
+  } as any)
+const AdminAdminRegionsIdInsightAgentsRoute =
+  AdminAdminRegionsIdInsightAgentsRouteImport.update({
     id: '/agents',
     path: '/agents',
-    getParentRoute: () => AdminRegionsIdInsightRoute,
+    getParentRoute: () => AdminAdminRegionsIdInsightRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminAdminRouteWithChildren
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/signin': typeof AuthSigninRoute
-  '/admin/regions/$id/insight': typeof AdminRegionsIdInsightRouteWithChildren
+  '/admin/users/create': typeof AdminAdminUsersCreateRoute
   '/admin/dashboard/': typeof AdminAdminDashboardIndexRoute
+  '/admin/models/': typeof AdminAdminModelsIndexRoute
+  '/admin/profile/': typeof AdminAdminProfileIndexRoute
+  '/admin/recipes/': typeof AdminAdminRecipesIndexRoute
   '/admin/regions/': typeof AdminAdminRegionsIndexRoute
-  '/admin/regions/$id/insight/agents': typeof AdminRegionsIdInsightAgentsRoute
-  '/admin/regions/$id/insight/ai': typeof AdminRegionsIdInsightAiRoute
-  '/admin/regions/$id/insight/reports': typeof AdminRegionsIdInsightReportsRoute
+  '/admin/reports/': typeof AdminAdminReportsIndexRoute
+  '/admin/stocks/': typeof AdminAdminStocksIndexRoute
+  '/admin/users/': typeof AdminAdminUsersIndexRoute
+  '/admin/weather/': typeof AdminAdminWeatherIndexRoute
+  '/admin/regions/$id/insight': typeof AdminAdminRegionsIdInsightRouteWithChildren
+  '/admin/regions/$id/insight/agents': typeof AdminAdminRegionsIdInsightAgentsRoute
+  '/admin/regions/$id/insight/ai': typeof AdminAdminRegionsIdInsightAiRoute
+  '/admin/regions/$id/insight/history': typeof AdminAdminRegionsIdInsightHistoryRoute
+  '/admin/regions/$id/insight/reports': typeof AdminAdminRegionsIdInsightReportsRoute
+  '/admin/regions/$id/insight/scenario': typeof AdminAdminRegionsIdInsightScenarioRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminAdminRouteWithChildren
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/signin': typeof AuthSigninRoute
-  '/admin/regions/$id/insight': typeof AdminRegionsIdInsightRouteWithChildren
+  '/admin/users/create': typeof AdminAdminUsersCreateRoute
   '/admin/dashboard': typeof AdminAdminDashboardIndexRoute
+  '/admin/models': typeof AdminAdminModelsIndexRoute
+  '/admin/profile': typeof AdminAdminProfileIndexRoute
+  '/admin/recipes': typeof AdminAdminRecipesIndexRoute
   '/admin/regions': typeof AdminAdminRegionsIndexRoute
-  '/admin/regions/$id/insight/agents': typeof AdminRegionsIdInsightAgentsRoute
-  '/admin/regions/$id/insight/ai': typeof AdminRegionsIdInsightAiRoute
-  '/admin/regions/$id/insight/reports': typeof AdminRegionsIdInsightReportsRoute
+  '/admin/reports': typeof AdminAdminReportsIndexRoute
+  '/admin/stocks': typeof AdminAdminStocksIndexRoute
+  '/admin/users': typeof AdminAdminUsersIndexRoute
+  '/admin/weather': typeof AdminAdminWeatherIndexRoute
+  '/admin/regions/$id/insight': typeof AdminAdminRegionsIdInsightRouteWithChildren
+  '/admin/regions/$id/insight/agents': typeof AdminAdminRegionsIdInsightAgentsRoute
+  '/admin/regions/$id/insight/ai': typeof AdminAdminRegionsIdInsightAiRoute
+  '/admin/regions/$id/insight/history': typeof AdminAdminRegionsIdInsightHistoryRoute
+  '/admin/regions/$id/insight/reports': typeof AdminAdminRegionsIdInsightReportsRoute
+  '/admin/regions/$id/insight/scenario': typeof AdminAdminRegionsIdInsightScenarioRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin/_admin': typeof AdminAdminRouteWithChildren
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/signin': typeof AuthSigninRoute
-  '/admin/regions/$id/insight': typeof AdminRegionsIdInsightRouteWithChildren
+  '/admin/_admin/users/create': typeof AdminAdminUsersCreateRoute
   '/admin/_admin/dashboard/': typeof AdminAdminDashboardIndexRoute
+  '/admin/_admin/models/': typeof AdminAdminModelsIndexRoute
+  '/admin/_admin/profile/': typeof AdminAdminProfileIndexRoute
+  '/admin/_admin/recipes/': typeof AdminAdminRecipesIndexRoute
   '/admin/_admin/regions/': typeof AdminAdminRegionsIndexRoute
-  '/admin/regions/$id/insight/agents': typeof AdminRegionsIdInsightAgentsRoute
-  '/admin/regions/$id/insight/ai': typeof AdminRegionsIdInsightAiRoute
-  '/admin/regions/$id/insight/reports': typeof AdminRegionsIdInsightReportsRoute
+  '/admin/_admin/reports/': typeof AdminAdminReportsIndexRoute
+  '/admin/_admin/stocks/': typeof AdminAdminStocksIndexRoute
+  '/admin/_admin/users/': typeof AdminAdminUsersIndexRoute
+  '/admin/_admin/weather/': typeof AdminAdminWeatherIndexRoute
+  '/admin/_admin/regions/$id/insight': typeof AdminAdminRegionsIdInsightRouteWithChildren
+  '/admin/_admin/regions/$id/insight/agents': typeof AdminAdminRegionsIdInsightAgentsRoute
+  '/admin/_admin/regions/$id/insight/ai': typeof AdminAdminRegionsIdInsightAiRoute
+  '/admin/_admin/regions/$id/insight/history': typeof AdminAdminRegionsIdInsightHistoryRoute
+  '/admin/_admin/regions/$id/insight/reports': typeof AdminAdminRegionsIdInsightReportsRoute
+  '/admin/_admin/regions/$id/insight/scenario': typeof AdminAdminRegionsIdInsightScenarioRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/admin'
+    | '/auth/forgot-password'
     | '/auth/register'
     | '/auth/signin'
-    | '/admin/regions/$id/insight'
+    | '/admin/users/create'
     | '/admin/dashboard/'
+    | '/admin/models/'
+    | '/admin/profile/'
+    | '/admin/recipes/'
     | '/admin/regions/'
+    | '/admin/reports/'
+    | '/admin/stocks/'
+    | '/admin/users/'
+    | '/admin/weather/'
+    | '/admin/regions/$id/insight'
     | '/admin/regions/$id/insight/agents'
     | '/admin/regions/$id/insight/ai'
+    | '/admin/regions/$id/insight/history'
     | '/admin/regions/$id/insight/reports'
+    | '/admin/regions/$id/insight/scenario'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin'
+    | '/auth/forgot-password'
     | '/auth/register'
     | '/auth/signin'
-    | '/admin/regions/$id/insight'
+    | '/admin/users/create'
     | '/admin/dashboard'
+    | '/admin/models'
+    | '/admin/profile'
+    | '/admin/recipes'
     | '/admin/regions'
+    | '/admin/reports'
+    | '/admin/stocks'
+    | '/admin/users'
+    | '/admin/weather'
+    | '/admin/regions/$id/insight'
     | '/admin/regions/$id/insight/agents'
     | '/admin/regions/$id/insight/ai'
+    | '/admin/regions/$id/insight/history'
     | '/admin/regions/$id/insight/reports'
+    | '/admin/regions/$id/insight/scenario'
   id:
     | '__root__'
     | '/'
     | '/admin/_admin'
+    | '/auth/forgot-password'
     | '/auth/register'
     | '/auth/signin'
-    | '/admin/regions/$id/insight'
+    | '/admin/_admin/users/create'
     | '/admin/_admin/dashboard/'
+    | '/admin/_admin/models/'
+    | '/admin/_admin/profile/'
+    | '/admin/_admin/recipes/'
     | '/admin/_admin/regions/'
-    | '/admin/regions/$id/insight/agents'
-    | '/admin/regions/$id/insight/ai'
-    | '/admin/regions/$id/insight/reports'
+    | '/admin/_admin/reports/'
+    | '/admin/_admin/stocks/'
+    | '/admin/_admin/users/'
+    | '/admin/_admin/weather/'
+    | '/admin/_admin/regions/$id/insight'
+    | '/admin/_admin/regions/$id/insight/agents'
+    | '/admin/_admin/regions/$id/insight/ai'
+    | '/admin/_admin/regions/$id/insight/history'
+    | '/admin/_admin/regions/$id/insight/reports'
+    | '/admin/_admin/regions/$id/insight/scenario'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminAdminRoute: typeof AdminAdminRouteWithChildren
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthSigninRoute: typeof AuthSigninRoute
-  AdminRegionsIdInsightRoute: typeof AdminRegionsIdInsightRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -181,6 +317,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/forgot-password': {
+      id: '/auth/forgot-password'
+      path: '/auth/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/_admin': {
       id: '/admin/_admin'
       path: '/admin'
@@ -188,11 +331,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/_admin/weather/': {
+      id: '/admin/_admin/weather/'
+      path: '/weather'
+      fullPath: '/admin/weather/'
+      preLoaderRoute: typeof AdminAdminWeatherIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/admin/_admin/users/': {
+      id: '/admin/_admin/users/'
+      path: '/users'
+      fullPath: '/admin/users/'
+      preLoaderRoute: typeof AdminAdminUsersIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/admin/_admin/stocks/': {
+      id: '/admin/_admin/stocks/'
+      path: '/stocks'
+      fullPath: '/admin/stocks/'
+      preLoaderRoute: typeof AdminAdminStocksIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/admin/_admin/reports/': {
+      id: '/admin/_admin/reports/'
+      path: '/reports'
+      fullPath: '/admin/reports/'
+      preLoaderRoute: typeof AdminAdminReportsIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
     '/admin/_admin/regions/': {
       id: '/admin/_admin/regions/'
       path: '/regions'
       fullPath: '/admin/regions/'
       preLoaderRoute: typeof AdminAdminRegionsIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/admin/_admin/recipes/': {
+      id: '/admin/_admin/recipes/'
+      path: '/recipes'
+      fullPath: '/admin/recipes/'
+      preLoaderRoute: typeof AdminAdminRecipesIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/admin/_admin/profile/': {
+      id: '/admin/_admin/profile/'
+      path: '/profile'
+      fullPath: '/admin/profile/'
+      preLoaderRoute: typeof AdminAdminProfileIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/admin/_admin/models/': {
+      id: '/admin/_admin/models/'
+      path: '/models'
+      fullPath: '/admin/models/'
+      preLoaderRoute: typeof AdminAdminModelsIndexRouteImport
       parentRoute: typeof AdminAdminRoute
     }
     '/admin/_admin/dashboard/': {
@@ -202,74 +394,122 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminDashboardIndexRouteImport
       parentRoute: typeof AdminAdminRoute
     }
-    '/admin/regions/$id/insight': {
-      id: '/admin/regions/$id/insight'
-      path: '/admin/regions/$id/insight'
-      fullPath: '/admin/regions/$id/insight'
-      preLoaderRoute: typeof AdminRegionsIdInsightRouteImport
-      parentRoute: typeof rootRouteImport
+    '/admin/_admin/users/create': {
+      id: '/admin/_admin/users/create'
+      path: '/users/create'
+      fullPath: '/admin/users/create'
+      preLoaderRoute: typeof AdminAdminUsersCreateRouteImport
+      parentRoute: typeof AdminAdminRoute
     }
-    '/admin/regions/$id/insight/reports': {
-      id: '/admin/regions/$id/insight/reports'
+    '/admin/_admin/regions/$id/insight': {
+      id: '/admin/_admin/regions/$id/insight'
+      path: '/regions/$id/insight'
+      fullPath: '/admin/regions/$id/insight'
+      preLoaderRoute: typeof AdminAdminRegionsIdInsightRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/admin/_admin/regions/$id/insight/scenario': {
+      id: '/admin/_admin/regions/$id/insight/scenario'
+      path: '/scenario'
+      fullPath: '/admin/regions/$id/insight/scenario'
+      preLoaderRoute: typeof AdminAdminRegionsIdInsightScenarioRouteImport
+      parentRoute: typeof AdminAdminRegionsIdInsightRoute
+    }
+    '/admin/_admin/regions/$id/insight/reports': {
+      id: '/admin/_admin/regions/$id/insight/reports'
       path: '/reports'
       fullPath: '/admin/regions/$id/insight/reports'
-      preLoaderRoute: typeof AdminRegionsIdInsightReportsRouteImport
-      parentRoute: typeof AdminRegionsIdInsightRoute
+      preLoaderRoute: typeof AdminAdminRegionsIdInsightReportsRouteImport
+      parentRoute: typeof AdminAdminRegionsIdInsightRoute
     }
-    '/admin/regions/$id/insight/ai': {
-      id: '/admin/regions/$id/insight/ai'
+    '/admin/_admin/regions/$id/insight/history': {
+      id: '/admin/_admin/regions/$id/insight/history'
+      path: '/history'
+      fullPath: '/admin/regions/$id/insight/history'
+      preLoaderRoute: typeof AdminAdminRegionsIdInsightHistoryRouteImport
+      parentRoute: typeof AdminAdminRegionsIdInsightRoute
+    }
+    '/admin/_admin/regions/$id/insight/ai': {
+      id: '/admin/_admin/regions/$id/insight/ai'
       path: '/ai'
       fullPath: '/admin/regions/$id/insight/ai'
-      preLoaderRoute: typeof AdminRegionsIdInsightAiRouteImport
-      parentRoute: typeof AdminRegionsIdInsightRoute
+      preLoaderRoute: typeof AdminAdminRegionsIdInsightAiRouteImport
+      parentRoute: typeof AdminAdminRegionsIdInsightRoute
     }
-    '/admin/regions/$id/insight/agents': {
-      id: '/admin/regions/$id/insight/agents'
+    '/admin/_admin/regions/$id/insight/agents': {
+      id: '/admin/_admin/regions/$id/insight/agents'
       path: '/agents'
       fullPath: '/admin/regions/$id/insight/agents'
-      preLoaderRoute: typeof AdminRegionsIdInsightAgentsRouteImport
-      parentRoute: typeof AdminRegionsIdInsightRoute
+      preLoaderRoute: typeof AdminAdminRegionsIdInsightAgentsRouteImport
+      parentRoute: typeof AdminAdminRegionsIdInsightRoute
     }
   }
 }
 
+interface AdminAdminRegionsIdInsightRouteChildren {
+  AdminAdminRegionsIdInsightAgentsRoute: typeof AdminAdminRegionsIdInsightAgentsRoute
+  AdminAdminRegionsIdInsightAiRoute: typeof AdminAdminRegionsIdInsightAiRoute
+  AdminAdminRegionsIdInsightHistoryRoute: typeof AdminAdminRegionsIdInsightHistoryRoute
+  AdminAdminRegionsIdInsightReportsRoute: typeof AdminAdminRegionsIdInsightReportsRoute
+  AdminAdminRegionsIdInsightScenarioRoute: typeof AdminAdminRegionsIdInsightScenarioRoute
+}
+
+const AdminAdminRegionsIdInsightRouteChildren: AdminAdminRegionsIdInsightRouteChildren =
+  {
+    AdminAdminRegionsIdInsightAgentsRoute:
+      AdminAdminRegionsIdInsightAgentsRoute,
+    AdminAdminRegionsIdInsightAiRoute: AdminAdminRegionsIdInsightAiRoute,
+    AdminAdminRegionsIdInsightHistoryRoute:
+      AdminAdminRegionsIdInsightHistoryRoute,
+    AdminAdminRegionsIdInsightReportsRoute:
+      AdminAdminRegionsIdInsightReportsRoute,
+    AdminAdminRegionsIdInsightScenarioRoute:
+      AdminAdminRegionsIdInsightScenarioRoute,
+  }
+
+const AdminAdminRegionsIdInsightRouteWithChildren =
+  AdminAdminRegionsIdInsightRoute._addFileChildren(
+    AdminAdminRegionsIdInsightRouteChildren,
+  )
+
 interface AdminAdminRouteChildren {
+  AdminAdminUsersCreateRoute: typeof AdminAdminUsersCreateRoute
   AdminAdminDashboardIndexRoute: typeof AdminAdminDashboardIndexRoute
+  AdminAdminModelsIndexRoute: typeof AdminAdminModelsIndexRoute
+  AdminAdminProfileIndexRoute: typeof AdminAdminProfileIndexRoute
+  AdminAdminRecipesIndexRoute: typeof AdminAdminRecipesIndexRoute
   AdminAdminRegionsIndexRoute: typeof AdminAdminRegionsIndexRoute
+  AdminAdminReportsIndexRoute: typeof AdminAdminReportsIndexRoute
+  AdminAdminStocksIndexRoute: typeof AdminAdminStocksIndexRoute
+  AdminAdminUsersIndexRoute: typeof AdminAdminUsersIndexRoute
+  AdminAdminWeatherIndexRoute: typeof AdminAdminWeatherIndexRoute
+  AdminAdminRegionsIdInsightRoute: typeof AdminAdminRegionsIdInsightRouteWithChildren
 }
 
 const AdminAdminRouteChildren: AdminAdminRouteChildren = {
+  AdminAdminUsersCreateRoute: AdminAdminUsersCreateRoute,
   AdminAdminDashboardIndexRoute: AdminAdminDashboardIndexRoute,
+  AdminAdminModelsIndexRoute: AdminAdminModelsIndexRoute,
+  AdminAdminProfileIndexRoute: AdminAdminProfileIndexRoute,
+  AdminAdminRecipesIndexRoute: AdminAdminRecipesIndexRoute,
   AdminAdminRegionsIndexRoute: AdminAdminRegionsIndexRoute,
+  AdminAdminReportsIndexRoute: AdminAdminReportsIndexRoute,
+  AdminAdminStocksIndexRoute: AdminAdminStocksIndexRoute,
+  AdminAdminUsersIndexRoute: AdminAdminUsersIndexRoute,
+  AdminAdminWeatherIndexRoute: AdminAdminWeatherIndexRoute,
+  AdminAdminRegionsIdInsightRoute: AdminAdminRegionsIdInsightRouteWithChildren,
 }
 
 const AdminAdminRouteWithChildren = AdminAdminRoute._addFileChildren(
   AdminAdminRouteChildren,
 )
 
-interface AdminRegionsIdInsightRouteChildren {
-  AdminRegionsIdInsightAgentsRoute: typeof AdminRegionsIdInsightAgentsRoute
-  AdminRegionsIdInsightAiRoute: typeof AdminRegionsIdInsightAiRoute
-  AdminRegionsIdInsightReportsRoute: typeof AdminRegionsIdInsightReportsRoute
-}
-
-const AdminRegionsIdInsightRouteChildren: AdminRegionsIdInsightRouteChildren = {
-  AdminRegionsIdInsightAgentsRoute: AdminRegionsIdInsightAgentsRoute,
-  AdminRegionsIdInsightAiRoute: AdminRegionsIdInsightAiRoute,
-  AdminRegionsIdInsightReportsRoute: AdminRegionsIdInsightReportsRoute,
-}
-
-const AdminRegionsIdInsightRouteWithChildren =
-  AdminRegionsIdInsightRoute._addFileChildren(
-    AdminRegionsIdInsightRouteChildren,
-  )
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminAdminRoute: AdminAdminRouteWithChildren,
+  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthSigninRoute: AuthSigninRoute,
-  AdminRegionsIdInsightRoute: AdminRegionsIdInsightRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

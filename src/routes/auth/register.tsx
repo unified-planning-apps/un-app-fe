@@ -3,56 +3,29 @@ import ThemeToggle from '#/components/ThemeToggle'
 import { Button } from '#/components/ui/button'
 import { FloatingInput, FloatingLabel } from '#/components/ui/floating-label-input'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '#/components/ui/form'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from 'react'
-import { FloatingLabelSelect } from '#/components/ui/floating-label-select'
-import { Region, Role } from '#/shared/constants'
-import { SelectItem } from '#/components/ui/select'
-import { PhoneInput } from '#/components/ui/phone-input'
-import { RegisterFormSchema, type RegisterFormValues } from '#/lib/validations/auth'
-import { Lock, Check } from 'lucide-react'
+import { Role } from '#/shared/constants'
+import { RegisterRequestSchema, type RegisterFormValues } from '#/lib/schemas/auth'
+import { useRegister } from '#/hooks/use-auth'
+import { Lock, Check, Loader2 } from 'lucide-react'
 import registerIllustration from '#/assets/images/register-illustration.png'
+import { toast } from 'sonner'
+import { ApiError } from '#/lib/api/client'
 
 export const Route = createFileRoute('/auth/register')({
     component: RouteComponent,
 })
 
-const REGION_LABELS: Record<Region, string> = {
-    [Region.AlaotraMangoro]: 'Alaotra-Mangoro',
-    [Region.AmoronMania]: "Amoron'i Mania",
-    [Region.Analamanga]: 'Analamanga',
-    [Region.Analanjirofo]: 'Analanjirofo',
-    [Region.Anosy]: 'Anosy',
-    [Region.Androy]: 'Androy',
-    [Region.AtsimoAndrefana]: 'Atsimo-Andrefana',
-    [Region.AtsimoAtsinanana]: 'Atsimo-Atsinanana',
-    [Region.Atsinanana]: 'Atsinanana',
-    [Region.Betsiboka]: 'Betsiboka',
-    [Region.Boeny]: 'Boeny',
-    [Region.Bongolava]: 'Bongolava',
-    [Region.Diana]: 'Diana',
-    [Region.Fitovinany]: 'Fitovinany',
-    [Region.Ihorombe]: 'Ihorombe',
-    [Region.Itasy]: 'Itasy',
-    [Region.MatsiatraAmbony]: 'Matsiatra Ambony',
-    [Region.Melaky]: 'Melaky',
-    [Region.Menabe]: 'Menabe',
-    [Region.Sava]: 'Sava',
-    [Region.Sofia]: 'Sofia',
-    [Region.Vakinankaratra]: 'Vakinankaratra',
-    [Region.Vatovavy]: 'Vatovavy',
-}
-
-const ROLE_LABELS: Record<Role, string> = {
-    [Role.Agent]: 'Agent sur terrain',
-    [Role.Guest]: 'Invité (lecture seule)',
-}
+// Self-registration always creates a read-only viewer account — Régional
+// and National roles are provisioned by an administrator (see
+// /admin/users/create).
 
 function PasswordStrength({ password }: { password: string }) {
     const checks = [
-        { label: 'Au moins 8 caractères', ok: password.length >= 8 },
+        { label: 'Au moins 6 caractères', ok: password.length >= 6 },
         { label: 'Une majuscule', ok: /[A-Z]/.test(password) },
         { label: 'Une minuscule', ok: /[a-z]/.test(password) },
         { label: 'Un chiffre', ok: /[0-9]/.test(password) },
@@ -105,16 +78,19 @@ function StepDots({ step }: { step: number }) {
 }
 
 function RouteComponent() {
+    const navigate = useNavigate()
     const [step, setStep] = useState(1);
+    const registerMutation = useRegister()
 
     const form = useForm<RegisterFormValues>({
-        resolver: zodResolver(RegisterFormSchema),
+        resolver: zodResolver(RegisterRequestSchema),
         defaultValues: {
-            fullname: '',
+            username: '',
             email: '',
-            phoneNumber: '',
-            region: Region.Analamanga,
-            role: Role.Guest,
+            full_name: '',
+            organisation: '',
+            region_id: undefined,
+            role: Role.Viewer,
             password: '',
             confirmPassword: ''
         },
@@ -124,13 +100,23 @@ function RouteComponent() {
     const password = form.watch('password')
 
     const nextStep = async () => {
-        const isStepValid = await form.trigger(['fullname', 'email', 'phoneNumber']);
+        const isStepValid = await form.trigger(['username', 'email', 'full_name']);
         if (isStepValid) setStep(2);
     };
     const prevStep = () => setStep(1);
 
-    const onSubmit = (_values: RegisterFormValues) => {
-        // TODO: implement registration
+    const onSubmit = (values: RegisterFormValues) => {
+        const { confirmPassword, ...payload } = values
+        registerMutation.mutate(payload, {
+            onSuccess: () => {
+                toast.success('Compte créé avec succès. Vous pouvez maintenant vous connecter.')
+                navigate({ to: '/auth/signin' })
+            },
+            onError: (error) => {
+                const message = error instanceof ApiError ? error.message : "Impossible de créer le compte."
+                toast.error(message)
+            },
+        })
     }
 
     return (
@@ -187,7 +173,7 @@ function RouteComponent() {
                                     <div className='space-y-4'>
                                         <FormField
                                             control={form.control}
-                                            name='fullname'
+                                            name='full_name'
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <div className='relative'>
@@ -195,7 +181,6 @@ function RouteComponent() {
                                                             <FloatingInput
                                                                 {...field}
                                                                 id="floating-fullname"
-                                                                placeholder="John Doe"
                                                                 className="h-14 rounded-xl border-gray-200"
                                                             />
                                                         </FormControl>
@@ -207,16 +192,20 @@ function RouteComponent() {
                                         />
                                         <FormField
                                             control={form.control}
-                                            name='phoneNumber'
+                                            name='username'
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <PhoneInput
-                                                        defaultCountry='MG'
-                                                        placeholder="Numéro de téléphone"
-                                                        {...field}
-                                                        id="floating-phone"
-                                                        className="h-14 rounded-xl border-gray-200"
-                                                    />
+                                                    <div className='relative'>
+                                                        <FormControl>
+                                                            <FloatingInput
+                                                                {...field}
+                                                                id="floating-username"
+                                                                autoComplete="username"
+                                                                className="h-14 rounded-xl border-gray-200"
+                                                            />
+                                                        </FormControl>
+                                                        <FloatingLabel htmlFor="floating-username">Nom d'utilisateur</FloatingLabel>
+                                                    </div>
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
@@ -232,11 +221,29 @@ function RouteComponent() {
                                                                 {...field}
                                                                 id="floating-email"
                                                                 type="email"
-                                                                placeholder="exemple@exemple.com"
                                                                 className="h-14 rounded-xl border-gray-200"
                                                             />
                                                         </FormControl>
                                                         <FloatingLabel htmlFor="floating-email">Email</FloatingLabel>
+                                                    </div>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name='organisation'
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <div className='relative'>
+                                                        <FormControl>
+                                                            <FloatingInput
+                                                                {...field}
+                                                                id="floating-organisation"
+                                                                className="h-14 rounded-xl border-gray-200"
+                                                            />
+                                                        </FormControl>
+                                                        <FloatingLabel htmlFor="floating-organisation">Organisation (optionnel)</FloatingLabel>
                                                     </div>
                                                     <FormMessage />
                                                 </FormItem>
@@ -247,52 +254,13 @@ function RouteComponent() {
 
                                 {step === 2 && (
                                     <div className='space-y-4'>
-                                        <FormField
-                                            control={form.control}
-                                            name='region'
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormControl>
-                                                        <FloatingLabelSelect
-                                                            id='region-select'
-                                                            label='Région'
-                                                            className='w-full h-14 rounded-xl border-gray-200'
-                                                            onValueChange={field.onChange}
-                                                            defaultValue={field.value}>
-                                                            {Object.values(Region).map((regionValue) => (
-                                                                <SelectItem key={regionValue} value={regionValue}>
-                                                                    {REGION_LABELS[regionValue as Region] ?? regionValue}
-                                                                </SelectItem>
-                                                            ))}
-                                                        </FloatingLabelSelect>
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={form.control}
-                                            name='role'
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormControl>
-                                                        <FloatingLabelSelect
-                                                            id='role-select'
-                                                            label='Rôle'
-                                                            className='w-full h-14 rounded-xl border-gray-200'
-                                                            onValueChange={field.onChange}
-                                                            defaultValue={field.value}>
-                                                            {Object.values(Role).map((roleValue) => (
-                                                                <SelectItem key={roleValue} value={roleValue}>
-                                                                    {ROLE_LABELS[roleValue as Role] ?? roleValue}
-                                                                </SelectItem>
-                                                            ))}
-                                                        </FloatingLabelSelect>
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
+                                        <div
+                                            className="rounded-xl p-3 text-xs"
+                                            style={{ backgroundColor: 'var(--background-gray-color)', color: 'var(--texte-gray)' }}
+                                        >
+                                            Les comptes créés ici sont en lecture seule (rôle « Lecture seule »).
+                                            Les rôles Régional et National sont attribués par un administrateur.
+                                        </div>
                                         <FormField
                                             control={form.control}
                                             name='password'
@@ -343,7 +311,7 @@ function RouteComponent() {
 
                                 {step === 1 ? (
                                     <Button
-                                        className='w-full h-12 rounded-xl text-base font-semibold'
+                                        className='w-full h-12 rounded-xl text-base font-semibold text-white'
                                         style={{
                                             background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)',
                                             color: 'white',
@@ -356,20 +324,22 @@ function RouteComponent() {
                                 ) : (
                                     <div className="flex gap-3">
                                         <Button
-                                            className='flex-1 h-12 rounded-xl text-base font-semibold'
+                                            className='flex-1 h-12 rounded-xl text-base font-semibold text-white'
                                             variant='outline'
                                             type='button'
                                             onClick={prevStep}>
                                             Retour
                                         </Button>
                                         <Button
-                                            className='flex-1 h-12 rounded-xl text-base font-semibold'
+                                            className='flex-1 h-12 rounded-xl text-base font-semibold text-white'
                                             style={{
                                                 background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)',
                                                 color: 'white',
                                                 border: 'none'
                                             }}
-                                            type='submit'>
+                                            type='submit'
+                                            disabled={registerMutation.isPending}>
+                                            {registerMutation.isPending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
                                             Créer
                                         </Button>
                                     </div>

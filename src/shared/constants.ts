@@ -1,58 +1,28 @@
-export const AppName = 'UN APP';
+export const AppName = 'HealthShield';
 
-export enum Region {
-    AlaotraMangoro = 'alaotra-mangoro',
-    AmoronMania = 'amoron-i mania',
-    Analamanga = 'analamanga',
-    Analanjirofo = 'alanjirofo',
-    Anosy = 'anosy',
-    Androy = 'androy',
-    AtsimoAndrefana = 'atsimo-andrefana',
-    AtsimoAtsinanana = 'atsimo-atsinanana',
-    Atsinanana = 'atsinanana',
-    Betsiboka = 'betsiboka',
-    Boeny = 'boeny',
-    Bongolava = 'bongolava',
-    Diana = 'diana',
-    Fitovinany = 'fitovinany',
-    Ihorombe = 'ihorombe',
-    Itasy = 'itasy',
-    MatsiatraAmbony = 'matsiatra-ambony',
-    Melaky = 'melaky',
-    Menabe = 'menabe',
-    Sava = 'sava',
-    Sofia = 'sofia',
-    Vakinankaratra = 'vakinankaratra',
-    Vatovavy = 'vatovavy',
-}
-
+/**
+ * User roles — must match backend `src/utils/constants.py::UserRole` exactly.
+ *   admin    → full access + user management
+ *   national → all regions, no user management
+ *   regional → restricted to own region
+ *   viewer   → read-only
+ */
 export enum Role {
-    Agent = 'Agent',
-    Guest = 'Guest',
+    Admin = 'admin',
+    National = 'national',
+    Regional = 'regional',
+    Viewer = 'viewer',
 }
 
-export const REGION_LOCATION: Record<Region, { lat: number; lng: number }> = {
-    [Region.AlaotraMangoro]: { lat: -18.23, lng: 48.42 },
-    [Region.AmoronMania]: { lat: -20.32, lng: 46.85 },
-    [Region.Analamanga]: { lat: -18.82, lng: 47.47 },
-    [Region.Analanjirofo]: { lat: -16.43, lng: 49.38 },
-    [Region.Anosy]: { lat: -24.16, lng: 46.68 },
-    [Region.Androy]: { lat: -24.83, lng: 45.45 },
-    [Region.AtsimoAndrefana]: { lat: -23.41, lng: 44.57 },
-    [Region.AtsimoAtsinanana]: { lat: -23.42, lng: 47.45 },
-    [Region.Atsinanana]: { lat: -18.73, lng: 48.92 },
-    [Region.Betsiboka]: { lat: -16.89, lng: 47.12 },
-    [Region.Boeny]: { lat: -15.98, lng: 46.12 },
-    [Region.Bongolava]: { lat: -18.74, lng: 46.12 },
-    [Region.Diana]: { lat: -13.31, lng: 48.92 },
-    [Region.Fitovinany]: { lat: -21.84, lng: 47.92 },
-    [Region.Ihorombe]: { lat: -22.42, lng: 46.12 },
-    [Region.Itasy]: { lat: -19.05, lng: 46.73 },
-    [Region.MatsiatraAmbony]: { lat: -21.31, lng: 46.92 },
-    [Region.Melaky]: { lat: -17.65, lng: 44.92 },
-    [Region.Menabe]: { lat: -20.03, lng: 44.75 },
-    [Region.Sava]: { lat: -14.27, lng: 49.89 },
-    [Region.Sofia]: { lat: -15.22, lng: 48.23 },
-    [Region.Vakinankaratra]: { lat: -19.78, lng: 46.92 },
-    [Region.Vatovavy]: { lat: -21.05, lng: 47.95 },
-};
+export const ROLE_LABELS: Record<Role, string> = {
+    [Role.Admin]: 'Administrateur',
+    [Role.National]: 'National',
+    [Role.Regional]: 'Régional',
+    [Role.Viewer]: 'Lecture seule',
+}
+
+// Region data now lives in `#/lib/regions` (sourced from the backend's
+// `config/regions_metadata.json`). Re-exported here for convenience /
+// backward compatibility with existing imports of `shared/constants`.
+export { REGIONS, REGION_BY_ID, getRegionName, getRegionMeta } from '#/lib/regions'
+export type { RegionMeta } from '#/lib/regions'

@@ -1,10 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { MapPin, Phone, Mail, Activity, FileText, CheckCircle, Clock, Send } from 'lucide-react'
-import { Region, Role } from '#/shared/constants'
+import { getRegionName } from '#/lib/regions'
 
-export const Route = createFileRoute('/admin/regions/$id/insight/agents')({
+export const Route = createFileRoute('/admin/_admin/regions/$id/insight/agents')({
   component: RouteComponent,
 })
+
+// Field-agent role (terrain staff), distinct from the platform's auth Role
+// (admin/national/regional/viewer in #/shared/constants). The backend has
+// no "field agents" endpoint yet, so this stays mock data.
+type FieldAgentRole = 'agent' | 'supervisor'
 
 interface Agent {
   id: number
@@ -12,8 +17,8 @@ interface Agent {
   initials: string
   email: string
   phone: string
-  role: Role
-  region: Region
+  role: FieldAgentRole
+  regionId: string
   status: 'active' | 'inactive' | 'offline'
   reportsCount: number
   lastReport: string
@@ -21,13 +26,15 @@ interface Agent {
   resolvedCount: number
 }
 
-const MOCK_AGENTS: Agent[] = [
-  { id: 1, name: 'Rabe Jean', initials: 'RJ', email: 'rabe.jean@hypepos.mg', phone: '+261 32 11 234 56', role: Role.Agent, region: Region.Analamanga, status: 'active', reportsCount: 47, lastReport: '2025-05-12', alertsCount: 18, resolvedCount: 14 },
-  { id: 2, name: 'Vola Ratsima', initials: 'VR', email: 'vola.ratsima@hypepos.mg', phone: '+261 33 44 567 89', role: Role.Agent, region: Region.Analamanga, status: 'active', reportsCount: 31, lastReport: '2025-05-12', alertsCount: 12, resolvedCount: 10 },
-  { id: 3, name: 'Tiana Andry', initials: 'TA', email: 'tiana.andry@hypepos.mg', phone: '+261 34 55 678 90', role: Role.Agent, region: Region.Analamanga, status: 'offline', reportsCount: 22, lastReport: '2025-05-10', alertsCount: 6, resolvedCount: 6 },
-  { id: 4, name: 'Koto Mamy', initials: 'KM', email: 'koto.mamy@hypepos.mg', phone: '+261 32 66 789 01', role: Role.Agent, region: Region.Analamanga, status: 'active', reportsCount: 38, lastReport: '2025-05-11', alertsCount: 9, resolvedCount: 7 },
-  { id: 5, name: 'Niry Solo', initials: 'NS', email: 'niry.solo@hypepos.mg', phone: '+261 33 77 890 12', role: Role.Agent, region: Region.Analamanga, status: 'inactive', reportsCount: 15, lastReport: '2025-05-05', alertsCount: 3, resolvedCount: 3 },
-]
+function makeAgents(regionId: string): Agent[] {
+  return [
+    { id: 1, name: 'Rabe Jean', initials: 'RJ', email: 'rabe.jean@healthshield.mg', phone: '+261 32 11 234 56', role: 'agent', regionId, status: 'active', reportsCount: 47, lastReport: '2025-05-12', alertsCount: 18, resolvedCount: 14 },
+    { id: 2, name: 'Vola Ratsima', initials: 'VR', email: 'vola.ratsima@healthshield.mg', phone: '+261 33 44 567 89', role: 'agent', regionId, status: 'active', reportsCount: 31, lastReport: '2025-05-12', alertsCount: 12, resolvedCount: 10 },
+    { id: 3, name: 'Tiana Andry', initials: 'TA', email: 'tiana.andry@healthshield.mg', phone: '+261 34 55 678 90', role: 'agent', regionId, status: 'offline', reportsCount: 22, lastReport: '2025-05-10', alertsCount: 6, resolvedCount: 6 },
+    { id: 4, name: 'Koto Mamy', initials: 'KM', email: 'koto.mamy@healthshield.mg', phone: '+261 32 66 789 01', role: 'supervisor', regionId, status: 'active', reportsCount: 38, lastReport: '2025-05-11', alertsCount: 9, resolvedCount: 7 },
+    { id: 5, name: 'Niry Solo', initials: 'NS', email: 'niry.solo@healthshield.mg', phone: '+261 33 77 890 12', role: 'agent', regionId, status: 'inactive', reportsCount: 15, lastReport: '2025-05-05', alertsCount: 3, resolvedCount: 3 },
+  ]
+}
 
 const AVATAR_COLORS = ['#023047', '#206ebb', '#0ea5e9', '#8b5cf6', '#ef4444']
 
@@ -72,7 +79,8 @@ function AgentCard({ agent, colorIndex }: { agent: Agent; colorIndex: number }) 
               </span>
             </div>
           </div>
-          <button
+          <a
+            href={`mailto:${agent.email}`}
             className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-xl border transition-all hover:opacity-80"
             style={{
               backgroundColor: 'var(--primary)',
@@ -82,7 +90,7 @@ function AgentCard({ agent, colorIndex }: { agent: Agent; colorIndex: number }) 
           >
             <Send className="w-3 h-3" />
             Contacter
-          </button>
+          </a>
         </div>
 
         <div className="space-y-1.5">
@@ -96,7 +104,7 @@ function AgentCard({ agent, colorIndex }: { agent: Agent; colorIndex: number }) 
           </div>
           <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--texte-gray)' }}>
             <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-            <span>{agent.region}</span>
+            <span>{getRegionName(agent.regionId)}</span>
           </div>
         </div>
       </div>
@@ -141,22 +149,24 @@ function AgentCard({ agent, colorIndex }: { agent: Agent; colorIndex: number }) 
 }
 
 function RouteComponent() {
-  const activeCount = MOCK_AGENTS.filter(a => a.status === 'active').length
-  const totalReports = MOCK_AGENTS.reduce((acc, a) => acc + a.reportsCount, 0)
-  const totalAlerts = MOCK_AGENTS.reduce((acc, a) => acc + a.alertsCount, 0)
+  const regionId = Route.useParams().id
+  const agents = makeAgents(regionId)
+  const activeCount = agents.filter(a => a.status === 'active').length
+  const totalReports = agents.reduce((acc, a) => acc + a.reportsCount, 0)
+  const totalAlerts = agents.reduce((acc, a) => acc + a.alertsCount, 0)
 
   return (
-    <div className="space-y-5 pb-8">
+    <div className="space-y-7 pb-10">
       {/* Summary */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-5">
         {[
-          { label: 'Agents actifs', value: `${activeCount}/${MOCK_AGENTS.length}`, color: '#22c55e', icon: <Activity className="w-4 h-4" /> },
+          { label: 'Agents actifs', value: `${activeCount}/${agents.length}`, color: '#22c55e', icon: <Activity className="w-4 h-4" /> },
           { label: 'Rapports total', value: totalReports, color: 'var(--primary2)', icon: <FileText className="w-4 h-4" /> },
           { label: 'Alertes émises', value: totalAlerts, color: '#ef4444', icon: <Activity className="w-4 h-4" /> },
         ].map(item => (
           <div
             key={item.label}
-            className="rounded-2xl border p-4"
+            className="rounded-2xl border p-5"
             style={{ backgroundColor: 'var(--background-white-color)', borderColor: 'var(--stroke-dark)' }}
           >
             <div
@@ -172,8 +182,8 @@ function RouteComponent() {
       </div>
 
       {/* Agent cards grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {MOCK_AGENTS.map((agent, i) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        {agents.map((agent, i) => (
           <AgentCard key={agent.id} agent={agent} colorIndex={i} />
         ))}
       </div>

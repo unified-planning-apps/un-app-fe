@@ -1,19 +1,21 @@
 import NavLinkComponent from '#/components/NavLinkComponent';
 import { createFileRoute, Outlet, Link } from '@tanstack/react-router'
-import { ChevronLeft, Rows3, Sparkles, Users, MapPin } from 'lucide-react';
+import { ChevronLeft, Rows3, Sparkles, Users, MapPin, FlaskConical, History } from 'lucide-react';
+import { getRegionMeta } from '#/lib/regions';
 
-export const Route = createFileRoute('/admin/regions/$id/insight')({
+export const Route = createFileRoute('/admin/_admin/regions/$id/insight')({
   component: InsightLayout,
 })
 
 function InsightLayout() {
-  const regionName = Route.useParams().id;
-  const displayName = regionName.charAt(0).toUpperCase() + regionName.slice(1).replace(/-/g, ' ');
+  const regionId = Route.useParams().id;
+  const region = getRegionMeta(regionId);
+  const displayName = region?.name ?? regionId;
 
   return (
     <div className="space-y-0">
       {/* Breadcrumb */}
-      <div className='flex flex-row items-center gap-2 px-6 pt-4 pb-3'>
+      <div className='flex flex-row items-center gap-2 pb-4'>
         <Link
           to='/admin/regions'
           className='flex items-center gap-1.5 text-sm font-medium transition-colors'
@@ -32,7 +34,7 @@ function InsightLayout() {
 
       {/* Hero banner */}
       <div
-        className="mx-6 rounded-2xl p-6 flex items-center justify-between overflow-hidden relative mb-4"
+        className="rounded-2xl p-6 flex items-center justify-between overflow-hidden relative mb-4"
         style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)' }}
       >
         <div className="absolute inset-0 opacity-10" style={{
@@ -45,30 +47,38 @@ function InsightLayout() {
           >
             Région {displayName}
           </h1>
-          <p className="text-sm text-white/70">Analyse détaillée des données sanitaires et climatiques</p>
+          <p className="text-sm text-white/70">
+            {region?.chef_lieu ? `Chef-lieu : ${region.chef_lieu}` : 'Analyse détaillée des données sanitaires et climatiques'}
+          </p>
         </div>
-        <div className="relative z-10 hidden sm:flex items-center gap-4">
+        <div className="relative z-10 hidden sm:flex items-center gap-5">
           <div className="text-center">
             <p className="text-white/70 text-xs">Superficie</p>
-            <p className="text-white font-bold text-lg">~12 500 km²</p>
+            <p className="text-white font-bold text-lg">
+              {region ? `${region.area_km2.toLocaleString('fr-FR')} km²` : '—'}
+            </p>
           </div>
           <div className="w-px h-10 bg-white/30" />
           <div className="text-center">
             <p className="text-white/70 text-xs">Population</p>
-            <p className="text-white font-bold text-lg">~3.2M</p>
+            <p className="text-white font-bold text-lg">
+              {region ? `${(region.population_2023 / 1_000_000).toFixed(1)}M` : '—'}
+            </p>
           </div>
         </div>
       </div>
 
       {/* Tab navigation */}
       <div
-        className='mx-6 flex flex-row items-center gap-1 border-b'
+        className='flex flex-row items-center gap-1 border-b'
         style={{ borderColor: 'var(--stroke-dark)' }}
       >
         {[
-          { to: `/admin/regions/${regionName}/insight/ai`, label: 'Analyse IA', icon: <Sparkles size={15} /> },
-          { to: `/admin/regions/${regionName}/insight/reports`, label: 'Rapports', icon: <Rows3 size={15} /> },
-          { to: `/admin/regions/${regionName}/insight/agents`, label: 'Agents', icon: <Users size={15} /> },
+          { to: `/admin/regions/${regionId}/insight/ai`, label: 'Analyse IA', icon: <Sparkles size={15} /> },
+          { to: `/admin/regions/${regionId}/insight/history`, label: 'Historique climatique', icon: <History size={15} /> },
+          { to: `/admin/regions/${regionId}/insight/scenario`, label: 'Scénarios', icon: <FlaskConical size={15} /> },
+          { to: `/admin/regions/${regionId}/insight/reports`, label: 'Rapports terrain', icon: <Rows3 size={15} /> },
+          { to: `/admin/regions/${regionId}/insight/agents`, label: 'Agents', icon: <Users size={15} /> },
         ].map(({ to, label, icon }) => (
           <NavLinkComponent
             key={to}
@@ -83,7 +93,7 @@ function InsightLayout() {
       </div>
 
       {/* Content */}
-      <div className="px-6 pt-4">
+      <div className="pt-2">
         <Outlet />
       </div>
     </div>

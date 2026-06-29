@@ -1,12 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-import { AlertTriangle, MessageCircle, FileText, Filter, Search, Calendar, MapPin, User } from 'lucide-react'
+import { FileText, Filter, Search } from 'lucide-react'
+import ReportDetail, {
+  REPORT_TYPE_CONFIG,
+  REPORT_STATUS_CONFIG,
+  type ReportType,
+  type ReportSeverity,
+  type ReportStatus,
+} from '#/components/ReportDetail'
 
-export const Route = createFileRoute('/admin/regions/$id/insight/reports')({
+export const Route = createFileRoute('/admin/_admin/regions/$id/insight/reports')({
   component: RouteComponent,
 })
-
-type ReportType = 'alert' | 'message' | 'other'
 
 interface Report {
   id: number
@@ -16,10 +21,14 @@ interface Report {
   reportType: ReportType
   report: string
   date: string
-  severity?: 'high' | 'medium' | 'low'
-  status: 'pending' | 'reviewed' | 'resolved'
+  severity?: ReportSeverity
+  status: ReportStatus
 }
 
+// Field-agent reports (alerts/messages submitted from the ground). This is a
+// distinct concept from the system-generated PDF reports under /admin/reports
+// (backend `/rapports/*`) — the backend has no endpoint for these yet, so
+// this stays mock data pending a dedicated "field reports" API.
 const MOCK_REPORTS: Report[] = [
   { id: 1, agentName: 'Rabe Jean', agentAvatar: 'RJ', region: 'Analamanga', reportType: 'alert', report: '17 nouveaux cas de paludisme dans la commune d\'Ambohidratrimo. Stocks de médicaments insuffisants au CSB.', date: '2025-05-12', severity: 'high', status: 'pending' },
   { id: 2, agentName: 'Vola Ratsima', agentAvatar: 'VR', region: 'Analamanga', reportType: 'alert', report: 'Vague de chaleur signalée — température dépasse 38°C dans 3 communes. Risque de coup de chaleur pour les enfants.', date: '2025-05-12', severity: 'high', status: 'reviewed' },
@@ -29,35 +38,6 @@ const MOCK_REPORTS: Report[] = [
   { id: 6, agentName: 'Hery Rado', agentAvatar: 'HR', region: 'Analamanga', reportType: 'message', report: 'Réunion communautaire tenue à Antehiroka. Les habitants demandent plus d\'agents de terrain.', date: '2025-05-10', status: 'resolved' },
   { id: 7, agentName: 'Fara Lova', agentAvatar: 'FL', region: 'Analamanga', reportType: 'alert', report: '3 cas suspects de choléra près du fleuve Ikopa. Prélèvements envoyés au laboratoire central.', date: '2025-05-09', severity: 'high', status: 'pending' },
 ]
-
-const TYPE_CONFIG: Record<ReportType, { label: string; icon: React.ReactNode; color: string; bg: string }> = {
-  alert: { label: 'Alerte', icon: <AlertTriangle className="w-3.5 h-3.5" />, color: '#ef4444', bg: '#fef2f2' },
-  message: { label: 'Message', icon: <MessageCircle className="w-3.5 h-3.5" />, color: '#0ea5e9', bg: '#eff6ff' },
-  other: { label: 'Rapport', icon: <FileText className="w-3.5 h-3.5" />, color: '#8b5cf6', bg: '#f5f3ff' },
-}
-
-const SEVERITY_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  high: { label: 'Critique', color: '#ef4444', bg: '#fef2f2' },
-  medium: { label: 'Moyen', color: '#f97316', bg: '#fff7ed' },
-  low: { label: 'Bas', color: '#22c55e', bg: '#f0fdf4' },
-}
-
-const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  pending: { label: 'En attente', color: '#f97316', bg: '#fff7ed' },
-  reviewed: { label: 'Traité', color: '#0ea5e9', bg: '#eff6ff' },
-  resolved: { label: 'Résolu', color: '#22c55e', bg: '#f0fdf4' },
-}
-
-function AvatarCircle({ initials, color }: { initials: string; color: string }) {
-  return (
-    <div
-      className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-      style={{ backgroundColor: color }}
-    >
-      {initials}
-    </div>
-  )
-}
 
 const AVATAR_COLORS = ['#023047', '#206ebb', '#0ea5e9', '#8b5cf6', '#ef4444', '#22c55e', '#f97316']
 
@@ -81,11 +61,11 @@ function RouteComponent() {
   }
 
   return (
-    <div className="space-y-5 pb-8">
+    <div className="space-y-7 pb-10">
       {/* Summary stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-5">
         {(['alert', 'message', 'other'] as ReportType[]).map(type => {
-          const cfg = TYPE_CONFIG[type]
+          const cfg = REPORT_TYPE_CONFIG[type]
           return (
             <button
               key={type}
@@ -138,7 +118,7 @@ function RouteComponent() {
                 : { backgroundColor: 'transparent', color: 'var(--texte-gray)', borderColor: 'var(--stroke-dark)' }
               }
             >
-              {s === 'all' ? 'Tous' : STATUS_CONFIG[s]?.label}
+              {s === 'all' ? 'Tous' : REPORT_STATUS_CONFIG[s as ReportStatus]?.label}
             </button>
           ))}
         </div>
@@ -152,60 +132,20 @@ function RouteComponent() {
             <p className="text-sm">Aucun rapport trouvé</p>
           </div>
         )}
-        {filtered.map((report, i) => {
-          const cfg = TYPE_CONFIG[report.reportType]
-          const statusCfg = STATUS_CONFIG[report.status]
-          const avatarColor = AVATAR_COLORS[i % AVATAR_COLORS.length]
-          return (
-            <div
-              key={report.id}
-              className="rounded-2xl border p-4 transition-all hover:shadow-sm"
-              style={{ backgroundColor: 'var(--background-white-color)', borderColor: 'var(--stroke-dark)' }}
-            >
-              <div className="flex items-start gap-3">
-                <AvatarCircle initials={report.agentAvatar} color={avatarColor} />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <span className="text-sm font-semibold" style={{ color: 'var(--texte-extra-black)' }}>
-                      {report.agentName}
-                    </span>
-                    <span
-                      className="flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full"
-                      style={{ backgroundColor: cfg.bg, color: cfg.color }}
-                    >
-                      {cfg.icon} {cfg.label}
-                    </span>
-                    {report.severity && (
-                      <span
-                        className="text-xs font-medium px-2 py-0.5 rounded-full"
-                        style={{ backgroundColor: SEVERITY_CONFIG[report.severity].bg, color: SEVERITY_CONFIG[report.severity].color }}
-                      >
-                        {SEVERITY_CONFIG[report.severity].label}
-                      </span>
-                    )}
-                    <span
-                      className="text-xs font-medium px-2 py-0.5 rounded-full ml-auto"
-                      style={{ backgroundColor: statusCfg.bg, color: statusCfg.color }}
-                    >
-                      {statusCfg.label}
-                    </span>
-                  </div>
-                  <p className="text-sm leading-relaxed mb-2" style={{ color: 'var(--texte-black)' }}>
-                    {report.report}
-                  </p>
-                  <div className="flex items-center gap-3 text-xs" style={{ color: 'var(--texte-gray)' }}>
-                    <span className="flex items-center gap-1">
-                      <MapPin className="w-3 h-3" /> {report.region}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" /> {new Date(report.date).toLocaleDateString('fr-MG', { day: 'numeric', month: 'long', year: 'numeric' })}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )
-        })}
+        {filtered.map((report, i) => (
+          <ReportDetail
+            key={report.id}
+            agentName={report.agentName}
+            agentAvatar={report.agentAvatar}
+            avatarColor={AVATAR_COLORS[i % AVATAR_COLORS.length]}
+            region={report.region}
+            reportType={report.reportType}
+            report={report.report}
+            date={report.date}
+            severity={report.severity}
+            status={report.status}
+          />
+        ))}
       </div>
     </div>
   )

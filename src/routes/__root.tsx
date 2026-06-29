@@ -5,8 +5,7 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
+import { Toaster } from '#/components/ui/sonner'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
@@ -41,7 +40,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Hype POS — Surveillance Sanitaire',
+        title: 'Surveillance Sanitaire Madagascar',
       },
     ],
     links: [
@@ -62,9 +61,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="font-sans antialiased wrap-anywhere selection:bg-[rgba(79,184,178,0.24)]">
-        {/* <Header /> */}
         {children}
-        {/* <Footer /> */}
+        <Toaster richColors position="top-right" />
         <TanStackDevtools
           config={{
             position: 'bottom-right',

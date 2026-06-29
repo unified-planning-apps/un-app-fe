@@ -3,26 +3,40 @@ import ThemeToggle from '#/components/ThemeToggle'
 import { Button } from '#/components/ui/button'
 import { FloatingInput, FloatingLabel } from '#/components/ui/floating-label-input'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '#/components/ui/form'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { SigninFormSchema, type SigninFormValues } from '#/lib/validations/auth'
-import { Checkbox } from '#/components/ui/checkbox'
-import { Lock } from 'lucide-react'
+import { LoginRequestSchema, type LoginRequest } from '#/lib/schemas/auth'
+import { useLogin } from '#/hooks/use-auth'
+import { Lock, Loader2 } from 'lucide-react'
 import signinIllustration from '#/assets/images/signin-illustration.png'
+import { toast } from 'sonner'
+import { ApiError } from '#/lib/api/client'
 
 export const Route = createFileRoute('/auth/signin')({
     component: RouteComponent,
 })
 
 function RouteComponent() {
-    const form = useForm<SigninFormValues>({
-        resolver: zodResolver(SigninFormSchema),
-        defaultValues: { email: '', password: '' }
+    const navigate = useNavigate()
+    const login = useLogin()
+
+    const form = useForm<LoginRequest>({
+        resolver: zodResolver(LoginRequestSchema),
+        defaultValues: { username: '', password: '' }
     });
 
-    const onSubmit = (_values: SigninFormValues) => {
-        // TODO: implement login
+    const onSubmit = (values: LoginRequest) => {
+        login.mutate(values, {
+            onSuccess: () => {
+                toast.success('Connexion réussie.')
+                navigate({ to: '/admin/dashboard' })
+            },
+            onError: (error) => {
+                const message = error instanceof ApiError ? error.message : 'Identifiants incorrects.'
+                toast.error(message)
+            },
+        })
     }
 
     return (
@@ -79,20 +93,20 @@ function RouteComponent() {
                             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
                                 <FormField
                                     control={form.control}
-                                    name='email'
+                                    name='username'
                                     render={({ field }) => (
                                         <FormItem>
                                             <div className='relative'>
                                                 <FormControl>
                                                     <FloatingInput
                                                         {...field}
-                                                        id="floating-email"
-                                                        type="email"
-                                                        placeholder="exemple@exemple.com"
+                                                        id="floating-username"
+                                                        type="text"
+                                                        autoComplete="username"
                                                         className="h-14 rounded-xl border-gray-200 bg-white focus:border-[var(--primary2)]"
                                                     />
                                                 </FormControl>
-                                                <FloatingLabel htmlFor="floating-email">Email</FloatingLabel>
+                                                <FloatingLabel htmlFor="floating-username">Nom d'utilisateur</FloatingLabel>
                                             </div>
                                             <FormMessage />
                                         </FormItem>
@@ -121,19 +135,9 @@ function RouteComponent() {
                                     )}
                                 />
 
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                        <Checkbox id="remember" />
-                                        <label
-                                            htmlFor="remember"
-                                            className="text-sm cursor-pointer"
-                                            style={{ color: 'var(--texte-black)' }}
-                                        >
-                                            Se souvenir de moi
-                                        </label>
-                                    </div>
+                                <div className="flex items-center justify-end">
                                     <Link
-                                        to='/auth/signin'
+                                        to='/auth/forgot-password'
                                         className="text-sm font-semibold"
                                         style={{ color: 'var(--texte-extra-black)' }}
                                     >
@@ -142,13 +146,16 @@ function RouteComponent() {
                                 </div>
 
                                 <Button
-                                    className='w-full h-12 rounded-xl text-base font-semibold'
+                                    className='w-full h-12 rounded-xl text-base font-semibold text-white'
                                     style={{
                                         background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)',
                                         color: 'white',
                                         border: 'none'
                                     }}
-                                    type='submit'>
+                                    type='submit'
+                                    disabled={login.isPending}
+                                >
+                                    {login.isPending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
                                     Se connecter
                                 </Button>
 

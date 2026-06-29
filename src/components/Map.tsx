@@ -1,9 +1,10 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { REGION_LOCATION } from '#/shared/constants'
+import { REGIONS } from '#/lib/regions'
 import { Button } from './ui/button'
 import { useNavigate } from '@tanstack/react-router'
+import { useMalariaRiskMap } from '#/hooks/use-malaria'
 
 // Madagascar Center & Bounds
 const MADAGASCAR_CENTER: [number, number] = [-18.7669, 46.8691]
@@ -12,11 +13,25 @@ const MADAGASCAR_BOUNDS: L.LatLngBoundsExpression = [
     [-11.0, 51.0]  // Northeast corner
 ]
 
-export default function Map() {
+const RISK_COLOR: Record<string, string> = {
+    faible: '#22c55e',
+    moyen: '#eab308',
+    'élevé': '#f97316',
+    'très élevé': '#ef4444',
+}
+
+export default function MapView() {
     const navigate = useNavigate();
-    const handleRegionNavigation = (region: string) => {
-        navigate({ to: `/admin/regions/${region.toLowerCase()}/insight/ai` });
+    const riskMap = useMalariaRiskMap()
+
+    const riskByRegion = new Map(
+        riskMap.data?.carte.map((c) => [c.region_id, c]) ?? [],
+    )
+
+    const handleRegionNavigation = (regionId: string) => {
+        navigate({ to: `/admin/regions/${regionId}/insight/ai` });
     }
+
     return (
         <MapContainer
             center={MADAGASCAR_CENTER}
@@ -34,15 +49,34 @@ export default function Map() {
             />
 
             {
-                Object.entries(REGION_LOCATION).map(([region, coords]) => (
-                    <Marker key={region} position={[coords.lat, coords.lng]}>
-                        <Popup>
-                            <Button className='cursor-pointer' onClick={() => handleRegionNavigation(region)}>
-                                {region}
-                            </Button>
-                        </Popup>
-                    </Marker>
-                ))
+                REGIONS.map((region) => {
+                    const risk = riskByRegion.get(region.id)
+                    const color = risk ? RISK_COLOR[risk.niveau_risque] ?? '#206ebb' : '#206ebb'
+                    return (
+                        <Marker
+                            key={region.id}
+                            position={[region.latitude, region.longitude]}
+                            icon={L.divIcon({
+                                className: '',
+                                html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:2px solid white;box-shadow:0 0 0 1px rgba(0,0,0,0.15)"></div>`,
+                            })}
+                        >
+                            <Popup>
+                                <div className="space-y-2">
+                                    <p className="font-semibold text-sm">{region.name}</p>
+                                    {risk && (
+                                        <p className="text-xs">
+                                            Risque paludisme : <span style={{ color }}>{risk.niveau_risque}</span>
+                                        </p>
+                                    )}
+                                    <Button className='cursor-pointer w-full' size="sm" onClick={() => handleRegionNavigation(region.id)}>
+                                        Voir les détails
+                                    </Button>
+                                </div>
+                            </Popup>
+                        </Marker>
+                    )
+                })
             }
         </MapContainer>
     )
