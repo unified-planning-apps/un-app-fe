@@ -19,6 +19,7 @@ import { toast } from 'sonner'
 
 export const Route = createFileRoute('/admin/_admin/users/create')({
   beforeLoad: () => {
+    if (typeof window === 'undefined') return
     if (useAuthStore.getState().user?.role !== 'admin') {
       throw redirect({ to: '/admin/dashboard' })
     }

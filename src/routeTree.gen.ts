@@ -14,8 +14,9 @@ import { Route as AuthSigninRouteImport } from './routes/auth/signin'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as AdminAdminRouteImport } from './routes/admin/_admin'
-import { Route as AdminAdminWeatherIndexRouteImport } from './routes/admin/_admin/weather/index'
 import { Route as AdminAdminUsersIndexRouteImport } from './routes/admin/_admin/users/index'
+import { Route as AdminAdminUsersCreateRouteImport } from './routes/admin/_admin/users/create'
+import { Route as AdminAdminWeatherIndexRouteImport } from './routes/admin/_admin/weather/index'
 import { Route as AdminAdminStocksIndexRouteImport } from './routes/admin/_admin/stocks/index'
 import { Route as AdminAdminReportsIndexRouteImport } from './routes/admin/_admin/reports/index'
 import { Route as AdminAdminRegionsIndexRouteImport } from './routes/admin/_admin/regions/index'
@@ -23,7 +24,6 @@ import { Route as AdminAdminRecipesIndexRouteImport } from './routes/admin/_admi
 import { Route as AdminAdminProfileIndexRouteImport } from './routes/admin/_admin/profile/index'
 import { Route as AdminAdminModelsIndexRouteImport } from './routes/admin/_admin/models/index'
 import { Route as AdminAdminDashboardIndexRouteImport } from './routes/admin/_admin/dashboard/index'
-import { Route as AdminAdminUsersCreateRouteImport } from './routes/admin/_admin/users/create'
 import { Route as AdminAdminRegionsIdInsightRouteImport } from './routes/admin/_admin/regions/$id/insight'
 import { Route as AdminAdminRegionsIdInsightScenarioRouteImport } from './routes/admin/_admin/regions/$id/insight/scenario'
 import { Route as AdminAdminRegionsIdInsightReportsRouteImport } from './routes/admin/_admin/regions/$id/insight/reports'
@@ -56,14 +56,19 @@ const AdminAdminRoute = AdminAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminAdminWeatherIndexRoute = AdminAdminWeatherIndexRouteImport.update({
-  id: '/weather/',
-  path: '/weather/',
-  getParentRoute: () => AdminAdminRoute,
-} as any)
 const AdminAdminUsersIndexRoute = AdminAdminUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminUsersCreateRoute = AdminAdminUsersCreateRouteImport.update({
+  id: '/users/create',
+  path: '/users/create',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminWeatherIndexRoute = AdminAdminWeatherIndexRouteImport.update({
+  id: '/weather/',
+  path: '/weather/',
   getParentRoute: () => AdminAdminRoute,
 } as any)
 const AdminAdminStocksIndexRoute = AdminAdminStocksIndexRouteImport.update({
@@ -102,11 +107,6 @@ const AdminAdminDashboardIndexRoute =
     path: '/dashboard/',
     getParentRoute: () => AdminAdminRoute,
   } as any)
-const AdminAdminUsersCreateRoute = AdminAdminUsersCreateRouteImport.update({
-  id: '/users/create',
-  path: '/users/create',
-  getParentRoute: () => AdminAdminRoute,
-} as any)
 const AdminAdminRegionsIdInsightRoute =
   AdminAdminRegionsIdInsightRouteImport.update({
     id: '/regions/$id/insight',
@@ -147,10 +147,9 @@ const AdminAdminRegionsIdInsightAgentsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminAdminRouteWithChildren
-  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/signin': typeof AuthSigninRoute
-  '/admin/users/create': typeof AdminAdminUsersCreateRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/admin/dashboard/': typeof AdminAdminDashboardIndexRoute
   '/admin/models/': typeof AdminAdminModelsIndexRoute
   '/admin/profile/': typeof AdminAdminProfileIndexRoute
@@ -158,8 +157,9 @@ export interface FileRoutesByFullPath {
   '/admin/regions/': typeof AdminAdminRegionsIndexRoute
   '/admin/reports/': typeof AdminAdminReportsIndexRoute
   '/admin/stocks/': typeof AdminAdminStocksIndexRoute
-  '/admin/users/': typeof AdminAdminUsersIndexRoute
   '/admin/weather/': typeof AdminAdminWeatherIndexRoute
+  '/admin/users/': typeof AdminAdminUsersIndexRoute
+  '/admin/users/create': typeof AdminAdminUsersCreateRoute
   '/admin/regions/$id/insight': typeof AdminAdminRegionsIdInsightRouteWithChildren
   '/admin/regions/$id/insight/agents': typeof AdminAdminRegionsIdInsightAgentsRoute
   '/admin/regions/$id/insight/ai': typeof AdminAdminRegionsIdInsightAiRoute
@@ -170,10 +170,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminAdminRouteWithChildren
-  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/signin': typeof AuthSigninRoute
-  '/admin/users/create': typeof AdminAdminUsersCreateRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/admin/dashboard': typeof AdminAdminDashboardIndexRoute
   '/admin/models': typeof AdminAdminModelsIndexRoute
   '/admin/profile': typeof AdminAdminProfileIndexRoute
@@ -181,8 +180,9 @@ export interface FileRoutesByTo {
   '/admin/regions': typeof AdminAdminRegionsIndexRoute
   '/admin/reports': typeof AdminAdminReportsIndexRoute
   '/admin/stocks': typeof AdminAdminStocksIndexRoute
-  '/admin/users': typeof AdminAdminUsersIndexRoute
   '/admin/weather': typeof AdminAdminWeatherIndexRoute
+  '/admin/users': typeof AdminAdminUsersIndexRoute
+  '/admin/users/create': typeof AdminAdminUsersCreateRoute
   '/admin/regions/$id/insight': typeof AdminAdminRegionsIdInsightRouteWithChildren
   '/admin/regions/$id/insight/agents': typeof AdminAdminRegionsIdInsightAgentsRoute
   '/admin/regions/$id/insight/ai': typeof AdminAdminRegionsIdInsightAiRoute
@@ -194,10 +194,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin/_admin': typeof AdminAdminRouteWithChildren
-  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/signin': typeof AuthSigninRoute
-  '/admin/_admin/users/create': typeof AdminAdminUsersCreateRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/admin/_admin/dashboard/': typeof AdminAdminDashboardIndexRoute
   '/admin/_admin/models/': typeof AdminAdminModelsIndexRoute
   '/admin/_admin/profile/': typeof AdminAdminProfileIndexRoute
@@ -205,8 +204,9 @@ export interface FileRoutesById {
   '/admin/_admin/regions/': typeof AdminAdminRegionsIndexRoute
   '/admin/_admin/reports/': typeof AdminAdminReportsIndexRoute
   '/admin/_admin/stocks/': typeof AdminAdminStocksIndexRoute
-  '/admin/_admin/users/': typeof AdminAdminUsersIndexRoute
   '/admin/_admin/weather/': typeof AdminAdminWeatherIndexRoute
+  '/admin/_admin/users/': typeof AdminAdminUsersIndexRoute
+  '/admin/_admin/users/create': typeof AdminAdminUsersCreateRoute
   '/admin/_admin/regions/$id/insight': typeof AdminAdminRegionsIdInsightRouteWithChildren
   '/admin/_admin/regions/$id/insight/agents': typeof AdminAdminRegionsIdInsightAgentsRoute
   '/admin/_admin/regions/$id/insight/ai': typeof AdminAdminRegionsIdInsightAiRoute
@@ -219,10 +219,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
-    | '/auth/forgot-password'
     | '/auth/register'
     | '/auth/signin'
-    | '/admin/users/create'
+    | '/auth/forgot-password'
     | '/admin/dashboard/'
     | '/admin/models/'
     | '/admin/profile/'
@@ -230,8 +229,9 @@ export interface FileRouteTypes {
     | '/admin/regions/'
     | '/admin/reports/'
     | '/admin/stocks/'
-    | '/admin/users/'
     | '/admin/weather/'
+    | '/admin/users/'
+    | '/admin/users/create'
     | '/admin/regions/$id/insight'
     | '/admin/regions/$id/insight/agents'
     | '/admin/regions/$id/insight/ai'
@@ -242,10 +242,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin'
-    | '/auth/forgot-password'
     | '/auth/register'
     | '/auth/signin'
-    | '/admin/users/create'
+    | '/auth/forgot-password'
     | '/admin/dashboard'
     | '/admin/models'
     | '/admin/profile'
@@ -253,8 +252,9 @@ export interface FileRouteTypes {
     | '/admin/regions'
     | '/admin/reports'
     | '/admin/stocks'
-    | '/admin/users'
     | '/admin/weather'
+    | '/admin/users'
+    | '/admin/users/create'
     | '/admin/regions/$id/insight'
     | '/admin/regions/$id/insight/agents'
     | '/admin/regions/$id/insight/ai'
@@ -265,10 +265,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin/_admin'
-    | '/auth/forgot-password'
     | '/auth/register'
     | '/auth/signin'
-    | '/admin/_admin/users/create'
+    | '/auth/forgot-password'
     | '/admin/_admin/dashboard/'
     | '/admin/_admin/models/'
     | '/admin/_admin/profile/'
@@ -276,8 +275,9 @@ export interface FileRouteTypes {
     | '/admin/_admin/regions/'
     | '/admin/_admin/reports/'
     | '/admin/_admin/stocks/'
-    | '/admin/_admin/users/'
     | '/admin/_admin/weather/'
+    | '/admin/_admin/users/'
+    | '/admin/_admin/users/create'
     | '/admin/_admin/regions/$id/insight'
     | '/admin/_admin/regions/$id/insight/agents'
     | '/admin/_admin/regions/$id/insight/ai'
@@ -289,9 +289,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminAdminRoute: typeof AdminAdminRouteWithChildren
-  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthSigninRoute: typeof AuthSigninRoute
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -331,34 +331,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/_admin/weather/': {
-      id: '/admin/_admin/weather/'
-      path: '/weather'
-      fullPath: '/admin/weather/'
-      preLoaderRoute: typeof AdminAdminWeatherIndexRouteImport
-      parentRoute: typeof AdminAdminRoute
-    }
-    '/admin/_admin/users/': {
-      id: '/admin/_admin/users/'
-      path: '/users'
-      fullPath: '/admin/users/'
-      preLoaderRoute: typeof AdminAdminUsersIndexRouteImport
-      parentRoute: typeof AdminAdminRoute
-    }
-    '/admin/_admin/stocks/': {
-      id: '/admin/_admin/stocks/'
-      path: '/stocks'
-      fullPath: '/admin/stocks/'
-      preLoaderRoute: typeof AdminAdminStocksIndexRouteImport
-      parentRoute: typeof AdminAdminRoute
-    }
-    '/admin/_admin/reports/': {
-      id: '/admin/_admin/reports/'
-      path: '/reports'
-      fullPath: '/admin/reports/'
-      preLoaderRoute: typeof AdminAdminReportsIndexRouteImport
-      parentRoute: typeof AdminAdminRoute
-    }
     '/admin/_admin/regions/': {
       id: '/admin/_admin/regions/'
       path: '/regions'
@@ -380,6 +352,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminProfileIndexRouteImport
       parentRoute: typeof AdminAdminRoute
     }
+    '/admin/_admin/reports/': {
+      id: '/admin/_admin/reports/'
+      path: '/reports'
+      fullPath: '/admin/reports/'
+      preLoaderRoute: typeof AdminAdminReportsIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/admin/_admin/stocks/': {
+      id: '/admin/_admin/stocks/'
+      path: '/stocks'
+      fullPath: '/admin/stocks/'
+      preLoaderRoute: typeof AdminAdminStocksIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/admin/_admin/weather/': {
+      id: '/admin/_admin/weather/'
+      path: '/weather'
+      fullPath: '/admin/weather/'
+      preLoaderRoute: typeof AdminAdminWeatherIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
     '/admin/_admin/models/': {
       id: '/admin/_admin/models/'
       path: '/models'
@@ -387,11 +380,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminModelsIndexRouteImport
       parentRoute: typeof AdminAdminRoute
     }
-    '/admin/_admin/dashboard/': {
-      id: '/admin/_admin/dashboard/'
-      path: '/dashboard'
-      fullPath: '/admin/dashboard/'
-      preLoaderRoute: typeof AdminAdminDashboardIndexRouteImport
+    '/admin/_admin/users/': {
+      id: '/admin/_admin/users/'
+      path: '/users'
+      fullPath: '/admin/users/'
+      preLoaderRoute: typeof AdminAdminUsersIndexRouteImport
       parentRoute: typeof AdminAdminRoute
     }
     '/admin/_admin/users/create': {
@@ -401,19 +394,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminUsersCreateRouteImport
       parentRoute: typeof AdminAdminRoute
     }
+    '/admin/_admin/dashboard/': {
+      id: '/admin/_admin/dashboard/'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard/'
+      preLoaderRoute: typeof AdminAdminDashboardIndexRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
     '/admin/_admin/regions/$id/insight': {
       id: '/admin/_admin/regions/$id/insight'
       path: '/regions/$id/insight'
       fullPath: '/admin/regions/$id/insight'
       preLoaderRoute: typeof AdminAdminRegionsIdInsightRouteImport
       parentRoute: typeof AdminAdminRoute
-    }
-    '/admin/_admin/regions/$id/insight/scenario': {
-      id: '/admin/_admin/regions/$id/insight/scenario'
-      path: '/scenario'
-      fullPath: '/admin/regions/$id/insight/scenario'
-      preLoaderRoute: typeof AdminAdminRegionsIdInsightScenarioRouteImport
-      parentRoute: typeof AdminAdminRegionsIdInsightRoute
     }
     '/admin/_admin/regions/$id/insight/reports': {
       id: '/admin/_admin/regions/$id/insight/reports'
@@ -441,6 +434,13 @@ declare module '@tanstack/react-router' {
       path: '/agents'
       fullPath: '/admin/regions/$id/insight/agents'
       preLoaderRoute: typeof AdminAdminRegionsIdInsightAgentsRouteImport
+      parentRoute: typeof AdminAdminRegionsIdInsightRoute
+    }
+    '/admin/_admin/regions/$id/insight/scenario': {
+      id: '/admin/_admin/regions/$id/insight/scenario'
+      path: '/scenario'
+      fullPath: '/admin/regions/$id/insight/scenario'
+      preLoaderRoute: typeof AdminAdminRegionsIdInsightScenarioRouteImport
       parentRoute: typeof AdminAdminRegionsIdInsightRoute
     }
   }
@@ -473,7 +473,6 @@ const AdminAdminRegionsIdInsightRouteWithChildren =
   )
 
 interface AdminAdminRouteChildren {
-  AdminAdminUsersCreateRoute: typeof AdminAdminUsersCreateRoute
   AdminAdminDashboardIndexRoute: typeof AdminAdminDashboardIndexRoute
   AdminAdminModelsIndexRoute: typeof AdminAdminModelsIndexRoute
   AdminAdminProfileIndexRoute: typeof AdminAdminProfileIndexRoute
@@ -481,13 +480,13 @@ interface AdminAdminRouteChildren {
   AdminAdminRegionsIndexRoute: typeof AdminAdminRegionsIndexRoute
   AdminAdminReportsIndexRoute: typeof AdminAdminReportsIndexRoute
   AdminAdminStocksIndexRoute: typeof AdminAdminStocksIndexRoute
-  AdminAdminUsersIndexRoute: typeof AdminAdminUsersIndexRoute
   AdminAdminWeatherIndexRoute: typeof AdminAdminWeatherIndexRoute
+  AdminAdminUsersIndexRoute: typeof AdminAdminUsersIndexRoute
+  AdminAdminUsersCreateRoute: typeof AdminAdminUsersCreateRoute
   AdminAdminRegionsIdInsightRoute: typeof AdminAdminRegionsIdInsightRouteWithChildren
 }
 
 const AdminAdminRouteChildren: AdminAdminRouteChildren = {
-  AdminAdminUsersCreateRoute: AdminAdminUsersCreateRoute,
   AdminAdminDashboardIndexRoute: AdminAdminDashboardIndexRoute,
   AdminAdminModelsIndexRoute: AdminAdminModelsIndexRoute,
   AdminAdminProfileIndexRoute: AdminAdminProfileIndexRoute,
@@ -495,8 +494,9 @@ const AdminAdminRouteChildren: AdminAdminRouteChildren = {
   AdminAdminRegionsIndexRoute: AdminAdminRegionsIndexRoute,
   AdminAdminReportsIndexRoute: AdminAdminReportsIndexRoute,
   AdminAdminStocksIndexRoute: AdminAdminStocksIndexRoute,
-  AdminAdminUsersIndexRoute: AdminAdminUsersIndexRoute,
   AdminAdminWeatherIndexRoute: AdminAdminWeatherIndexRoute,
+  AdminAdminUsersIndexRoute: AdminAdminUsersIndexRoute,
+  AdminAdminUsersCreateRoute: AdminAdminUsersCreateRoute,
   AdminAdminRegionsIdInsightRoute: AdminAdminRegionsIdInsightRouteWithChildren,
 }
 
@@ -507,9 +507,9 @@ const AdminAdminRouteWithChildren = AdminAdminRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminAdminRoute: AdminAdminRouteWithChildren,
-  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthSigninRoute: AuthSigninRoute,
+  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

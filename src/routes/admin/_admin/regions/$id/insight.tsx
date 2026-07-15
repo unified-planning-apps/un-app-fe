@@ -85,6 +85,7 @@ function InsightLayout() {
             to={to}
             displayName={label}
             icon={icon}
+            exact
             className='flex items-center gap-1.5 px-4 py-3 text-sm font-medium transition-colors rounded-t-lg'
             activeClassName='font-semibold border-b-2 -mb-px'
             style={{ color: 'var(--texte-gray)' }}

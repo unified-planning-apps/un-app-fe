@@ -7,6 +7,7 @@ import { getRegionName } from '#/lib/regions'
 
 export const Route = createFileRoute('/admin/_admin/users/')({
   beforeLoad: () => {
+    if (typeof window === 'undefined') return
     if (useAuthStore.getState().user?.role !== 'admin') {
       throw redirect({ to: '/admin/dashboard' })
     }
