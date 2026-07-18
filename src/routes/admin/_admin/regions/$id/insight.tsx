@@ -2,12 +2,14 @@ import NavLinkComponent from '#/components/NavLinkComponent';
 import { createFileRoute, Outlet, Link } from '@tanstack/react-router'
 import { ChevronLeft, Rows3, Sparkles, Users, MapPin, FlaskConical, History } from 'lucide-react';
 import { getRegionMeta } from '#/lib/regions';
+import { useAuthStore } from '#/stores/auth-store';
 
 export const Route = createFileRoute('/admin/_admin/regions/$id/insight')({
   component: InsightLayout,
 })
 
 function InsightLayout() {
+  const role = useAuthStore((s) => s.user?.role ?? 'viewer');
   const regionId = Route.useParams().id;
   const region = getRegionMeta(regionId);
   const displayName = region?.name ?? regionId;
@@ -32,22 +34,21 @@ function InsightLayout() {
         </div>
       </div>
 
-      {/* Hero banner */}
+      {/* Hero banner — brand gradient, key region facts at a glance */}
       <div
         className="rounded-2xl p-6 flex items-center justify-between overflow-hidden relative mb-4"
-        style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)' }}
+        style={{ background: 'var(--gradient-brand)' }}
       >
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: 'radial-gradient(circle at 80% 50%, white 0%, transparent 60%)'
-        }} />
+        <div
+          className="absolute inset-0 opacity-[0.07] pointer-events-none"
+          style={{ backgroundImage: 'radial-gradient(circle at 85% 30%, white 0%, transparent 55%)' }}
+          aria-hidden="true"
+        />
         <div className="relative z-10">
-          <h1
-            className="text-2xl font-bold text-white mb-1"
-            style={{ fontFamily: 'Fraunces, serif' }}
-          >
+          <h1 className="text-2xl font-bold text-white tracking-tight mb-1">
             Région {displayName}
           </h1>
-          <p className="text-sm text-white/70">
+          <p className="text-sm text-white/75">
             {region?.chef_lieu ? `Chef-lieu : ${region.chef_lieu}` : 'Analyse détaillée des données sanitaires et climatiques'}
           </p>
         </div>
@@ -74,12 +75,13 @@ function InsightLayout() {
         style={{ borderColor: 'var(--stroke-dark)' }}
       >
         {[
-          { to: `/admin/regions/${regionId}/insight/ai`, label: 'Analyse IA', icon: <Sparkles size={15} /> },
-          { to: `/admin/regions/${regionId}/insight/history`, label: 'Historique climatique', icon: <History size={15} /> },
-          { to: `/admin/regions/${regionId}/insight/scenario`, label: 'Scénarios', icon: <FlaskConical size={15} /> },
-          { to: `/admin/regions/${regionId}/insight/reports`, label: 'Rapports terrain', icon: <Rows3 size={15} /> },
-          { to: `/admin/regions/${regionId}/insight/agents`, label: 'Agents', icon: <Users size={15} /> },
-        ].map(({ to, label, icon }) => (
+          { to: `/admin/regions/${regionId}/insight/ai`, label: 'Analyse IA', icon: <Sparkles size={15} />, roles: null },
+          { to: `/admin/regions/${regionId}/insight/history`, label: 'Historique climatique', icon: <History size={15} />, roles: null },
+          { to: `/admin/regions/${regionId}/insight/scenario`, label: 'Scénarios', icon: <FlaskConical size={15} />, roles: ['regional', 'national', 'admin'] },
+          { to: `/admin/regions/${regionId}/insight/reports`, label: 'Rapports terrain', icon: <Rows3 size={15} />, roles: null },
+          { to: `/admin/regions/${regionId}/insight/agents`, label: 'Agents', icon: <Users size={15} />, roles: ['regional', 'national', 'admin'] },
+        ].filter(({ roles }) => roles === null || roles.includes(role))
+         .map(({ to, label, icon }) => (
           <NavLinkComponent
             key={to}
             to={to}

@@ -7,39 +7,42 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
-import { z } from 'zod'
-import { ArrowLeft, Mail, MailCheck, Loader2 } from 'lucide-react'
+import { ArrowLeft, Mail, MailCheck, Loader2, KeyRound } from 'lucide-react'
+import { useForgotPassword } from '#/hooks/use-auth'
+import { NetworkError } from '#/lib/api/client'
+import {
+  ForgotPasswordRequestSchema,
+  type ForgotPasswordRequest,
+} from '#/lib/schemas/auth'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/auth/forgot-password')({
   component: RouteComponent,
 })
 
-const ForgotPasswordSchema = z.object({
-  email: z.string().email('Adresse email invalide.'),
-})
-type ForgotPasswordValues = z.infer<typeof ForgotPasswordSchema>
-
 function RouteComponent() {
+  const forgotPassword = useForgotPassword()
   const [submitted, setSubmitted] = useState(false)
-  const [isPending, setIsPending] = useState(false)
+  // Dev only: the backend returns the reset token in the response when no
+  // SMTP is configured (never in production). We surface it as a clickable
+  // link so the flow is testable end-to-end.
+  const [devResetToken, setDevResetToken] = useState<string | null>(null)
 
-  const form = useForm<ForgotPasswordValues>({
-    resolver: zodResolver(ForgotPasswordSchema),
+  const form = useForm<ForgotPasswordRequest>({
+    resolver: zodResolver(ForgotPasswordRequestSchema),
     defaultValues: { email: '' },
   })
 
-  // NOTE: the backend doesn't yet expose a password-reset endpoint
-  // (e.g. POST /auth/forgot-password). This flow is built ahead of that —
-  // once it exists, replace this with a real mutation. The generic
-  // confirmation message is intentional: it doesn't reveal whether the
-  // email matches an existing account, which is the email-verification
-  // security model planned for this feature.
-  const onSubmit = (_values: ForgotPasswordValues) => {
-    setIsPending(true)
-    setTimeout(() => {
-      setIsPending(false)
-      setSubmitted(true)
-    }, 600)
+  const onSubmit = (values: ForgotPasswordRequest) => {
+    forgotPassword.mutate(values, {
+      onSuccess: (res) => {
+        setDevResetToken(res.reset_token ?? null)
+        setSubmitted(true)
+      },
+      onError: () => {
+        toast.error(error instanceof NetworkError ? 'Serveur inaccessible. Vérifiez que le backend est démarré.' : "Impossible d'envoyer la demande. Réessayez plus tard.")
+      },
+    })
   }
 
   return (
@@ -55,8 +58,8 @@ function RouteComponent() {
             <>
               <div className="mb-8 text-center">
                 <h2
-                  className="text-3xl font-bold mb-2"
-                  style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}
+                  className="text-3xl font-bold tracking-tight mb-2"
+                  style={{ color: 'var(--texte-extra-black)' }}
                 >
                   Mot de passe oublié ?
                 </h2>
@@ -91,14 +94,14 @@ function RouteComponent() {
 
                   <Button
                     type="submit"
-                    disabled={isPending}
+                    disabled={forgotPassword.isPending}
                     className="w-full h-12 rounded-xl text-base font-semibold text-white"
                     style={{
-                      background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)',
+                      background: 'var(--gradient-brand)',
                       border: 'none',
                     }}
                   >
-                    {isPending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
+                    {forgotPassword.isPending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
                     Envoyer le lien
                   </Button>
                 </form>
@@ -120,6 +123,29 @@ function RouteComponent() {
                   Si un compte existe avec cette adresse, un lien de réinitialisation vient de lui être envoyé.
                 </p>
               </div>
+
+              {devResetToken && (
+                <div
+                  className="rounded-xl p-4 text-left space-y-2"
+                  style={{ backgroundColor: 'var(--background-gray-color)' }}
+                >
+                  <p className="text-xs font-semibold" style={{ color: 'var(--texte-extra-black)' }}>
+                    Mode développement — pas d'email configuré
+                  </p>
+                  <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>
+                    Le lien de réinitialisation est affiché ici uniquement en développement :
+                  </p>
+                  <Link
+                    to="/auth/reset-password"
+                    search={{ token: devResetToken }}
+                    className="flex items-center gap-1.5 text-xs font-semibold"
+                    style={{ color: 'var(--primary)' }}
+                  >
+                    <KeyRound size={13} />
+                    Réinitialiser mon mot de passe maintenant
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 

@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { History, Thermometer, CloudRain } from 'lucide-react'
 import { useWeatherHistory } from '#/hooks/use-weather'
+import { SkeletonCards, ErrorState } from '#/components/ui-states'
 
 export const Route = createFileRoute('/admin/_admin/regions/$id/insight/history')({
   component: RouteComponent,
@@ -68,8 +69,14 @@ function RouteComponent() {
         </div>
       </div>
 
-      {history.isLoading && <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>Chargement de l'historique…</p>}
-      {history.isError && <p className="text-sm" style={{ color: '#ef4444' }}>Historique indisponible pour cette période.</p>}
+      {history.isLoading && <SkeletonCards count={2} height={180} />}
+      {history.isError && (
+        <ErrorState
+          title="Historique indisponible"
+          description="Aucune donnée climatique enregistrée pour cette période, ou le service n'a pas répondu."
+          onRetry={() => history.refetch()}
+        />
+      )}
 
       {history.data && history.data.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">

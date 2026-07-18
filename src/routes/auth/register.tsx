@@ -13,7 +13,7 @@ import { useRegister } from '#/hooks/use-auth'
 import { Lock, Check, Loader2 } from 'lucide-react'
 import registerIllustration from '#/assets/images/register-illustration.png'
 import { toast } from 'sonner'
-import { ApiError } from '#/lib/api/client'
+import { ApiError, NetworkError } from '#/lib/api/client'
 
 export const Route = createFileRoute('/auth/register')({
     component: RouteComponent,
@@ -113,7 +113,7 @@ function RouteComponent() {
                 navigate({ to: '/auth/signin' })
             },
             onError: (error) => {
-                const message = error instanceof ApiError ? error.message : "Impossible de créer le compte."
+                const message = error instanceof NetworkError ? 'Serveur inaccessible. Vérifiez que le backend est démarré.' : error instanceof ApiError ? error.message : 'Impossible de créer le compte.'
                 toast.error(message)
             },
         })
@@ -136,7 +136,7 @@ function RouteComponent() {
                     <div className="relative z-10 text-center mb-8">
                         <h1
                             className="text-4xl xl:text-5xl font-bold leading-tight"
-                            style={{ fontFamily: 'Fraunces, serif', color: 'var(--primary)' }}
+                            style={{ color: 'var(--primary)' }}
                         >
                             Priorité au <span style={{ color: 'var(--primary2)' }}>soin</span>,
                             <br />
@@ -157,8 +157,8 @@ function RouteComponent() {
                     <div className='w-full max-w-md'>
                         <div className='mb-6 text-center'>
                             <h2
-                                className="text-3xl font-bold mb-2"
-                                style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}
+                                className="text-3xl font-bold tracking-tight mb-2"
+                                style={{ color: 'var(--texte-extra-black)' }}
                             >
                                 Créer un Compte
                             </h2>
@@ -313,7 +313,7 @@ function RouteComponent() {
                                     <Button
                                         className='w-full h-12 rounded-xl text-base font-semibold text-white'
                                         style={{
-                                            background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)',
+                                            background: 'var(--gradient-brand)',
                                             color: 'white',
                                             border: 'none'
                                         }}
@@ -333,7 +333,7 @@ function RouteComponent() {
                                         <Button
                                             className='flex-1 h-12 rounded-xl text-base font-semibold text-white'
                                             style={{
-                                                background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)',
+                                                background: 'var(--gradient-brand)',
                                                 color: 'white',
                                                 border: 'none'
                                             }}

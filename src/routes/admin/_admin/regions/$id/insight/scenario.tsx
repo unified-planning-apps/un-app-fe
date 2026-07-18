@@ -1,10 +1,18 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { useAuthStore } from '#/stores/auth-store'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useState } from 'react'
 import { FlaskConical, CloudRain, Sun, Coins, Play, Loader2 } from 'lucide-react'
 import { useScenarioSimulation } from '#/hooks/use-predictions'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/admin/_admin/regions/$id/insight/scenario')({
+  beforeLoad: () => {
+    if (typeof window === 'undefined') return
+    const role = useAuthStore.getState().user?.role ?? 'viewer'
+    if (role === 'viewer') {
+      throw redirect({ to: '/admin/regions' })
+    }
+  },
   component: RouteComponent,
 })
 
@@ -104,7 +112,7 @@ function RouteComponent() {
           onClick={handleSimulate}
           disabled={simulate.isPending}
           className="flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl text-white"
-          style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)' }}
+          style={{ background: 'var(--gradient-brand)' }}
         >
           {simulate.isPending ? <Loader2 size={16} className="animate-spin" /> : <Play size={16} />}
           Lancer la simulation

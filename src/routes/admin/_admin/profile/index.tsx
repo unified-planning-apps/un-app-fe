@@ -10,7 +10,7 @@ import { useChangePassword } from '#/hooks/use-auth'
 import { ChangePasswordFormSchema, type ChangePasswordFormValues } from '#/lib/schemas/auth'
 import { ROLE_LABELS } from '#/shared/constants'
 import { getRegionName } from '#/lib/regions'
-import { ApiError } from '#/lib/api/client'
+import { ApiError, NetworkError } from '#/lib/api/client'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/admin/_admin/profile/')({
@@ -35,7 +35,7 @@ function RouteComponent() {
           form.reset()
         },
         onError: (error) => {
-          const message = error instanceof ApiError ? error.message : 'Impossible de changer le mot de passe.'
+          const message = error instanceof NetworkError ? 'Serveur inaccessible.' : error instanceof ApiError ? error.message : 'Impossible de changer le mot de passe.'
           toast.error(message)
         },
       },
@@ -45,10 +45,10 @@ function RouteComponent() {
   return (
     <div className="max-w-2xl mx-auto space-y-8 pb-10">
       <div>
-        <h1 className="text-xl font-bold" style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}>
+        <h1 className="page-title">
           Mon profil
         </h1>
-        <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
+        <p className="page-subtitle">
           Informations de votre compte et sécurité
         </p>
       </div>
@@ -156,7 +156,7 @@ function RouteComponent() {
               type="submit"
               disabled={changePassword.isPending}
               className="h-12 rounded-xl text-sm font-semibold px-6 text-white"
-              style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)', color: 'white', border: 'none' }}
+              style={{ background: 'var(--gradient-brand)', color: 'white', border: 'none' }}
             >
               {changePassword.isPending && <Loader2 size={16} className="animate-spin mr-2" />}
               Mettre à jour le mot de passe

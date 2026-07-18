@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { ChefHat, Clock, Flame, Filter } from 'lucide-react'
 import { useRecipes } from '#/hooks/use-nutrition'
+import { SkeletonCards, EmptyState, ErrorState } from '#/components/ui-states'
 import { REGIONS } from '#/lib/regions'
 
 export const Route = createFileRoute('/admin/_admin/recipes/')({
@@ -29,10 +30,10 @@ function RouteComponent() {
   return (
     <div className="space-y-7 pb-10">
       <div>
-        <h1 className="text-xl font-bold" style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}>
+        <h1 className="page-title">
           Recettes nutritionnelles
         </h1>
-        <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
+        <p className="page-subtitle">
           Recettes adaptées au contexte local, optimisées pour les besoins des enfants de moins de 5 ans
         </p>
       </div>
@@ -65,15 +66,16 @@ function RouteComponent() {
         </select>
       </div>
 
-      {recipes.isLoading && (
-        <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>Chargement des recettes…</p>
-      )}
+      {recipes.isLoading && <SkeletonCards count={6} height={170} />}
+
+      {recipes.isError && <ErrorState onRetry={() => recipes.refetch()} />}
 
       {recipes.data && recipes.data.length === 0 && (
-        <div className="text-center py-12" style={{ color: 'var(--texte-gray)' }}>
-          <ChefHat className="w-10 h-10 mx-auto mb-3 opacity-30" />
-          <p className="text-sm">Aucune recette trouvée pour ces filtres</p>
-        </div>
+        <EmptyState
+          icon={<ChefHat size={22} />}
+          title="Aucune recette pour ces filtres"
+          description="Essayez d'élargir la recherche : toutes les régions ou toutes les cibles."
+        />
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

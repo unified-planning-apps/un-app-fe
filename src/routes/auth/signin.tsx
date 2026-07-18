@@ -11,7 +11,7 @@ import { useLogin } from '#/hooks/use-auth'
 import { Lock, Loader2 } from 'lucide-react'
 import signinIllustration from '#/assets/images/signin-illustration.png'
 import { toast } from 'sonner'
-import { ApiError } from '#/lib/api/client'
+import { ApiError, NetworkError } from '#/lib/api/client'
 
 export const Route = createFileRoute('/auth/signin')({
     component: RouteComponent,
@@ -33,7 +33,12 @@ function RouteComponent() {
                 navigate({ to: '/admin/dashboard' })
             },
             onError: (error) => {
-                const message = error instanceof ApiError ? error.message : 'Identifiants incorrects.'
+                let message = 'Identifiants incorrects.'
+                if (error instanceof NetworkError) {
+                    message = 'Serveur inaccessible. Vérifiez que le backend est démarré.'
+                } else if (error instanceof ApiError) {
+                    message = error.message
+                }
                 toast.error(message)
             },
         })
@@ -58,7 +63,7 @@ function RouteComponent() {
                     <div className="relative z-10 text-center mb-8">
                         <h1
                             className="text-4xl xl:text-5xl font-bold leading-tight"
-                            style={{ fontFamily: 'Fraunces, serif', color: 'var(--primary)' }}
+                            style={{ color: 'var(--primary)' }}
                         >
                             Priorité au <span style={{ color: 'var(--primary2)' }}>soin</span>,
                             <br />
@@ -79,8 +84,8 @@ function RouteComponent() {
                     <div className='w-full max-w-md'>
                         <div className='mb-8 text-center'>
                             <h2
-                                className="text-3xl font-bold mb-2"
-                                style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}
+                                className="text-3xl font-bold tracking-tight mb-2"
+                                style={{ color: 'var(--texte-extra-black)' }}
                             >
                                 Ravi de vous revoir !
                             </h2>
@@ -148,7 +153,7 @@ function RouteComponent() {
                                 <Button
                                     className='w-full h-12 rounded-xl text-base font-semibold text-white'
                                     style={{
-                                        background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)',
+                                        background: 'var(--gradient-brand)',
                                         color: 'white',
                                         border: 'none'
                                     }}

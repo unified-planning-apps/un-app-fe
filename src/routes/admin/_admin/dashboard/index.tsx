@@ -6,6 +6,7 @@ import { useMalariaRiskMap } from '#/hooks/use-malaria'
 import { useNutritionRiskMap } from '#/hooks/use-nutrition'
 import { useNationalWeatherSummary } from '#/hooks/use-weather'
 import { getRegionName } from '#/lib/regions'
+import { EmptyState } from '#/components/ui-states'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/admin/_admin/dashboard/')({
@@ -92,23 +93,37 @@ function RouteComponent() {
 
   return (
     <div className="space-y-8 pb-10">
-      {/* Welcome banner */}
+      {/* Hero — brand gradient, alert status always visible */}
       <div
-        className="rounded-2xl p-6 flex items-center justify-between overflow-hidden relative"
-        style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)' }}
+        className="rounded-2xl p-6 sm:p-7 flex items-center justify-between gap-4 flex-wrap relative overflow-hidden"
+        style={{ background: 'var(--gradient-brand)' }}
       >
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: 'radial-gradient(circle at 80% 50%, white 0%, transparent 60%)'
-        }} />
+        <div
+          className="absolute inset-0 opacity-[0.07] pointer-events-none"
+          style={{ backgroundImage: 'radial-gradient(circle at 85% 30%, white 0%, transparent 55%)' }}
+          aria-hidden="true"
+        />
         <div className="relative z-10">
-          <h1 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: 'Fraunces, serif' }}>
-            Tableau de bord
-          </h1>
-          <p className="text-sm text-white/70">Vue d'ensemble de la situation sanitaire et climatique à Madagascar</p>
+          <h1 className="text-2xl font-bold text-white tracking-tight">Tableau de bord</h1>
+          <p className="text-sm text-white/75 mt-1">
+            Vue d'ensemble de la situation sanitaire et climatique à Madagascar
+          </p>
         </div>
-        <div className="relative z-10 flex items-center gap-2 bg-white/20 rounded-xl px-4 py-2">
-          <Bell className="w-4 h-4 text-white" />
-          <span className="text-white text-sm font-medium">{totalActiveAlerts} alertes actives</span>
+        <div
+          className="relative z-10 flex items-center gap-2.5 rounded-full px-4 py-2 flex-shrink-0 bg-white/15 backdrop-blur-sm"
+          role="status"
+        >
+          <span
+            className="w-2 h-2 rounded-full flex-shrink-0"
+            style={{ backgroundColor: totalActiveAlerts > 0 ? '#fb923c' : '#4ade80' }}
+            aria-hidden="true"
+          />
+          <Bell className="w-4 h-4 text-white" aria-hidden="true" />
+          <span className="text-sm font-semibold text-white">
+            {totalActiveAlerts > 0
+              ? `${totalActiveAlerts} alerte${totalActiveAlerts > 1 ? 's' : ''} active${totalActiveAlerts > 1 ? 's' : ''}`
+              : 'Aucune alerte active'}
+          </span>
         </div>
       </div>
 
@@ -154,7 +169,11 @@ function RouteComponent() {
           </div>
           <div className="divide-y" style={{ borderColor: 'var(--stroke-dark)' }}>
             {allAlerts.length === 0 && (
-              <p className="p-5 text-sm" style={{ color: 'var(--texte-gray)' }}>Aucune alerte active pour le moment.</p>
+              <EmptyState
+                icon={<Bell size={20} />}
+                title="Aucune alerte active"
+                description="Les 22 régions sont sous surveillance continue. Les nouvelles alertes paludisme et nutrition apparaîtront ici."
+              />
             )}
             {allAlerts.map((alert) => (
               <div key={alert.alerte_id} className="p-5 flex items-start gap-3 hover:bg-gray-50/50 transition-colors">

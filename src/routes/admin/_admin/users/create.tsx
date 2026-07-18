@@ -14,7 +14,7 @@ import { useRegister } from '#/hooks/use-auth'
 import { REGIONS } from '#/lib/regions'
 import { Role, ROLE_LABELS } from '#/shared/constants'
 import { generateStrongPassword } from '#/lib/password-generator'
-import { ApiError } from '#/lib/api/client'
+import { ApiError, NetworkError } from '#/lib/api/client'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/admin/_admin/users/create')({
@@ -114,7 +114,7 @@ function RouteComponent() {
           toast.success('Compte créé. Communiquez les identifiants en lieu sûr.')
         },
         onError: (error) => {
-          const message = error instanceof ApiError ? error.message : 'Impossible de créer le compte.'
+          const message = error instanceof NetworkError ? 'Serveur inaccessible.' : error instanceof ApiError ? error.message : 'Impossible de créer le compte.'
           toast.error(message)
         },
       },
@@ -157,7 +157,7 @@ function RouteComponent() {
                 `Nom d'utilisateur : ${created.username}\nMot de passe temporaire : ${password}\n\nConnectez-vous sur la plateforme puis changez votre mot de passe dans votre profil.`,
               )}`}
               className="flex-1 flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-semibold"
-              style={{ backgroundColor: 'var(--primary)', color: 'white' }}
+              style={{ background: 'var(--gradient-brand)', color: 'white' }}
             >
               <Mail size={15} /> Envoyer par email
             </a>
@@ -177,10 +177,10 @@ function RouteComponent() {
   return (
     <div className="max-w-lg mx-auto space-y-6 pb-10">
       <div>
-        <h1 className="text-xl font-bold" style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}>
+        <h1 className="page-title">
           Créer un compte national / régional
         </h1>
-        <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
+        <p className="page-subtitle">
           Les comptes avec un rôle élevé sont créés uniquement par un administrateur.
           Un mot de passe fort est généré automatiquement — communiquez-le à l'utilisateur
           par un canal externe sécurisé.
@@ -309,7 +309,7 @@ function RouteComponent() {
               type="submit"
               disabled={registerMutation.isPending}
               className="w-full h-12 rounded-xl text-base font-semibold text-white"
-              style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)', color: 'white', border: 'none' }}
+              style={{ background: 'var(--gradient-brand)', color: 'white', border: 'none' }}
             >
               {registerMutation.isPending ? <Loader2 size={16} className="animate-spin mr-2" /> : <ShieldPlus size={16} className="mr-2" />}
               Créer le compte

@@ -8,7 +8,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { authApi } from '#/lib/api/auth'
-import type { ChangePasswordRequest, LoginRequest, RegisterRequest } from '#/lib/schemas/auth'
+import type { ChangePasswordRequest, ForgotPasswordRequest, LoginRequest, RegisterRequest, ResetPasswordRequest } from '#/lib/schemas/auth'
 import { useAuthStore } from '#/stores/auth-store'
 import { queryKeys } from './query-keys'
 
@@ -62,5 +62,17 @@ export function useUsersList() {
     queryKey: queryKeys.auth.users,
     queryFn: () => authApi.listUsers(),
     enabled: isAdmin,
+  })
+}
+
+export function useForgotPassword() {
+  return useMutation({
+    mutationFn: (data: ForgotPasswordRequest) => authApi.forgotPassword(data),
+  })
+}
+
+export function useResetPassword() {
+  return useMutation({
+    mutationFn: (data: ResetPasswordRequest) => authApi.resetPassword(data),
   })
 }

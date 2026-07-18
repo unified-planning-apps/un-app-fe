@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { CloudRain, Droplets, Thermometer, AlertTriangle, RefreshCw } from 'lucide-react'
 import { useNationalWeatherSummary, useActiveWeatherAnomalies } from '#/hooks/use-weather'
 import { getRegionName } from '#/lib/regions'
+import { SkeletonRows, ErrorState } from '#/components/ui-states'
 
 export const Route = createFileRoute('/admin/_admin/weather/')({
   component: RouteComponent,
@@ -29,10 +30,10 @@ function RouteComponent() {
     <div className="space-y-8 pb-10">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold" style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}>
+          <h1 className="page-title">
             Météo nationale
           </h1>
-          <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
+          <p className="page-subtitle">
             Conditions actuelles dans les 22 régions de Madagascar
           </p>
         </div>
@@ -100,15 +101,17 @@ function RouteComponent() {
         </div>
 
         {summary.isLoading && (
-          <div className="p-8 text-center text-sm" style={{ color: 'var(--texte-gray)' }}>
-            Chargement des données météo…
+          <div className="p-6">
+            <SkeletonRows rows={6} height={40} />
           </div>
         )}
 
         {summary.isError && (
-          <div className="p-8 text-center text-sm" style={{ color: '#ef4444' }}>
-            Impossible de charger la météo nationale.
-          </div>
+          <ErrorState
+            title="Météo nationale indisponible"
+            description="Le service météo n'a pas répondu. Vérifiez que l'API est démarrée, puis réessayez."
+            onRetry={() => summary.refetch()}
+          />
         )}
 
         {summary.data && (

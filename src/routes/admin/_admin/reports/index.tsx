@@ -12,6 +12,7 @@ import {
 } from '#/hooks/use-reports'
 import { REGIONS } from '#/lib/regions'
 import { useAuthStore } from '#/stores/auth-store'
+import { EmptyState } from '#/components/ui-states'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/admin/_admin/reports/')({
@@ -97,10 +98,10 @@ function RouteComponent() {
   return (
     <div className="space-y-8 pb-10">
       <div>
-        <h1 className="text-xl font-bold" style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}>
+        <h1 className="page-title">
           Rapports UNICEF
         </h1>
-        <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
+        <p className="page-subtitle">
           Génération, historique et planification des rapports paludisme/nutrition
         </p>
       </div>
@@ -139,7 +140,7 @@ function RouteComponent() {
             onClick={handleGenerate}
             disabled={generate.isPending}
             className="flex items-center justify-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl text-white"
-            style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)' }}
+            style={{ background: 'var(--gradient-brand)' }}
           >
             {generate.isPending ? <Loader2 size={16} className="animate-spin" /> : <FileText size={16} />}
             Générer
@@ -170,7 +171,7 @@ function RouteComponent() {
                 onClick={handleDownload}
                 disabled={download.isPending}
                 className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-xl"
-                style={{ backgroundColor: 'var(--primary)', color: 'white' }}
+                style={{ background: 'var(--gradient-brand)', color: 'white' }}
               >
                 <Download size={13} /> Télécharger
               </button>
@@ -191,9 +192,11 @@ function RouteComponent() {
           </h2>
         </div>
         {history.data && history.data.length === 0 && (
-          <div className="p-6 text-center text-sm" style={{ color: 'var(--texte-gray)' }}>
-            Aucun rapport dans l'historique pour le moment.
-          </div>
+          <EmptyState
+            icon={<FileText size={20} />}
+            title="Aucun rapport généré"
+            description="Générez votre premier rapport avec le formulaire ci-dessus : il apparaîtra ici, prêt à télécharger."
+          />
         )}
         <div className="divide-y" style={{ borderColor: 'var(--stroke-dark)' }}>
           {history.data?.map((r) => (
@@ -243,7 +246,7 @@ function RouteComponent() {
             onClick={handleExport}
             disabled={exportData.isPending}
             className="flex items-center justify-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl text-white"
-            style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)' }}
+            style={{ background: 'var(--gradient-brand)' }}
           >
             {exportData.isPending ? <Loader2 size={16} className="animate-spin" /> : <FileDown size={16} />}
             Exporter
@@ -267,9 +270,11 @@ function RouteComponent() {
             </h2>
           </div>
           {schedules.data && schedules.data.length === 0 && (
-            <div className="p-6 text-center text-sm" style={{ color: 'var(--texte-gray)' }}>
-              Aucune planification active.
-            </div>
+            <EmptyState
+              icon={<Calendar size={20} />}
+              title="Aucune planification active"
+              description="Les rapports planifiés sont envoyés automatiquement par email à la fréquence choisie."
+            />
           )}
           <div className="divide-y" style={{ borderColor: 'var(--stroke-dark)' }}>
             {schedules.data?.map((p) => (

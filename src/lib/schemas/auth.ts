@@ -76,3 +76,31 @@ export const TokenResponseSchema = z.object({
   user: UserResponseSchema,
 })
 export type TokenResponse = z.infer<typeof TokenResponseSchema>
+
+export const ForgotPasswordRequestSchema = z.object({
+  email: z.string().email('Adresse email invalide.'),
+})
+export type ForgotPasswordRequest = z.infer<typeof ForgotPasswordRequestSchema>
+
+/** Backend response — reset_token/dev_note only present in development mode. */
+export interface ForgotPasswordResponse {
+  message: string
+  reset_token?: string
+  dev_note?: string
+}
+
+export const ResetPasswordFormSchema = z
+  .object({
+    new_password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères.'),
+    confirm_password: z.string().min(1, 'Veuillez confirmer le mot de passe.'),
+  })
+  .refine((data) => data.new_password === data.confirm_password, {
+    message: 'Les mots de passe ne correspondent pas.',
+    path: ['confirm_password'],
+  })
+export type ResetPasswordFormValues = z.infer<typeof ResetPasswordFormSchema>
+
+export interface ResetPasswordRequest {
+  token: string
+  new_password: string
+}

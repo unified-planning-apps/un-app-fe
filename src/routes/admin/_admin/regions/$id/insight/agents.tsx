@@ -1,8 +1,16 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { useAuthStore } from '#/stores/auth-store'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { MapPin, Phone, Mail, Activity, FileText, CheckCircle, Clock, Send } from 'lucide-react'
 import { getRegionName } from '#/lib/regions'
 
 export const Route = createFileRoute('/admin/_admin/regions/$id/insight/agents')({
+  beforeLoad: () => {
+    if (typeof window === 'undefined') return
+    const role = useAuthStore.getState().user?.role ?? 'viewer'
+    if (role === 'viewer') {
+      throw redirect({ to: '/admin/regions' })
+    }
+  },
   component: RouteComponent,
 })
 
@@ -83,7 +91,7 @@ function AgentCard({ agent, colorIndex }: { agent: Agent; colorIndex: number }) 
             href={`mailto:${agent.email}`}
             className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-xl border transition-all hover:opacity-80"
             style={{
-              backgroundColor: 'var(--primary)',
+              background: 'var(--gradient-brand)',
               color: 'white',
               border: 'none',
             }}

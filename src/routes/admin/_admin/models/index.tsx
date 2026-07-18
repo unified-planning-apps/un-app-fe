@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Activity, AlertTriangle, RefreshCw, History, Layers, Loader2, Play } from 'lucide-react'
 import { useModelHealth, useForceRetraining, useModelBacktest, useBatchPredictions } from '#/hooks/use-predictions'
 import { useAuthStore } from '#/stores/auth-store'
+import { SkeletonCards, ErrorState } from '#/components/ui-states'
 import { REGIONS, getRegionName } from '#/lib/regions'
 import { toast } from 'sonner'
 
@@ -63,10 +64,10 @@ function RouteComponent() {
     <div className="space-y-8 pb-10">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold" style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}>
+          <h1 className="page-title">
             Santé des modèles ML
           </h1>
-          <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
+          <p className="page-subtitle">
             Performance, dérive (PSI), backtest et calculs multi-régions
           </p>
         </div>
@@ -80,7 +81,7 @@ function RouteComponent() {
             }
             disabled={retrain.isPending}
             className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl text-white"
-            style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)' }}
+            style={{ background: 'var(--gradient-brand)' }}
           >
             <RefreshCw size={14} className={retrain.isPending ? 'animate-spin' : ''} />
             Forcer le retraining
@@ -88,9 +89,8 @@ function RouteComponent() {
         )}
       </div>
 
-      {health.isLoading && (
-        <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>Chargement…</p>
-      )}
+      {health.isLoading && <SkeletonCards count={2} height={170} />}
+      {health.isError && <ErrorState onRetry={() => health.refetch()} />}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {health.data?.map((m) => {
@@ -214,7 +214,7 @@ function RouteComponent() {
           onClick={runBatch}
           disabled={batch.isPending}
           className="flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl text-white mb-4"
-          style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)' }}
+          style={{ background: 'var(--gradient-brand)' }}
         >
           {batch.isPending ? <Loader2 size={16} className="animate-spin" /> : <Play size={16} />}
           Lancer ({selectedRegions.length} région{selectedRegions.length > 1 ? 's' : ''})

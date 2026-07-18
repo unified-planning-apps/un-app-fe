@@ -4,6 +4,7 @@ import { useUsersList } from '#/hooks/use-auth'
 import { useAuthStore } from '#/stores/auth-store'
 import { ROLE_LABELS } from '#/shared/constants'
 import { getRegionName } from '#/lib/regions'
+import { SkeletonRows } from '#/components/ui-states'
 
 export const Route = createFileRoute('/admin/_admin/users/')({
   beforeLoad: () => {
@@ -29,17 +30,17 @@ function RouteComponent() {
     <div className="space-y-7 pb-10">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold" style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}>
+          <h1 className="page-title">
             Utilisateurs
           </h1>
-          <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
+          <p className="page-subtitle">
             Gestion des comptes ayant accès à la plateforme
           </p>
         </div>
         <Link
           to="/admin/users/create"
           className="flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl text-white"
-          style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)' }}
+          style={{ background: 'var(--gradient-brand)' }}
         >
           <UserPlus size={16} />
           Créer un compte
@@ -56,6 +57,11 @@ function RouteComponent() {
             {users.data?.length ?? 0} compte(s)
           </h2>
         </div>
+        {users.isLoading && (
+          <div className="p-6">
+            <SkeletonRows rows={4} height={40} />
+          </div>
+        )}
         <div className="divide-y" style={{ borderColor: 'var(--stroke-dark)' }}>
           {users.data?.map((u) => {
             const roleStyle = ROLE_STYLE[u.role] ?? ROLE_STYLE.viewer

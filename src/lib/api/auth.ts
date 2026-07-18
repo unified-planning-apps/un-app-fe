@@ -7,6 +7,9 @@
 import { apiClient } from './client'
 import type {
   ChangePasswordRequest,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
+  ResetPasswordRequest,
   LoginRequest,
   RegisterRequest,
   TokenResponse,
@@ -24,6 +27,12 @@ export const authApi = {
 
   changePassword: (data: ChangePasswordRequest) =>
     apiClient.post<{ message: string }>('/auth/change-password', data),
+
+  forgotPassword: (data: ForgotPasswordRequest) =>
+    apiClient.post<ForgotPasswordResponse>('/auth/forgot-password', data, { skipAuth: true }),
+
+  resetPassword: (data: ResetPasswordRequest) =>
+    apiClient.post<{ message: string }>('/auth/reset-password', data, { skipAuth: true }),
 
   /** Admin only. */
   listUsers: () => apiClient.get<UserResponse[]>('/auth/users'),

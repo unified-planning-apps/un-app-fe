@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Package, Save, Loader2, AlertTriangle } from 'lucide-react'
 import { useHumanitarianStocks, useUpdateHumanitarianStocks } from '#/hooks/use-nutrition'
 import { useAuthStore } from '#/stores/auth-store'
+import { SkeletonCards, ErrorState } from '#/components/ui-states'
 import { REGIONS } from '#/lib/regions'
 import type { StockHumanitaireInput } from '#/lib/schemas/nutrition'
 import { toast } from 'sonner'
@@ -67,10 +68,10 @@ function RouteComponent() {
     <div className="max-w-3xl mx-auto space-y-8 pb-10">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl font-bold" style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}>
+          <h1 className="page-title">
             Stocks humanitaires
           </h1>
-          <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
+          <p className="page-subtitle">
             Inventaire RUTF / RUSF / micronutriments par région
           </p>
         </div>
@@ -86,7 +87,8 @@ function RouteComponent() {
         </select>
       </div>
 
-      {stocks.isLoading && <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>Chargement…</p>}
+      {stocks.isLoading && <SkeletonCards count={3} height={92} />}
+      {stocks.isError && <ErrorState onRetry={() => stocks.refetch()} />}
 
       {stocks.data && (
         <>
@@ -162,7 +164,7 @@ function RouteComponent() {
               onClick={handleSave}
               disabled={updateStocks.isPending}
               className="flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl text-white"
-              style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary2) 100%)' }}
+              style={{ background: 'var(--gradient-brand)' }}
             >
               {updateStocks.isPending ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
               Enregistrer l'inventaire

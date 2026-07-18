@@ -14,6 +14,23 @@
 import { env } from '#/env'
 import { useAuthStore } from '#/stores/auth-store'
 
+/**
+ * Thrown when the request never reaches the server (no internet, server
+ * DOWN, CORS preflight blocked, DNS failure, etc.).
+ * Distinct from ApiError so callers can show a meaningful message:
+ * "Serveur inaccessible" instead of "Identifiants incorrects".
+ */
+export class NetworkError extends Error {
+  constructor(cause?: unknown) {
+    super(
+      'Impossible de contacter le serveur. ' +
+      'Vérifiez que le backend est démarré et accessible.',
+    )
+    this.name = 'NetworkError'
+    if (cause) this.cause = cause
+  }
+}
+
 export class ApiError extends Error {
   status: number
   code?: string
@@ -103,12 +120,21 @@ async function request<T>(
     }
   }
 
-  const response = await fetch(url, {
-    method,
-    headers,
-    body: body !== undefined ? JSON.stringify(body) : undefined,
-    signal: options?.signal,
-  })
+  let response: Response
+  try {
+    response = await fetch(url, {
+      method,
+      headers,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+      signal: options?.signal,
+    })
+  } catch (fetchError) {
+    // TypeError = network-level failure (server DOWN, no internet, CORS, etc.)
+    if (fetchError instanceof TypeError) {
+      throw new NetworkError(fetchError)
+    }
+    throw fetchError
+  }
 
   if (response.status === 204) {
     return undefined as T

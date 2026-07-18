@@ -89,3 +89,35 @@ user card, and logout.
 - Self-registration is restricted to `viewer`/`regional` roles in the UI;
   the backend may have its own server-side restriction on who can create
   `admin`/`national` accounts — worth confirming server-side behavior.
+
+---
+
+## Consolidation round (forgot/reset password + backend fixes)
+
+### Backend (minimal, documented changes)
+- **Dockerfile**: pinned `bcrypt==3.2.2` after requirements install — fixes the
+  passlib 1.7.4 / bcrypt 5.0 incompatibility that silently prevented the default
+  `admin`/`demo` accounts from being created at startup ("password cannot be
+  longer than 72 bytes" error).
+- **docker-compose.yml**: removed obsolete `version:` attribute (warning fix).
+- **NEW endpoints** in `src/api/routers/auth.py` + `services/auth_service.py`
+  + `schema/auth.py`:
+  - `POST /auth/forgot-password` — generates a 30-min purpose-scoped reset JWT.
+    Dev mode (no SMTP): token returned in response + logged. Production: never
+    exposed (email delivery to be added later, per project decision).
+    Response is identical whether the email exists or not (anti-enumeration).
+  - `POST /auth/reset-password` — applies new password from a valid reset token.
+    Access tokens are rejected (purpose claim check).
+
+### Frontend
+- `lib/schemas/auth.ts` — ForgotPassword/ResetPassword schemas.
+- `lib/api/auth.ts` + `hooks/use-auth.ts` — forgotPassword/resetPassword wired.
+- `routes/auth/forgot-password.tsx` — now calls the real endpoint. In dev mode,
+  shows a clickable reset link (backend returns the token when no SMTP).
+- **NEW** `routes/auth/reset-password.tsx` — reads `?token=` from URL,
+  new-password form, invalid-link fallback state.
+- routeTree.gen.ts updated; `old.txt` removed again.
+
+### Verified (no changes needed)
+- CORS: `http://localhost:3000` already whitelisted in development mode.
+- `/api/v1/auth` prefix is public → new endpoints reachable without a token.

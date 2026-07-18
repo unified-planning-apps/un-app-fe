@@ -25,10 +25,10 @@ function RouteComponent() {
     <div className="space-y-4 h-full">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl font-bold" style={{ color: 'var(--texte-extra-black)', fontFamily: 'Fraunces, serif' }}>
+          <h1 className="page-title">
             Carte des régions
           </h1>
-          <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
+          <p className="page-subtitle">
             Risque paludisme par région — cliquez sur une région pour les détails
           </p>
         </div>
@@ -43,9 +43,9 @@ function RouteComponent() {
       </div>
 
       {!isClient ? (
-        <div className="h-150 bg-muted animate-pulse flex items-center justify-center rounded-2xl">Chargement de la carte...</div>
+        <div className="h-150 skeleton rounded-2xl" role="status" aria-label="Chargement de la carte" />
       ) : (
-        <Suspense fallback={<div>Chargement des composants de la carte...</div>}>
+        <Suspense fallback={<div className="h-150 skeleton rounded-2xl" role="status" aria-label="Chargement de la carte" />}>
           <LazyMap />
         </Suspense>
       )}

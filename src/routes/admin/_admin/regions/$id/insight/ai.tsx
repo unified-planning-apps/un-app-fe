@@ -6,6 +6,7 @@ import { useCurrentWeather, useWeatherForecast } from '#/hooks/use-weather'
 import { useCombinedPrediction, useShapExplanation } from '#/hooks/use-predictions'
 import { useMalariaWeeklyTrend } from '#/hooks/use-malaria'
 import { getRegionName } from '#/lib/regions'
+import { SkeletonRows, SkeletonCards } from '#/components/ui-states'
 
 export const Route = createFileRoute('/admin/_admin/regions/$id/insight/ai')({
   component: RouteComponent,
@@ -113,7 +114,7 @@ function RouteComponent() {
           <Sun className="w-4 h-4" style={{ color: 'var(--primary2)' }} />
           Conditions climatiques actuelles — {displayName}
         </h2>
-        {weather.isLoading && <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Chargement…</p>}
+        {weather.isLoading && <SkeletonCards count={4} height={96} />}
         {weather.data && (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             <WeatherDetail
@@ -154,7 +155,7 @@ function RouteComponent() {
           <CloudRain className="w-4 h-4" style={{ color: 'var(--primary2)' }} />
           Prévisions à 7 jours
         </h2>
-        {forecast.isLoading && <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Chargement des prévisions…</p>}
+        {forecast.isLoading && <SkeletonRows rows={1} height={92} />}
         {forecast.data && (
           <>
             {(forecast.data.alerte_cyclone || forecast.data.alerte_secheresse || forecast.data.alerte_inondation) && (
@@ -209,7 +210,7 @@ function RouteComponent() {
             </h2>
           </div>
           <div className="p-5 space-y-4">
-            {prediction.isLoading && <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>Calcul des prédictions…</p>}
+            {prediction.isLoading && <SkeletonRows rows={3} height={22} />}
             {prediction.data && (
               <>
                 {[
