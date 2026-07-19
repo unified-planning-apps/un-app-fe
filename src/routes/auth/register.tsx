@@ -1,4 +1,5 @@
 import ParaglideLocaleSwitcher from '#/components/LocaleSwitcher'
+import BrandLogo from '#/components/BrandLogo'
 import ThemeToggle from '#/components/ThemeToggle'
 import { Button } from '#/components/ui/button'
 import { FloatingInput, FloatingLabel } from '#/components/ui/floating-label-input'
@@ -156,6 +157,7 @@ function RouteComponent() {
                 <div className='w-full lg:w-1/2 flex flex-col items-center justify-center px-6 py-12'>
                     <div className='w-full max-w-md'>
                         <div className='mb-6 text-center'>
+                            <BrandLogo className="h-8 w-auto mx-auto mb-5" />
                             <h2
                                 className="text-3xl font-bold tracking-tight mb-2"
                                 style={{ color: 'var(--texte-extra-black)' }}

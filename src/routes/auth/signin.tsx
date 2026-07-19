@@ -12,6 +12,7 @@ import { Lock, Loader2 } from 'lucide-react'
 import signinIllustration from '#/assets/images/signin-illustration.png'
 import { toast } from 'sonner'
 import { ApiError, NetworkError } from '#/lib/api/client'
+import BrandLogo from '#/components/BrandLogo'
 
 export const Route = createFileRoute('/auth/signin')({
     component: RouteComponent,
@@ -83,6 +84,7 @@ function RouteComponent() {
                 <div className='w-full lg:w-1/2 flex flex-col items-center justify-center px-6 py-12'>
                     <div className='w-full max-w-md'>
                         <div className='mb-8 text-center'>
+                            <BrandLogo className="h-8 w-auto mx-auto mb-6" />
                             <h2
                                 className="text-3xl font-bold tracking-tight mb-2"
                                 style={{ color: 'var(--texte-extra-black)' }}

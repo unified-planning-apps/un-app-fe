@@ -374,6 +374,31 @@ export const REGIONS: RegionMeta[] = [
     "health_facilities": 115
   },
   {
+    "id": "MDG-BET",
+    "name": "Betsiboka",
+    "chef_lieu": "Maevatanana",
+    "latitude": -16.9333,
+    "longitude": 46.8333,
+    "altitude_mean_m": 350,
+    "area_km2": 30025,
+    "population_2023": 330000,
+    "climate_zone": "tropical_sub_humid",
+    "malaria_endemicity": "high",
+    "districts_count": 4,
+    "dhis2_org_unit": "OU_MDG_BET",
+    "rainfall_season": {
+      "start_month": 11,
+      "end_month": 4
+    },
+    "main_crops": [
+      "rice",
+      "maize",
+      "cassava",
+      "zebu"
+    ],
+    "health_facilities": 52
+  },
+  {
     "id": "MDG-MEN",
     "name": "Melaky",
     "chef_lieu": "Maintirano",

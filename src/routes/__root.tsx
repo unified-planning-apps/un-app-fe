@@ -40,7 +40,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Health Shield',
+        title: 'Surveillance Sanitaire Madagascar',
       },
     ],
     links: [

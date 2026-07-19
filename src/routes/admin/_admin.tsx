@@ -4,6 +4,7 @@ import { useAuthStore } from '#/stores/auth-store'
 import { useLogout } from '#/hooks/use-auth'
 import { ROLE_LABELS } from '#/shared/constants'
 import { AppName } from '#/shared/constants'
+import BrandLogo from '#/components/BrandLogo'
 import { createFileRoute, Link, Outlet, redirect, useNavigate } from '@tanstack/react-router'
 import {
   LayoutDashboard,
@@ -14,7 +15,6 @@ import {
   Activity,
   Users,
   LogOut,
-  ShieldCheck,
   Package,
   ChevronRight,
 } from 'lucide-react'
@@ -118,23 +118,9 @@ function AdminLayout() {
         className="w-64 flex flex-col border-r flex-shrink-0"
         style={{ backgroundColor: 'var(--background-white-color)', borderColor: 'var(--stroke-dark)' }}
       >
-        {/* Brand */}
-        <div className="h-16 flex items-center gap-2.5 px-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0"
-            style={{ background: 'var(--gradient-brand)' }}
-            aria-hidden="true"
-          >
-            <ShieldCheck size={16} />
-          </div>
-          <div className="min-w-0 leading-tight">
-            <p className="font-bold text-sm truncate" style={{ color: 'var(--texte-extra-black)' }}>
-              {AppName}
-            </p>
-            <p className="text-[11px] truncate" style={{ color: 'var(--texte-gray)' }}>
-              Surveillance sanitaire
-            </p>
-          </div>
+        {/* Brand — real HealthShield logo */}
+        <div className="h-16 flex items-center px-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
+          <BrandLogo className="h-7 w-auto" />
         </div>
 
         {/* Nav */}

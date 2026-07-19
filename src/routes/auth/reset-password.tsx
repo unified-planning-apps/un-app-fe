@@ -1,4 +1,5 @@
 import ParaglideLocaleSwitcher from '#/components/LocaleSwitcher'
+import BrandLogo from '#/components/BrandLogo'
 import ThemeToggle from '#/components/ThemeToggle'
 import { Button } from '#/components/ui/button'
 import { FloatingInput, FloatingLabel } from '#/components/ui/floating-label-input'
@@ -86,6 +87,7 @@ function RouteComponent() {
           ) : (
             <>
               <div className="mb-8 text-center">
+                <BrandLogo className="h-8 w-auto mx-auto mb-6" />
                 <h2
                   className="text-3xl font-bold tracking-tight mb-2"
                   style={{ color: 'var(--texte-extra-black)' }}
