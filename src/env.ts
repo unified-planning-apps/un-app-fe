@@ -38,3 +38,13 @@ export const env = createEnv({
    */
   emptyStringAsUndefined: true,
 })
+
+
+// --- App mode (added for demo/production switching) ---
+// Re-export so the rest of the app can import from one place.
+// VITE_APP_MODE values: "development" | "production" | "demo"
+// Defaults to "development" if unset.
+export const APP_MODE = (import.meta.env.VITE_APP_MODE as string | undefined) ?? 'development'
+
+/** True when running with local mock data — no backend required. */
+export const IS_DEMO = APP_MODE === 'demo'

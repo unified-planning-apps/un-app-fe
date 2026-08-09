@@ -37,7 +37,7 @@ function InsightLayout() {
       {/* Hero banner — brand gradient, key region facts at a glance */}
       <div
         className="rounded-2xl p-6 flex items-center justify-between overflow-hidden relative mb-4"
-        style={{ background: 'var(--gradient-brand)' }}
+        style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)' }}
       >
         <div
           className="absolute inset-0 opacity-[0.07] pointer-events-none"
@@ -45,24 +45,24 @@ function InsightLayout() {
           aria-hidden="true"
         />
         <div className="relative z-10">
-          <h1 className="text-2xl font-bold text-white tracking-tight mb-1">
+          <h1 className="text-2xl font-bold tracking-tight mb-1" style={{ color: "#ffffff" }}>
             Région {displayName}
           </h1>
-          <p className="text-sm text-white/75">
+          <p className="text-sm" style={{ color: "rgba(255,255,255,0.75)" }}>
             {region?.chef_lieu ? `Chef-lieu : ${region.chef_lieu}` : 'Analyse détaillée des données sanitaires et climatiques'}
           </p>
         </div>
         <div className="relative z-10 hidden sm:flex items-center gap-5">
           <div className="text-center">
-            <p className="text-white/70 text-xs">Superficie</p>
-            <p className="text-white font-bold text-lg">
-              {region ? `${region.area_km2.toLocaleString('fr-FR')} km²` : '—'}
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)" }}>Superficie</p>
+            <p className="font-bold text-lg" style={{ color: "#ffffff" }}>
+              {region ? `${region.area_km2.toLocaleString('en-GB')} km²` : '—'}
             </p>
           </div>
           <div className="w-px h-10 bg-white/30" />
           <div className="text-center">
-            <p className="text-white/70 text-xs">Population</p>
-            <p className="text-white font-bold text-lg">
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)" }}>Population</p>
+            <p className="font-bold text-lg" style={{ color: "#ffffff" }}>
               {region ? `${(region.population_2023 / 1_000_000).toFixed(1)}M` : '—'}
             </p>
           </div>

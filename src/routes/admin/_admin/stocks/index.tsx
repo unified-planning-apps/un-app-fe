@@ -164,7 +164,7 @@ function RouteComponent() {
               onClick={handleSave}
               disabled={updateStocks.isPending}
               className="flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl text-white"
-              style={{ background: 'var(--gradient-brand)' }}
+              style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
             >
               {updateStocks.isPending ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
               Enregistrer l'inventaire

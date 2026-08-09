@@ -315,7 +315,7 @@ function RouteComponent() {
                                     <Button
                                         className='w-full h-12 rounded-xl text-base font-semibold text-white'
                                         style={{
-                                            background: 'var(--gradient-brand)',
+                                            background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff',
                                             color: 'white',
                                             border: 'none'
                                         }}
@@ -335,7 +335,7 @@ function RouteComponent() {
                                         <Button
                                             className='flex-1 h-12 rounded-xl text-base font-semibold text-white'
                                             style={{
-                                                background: 'var(--gradient-brand)',
+                                                background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff',
                                                 color: 'white',
                                                 border: 'none'
                                             }}

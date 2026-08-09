@@ -56,3 +56,4 @@ export function isNationalOrAdmin(): boolean {
   const role = useAuthStore.getState().user?.role
   return role === 'admin' || role === 'national'
 }
+

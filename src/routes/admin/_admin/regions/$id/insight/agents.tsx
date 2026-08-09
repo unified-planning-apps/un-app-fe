@@ -91,7 +91,7 @@ function AgentCard({ agent, colorIndex }: { agent: Agent; colorIndex: number }) 
             href={`mailto:${agent.email}`}
             className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-xl border transition-all hover:opacity-80"
             style={{
-              background: 'var(--gradient-brand)',
+              background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)',
               color: 'white',
               border: 'none',
             }}
@@ -149,7 +149,7 @@ function AgentCard({ agent, colorIndex }: { agent: Agent; colorIndex: number }) 
       <div className="px-4 py-2.5 border-t" style={{ borderColor: 'var(--stroke-dark)' }}>
         <p className="text-xs flex items-center gap-1.5" style={{ color: 'var(--texte-gray)' }}>
           <Clock className="w-3 h-3" />
-          Dernier rapport : {new Date(agent.lastReport).toLocaleDateString('fr-MG', { day: 'numeric', month: 'long' })}
+          Dernier rapport : {new Date(agent.lastReport).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}
         </p>
       </div>
     </div>

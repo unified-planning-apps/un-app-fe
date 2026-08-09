@@ -81,7 +81,7 @@ function RouteComponent() {
             }
             disabled={retrain.isPending}
             className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-xl text-white"
-            style={{ background: 'var(--gradient-brand)' }}
+            style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
           >
             <RefreshCw size={14} className={retrain.isPending ? 'animate-spin' : ''} />
             Forcer le retraining
@@ -130,7 +130,7 @@ function RouteComponent() {
                 <div>
                   <p className="opacity-70">Entraîné le</p>
                   <p className="font-semibold text-sm" style={{ color: 'var(--texte-extra-black)' }}>
-                    {m.date_entrainement ? new Date(m.date_entrainement).toLocaleDateString('fr-MG') : '—'}
+                    {m.date_entrainement ? new Date(m.date_entrainement).toLocaleDateString('en-GB') : '—'}
                   </p>
                 </div>
               </div>
@@ -214,7 +214,7 @@ function RouteComponent() {
           onClick={runBatch}
           disabled={batch.isPending}
           className="flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl text-white mb-4"
-          style={{ background: 'var(--gradient-brand)' }}
+          style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
         >
           {batch.isPending ? <Loader2 size={16} className="animate-spin" /> : <Play size={16} />}
           Lancer ({selectedRegions.length} région{selectedRegions.length > 1 ? 's' : ''})

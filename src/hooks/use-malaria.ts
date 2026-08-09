@@ -1,94 +1,73 @@
 /**
  * src/hooks/use-malaria.ts
- * =========================
- * React-query hooks wrapping `lib/api/malaria.ts`.
+ * -------------------------
+ * React-Query hooks for malaria data.
+ * Transparently uses demo data when IS_DEMO === true.
  */
-
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { malariaApi } from '#/lib/api/malaria'
 import { queryKeys } from './query-keys'
+import { malariaApi } from '#/lib/api/malaria'
+import { demoMalariaApi } from '#/lib/api/demo'
+import { IS_DEMO } from '#/env'
 
-export function useMalariaCases(
-  regionId: string | undefined,
-  params?: { date_debut?: string; date_fin?: string; district?: string },
-) {
-  return useQuery({
-    queryKey: [...queryKeys.malaria.cas(regionId ?? ''), params],
-    queryFn: () => malariaApi.cas(regionId as string, params),
-    enabled: !!regionId,
-  })
-}
+const api = IS_DEMO ? demoMalariaApi : malariaApi
 
-export function useMalariaRisk(regionId: string | undefined, horizonJours = 14) {
+export function useMalariaCases(regionId: string, params?: { date_debut?: string; date_fin?: string }) {
   return useQuery({
-    queryKey: queryKeys.malaria.risque(regionId ?? '', horizonJours),
-    queryFn: () => malariaApi.risque(regionId as string, horizonJours),
+    queryKey: queryKeys.malaria.cas(regionId),
+    queryFn: () => api.cas(regionId, params),
     enabled: !!regionId,
-    staleTime: 24 * 60 * 60 * 1000,
+    staleTime: 60 * 60 * 1000,
   })
 }
 
 export function useMalariaRiskMap(horizonJours = 14) {
   return useQuery({
     queryKey: queryKeys.malaria.carteRisque(horizonJours),
-    queryFn: () => malariaApi.carteRisqueNationale(horizonJours),
-    staleTime: 24 * 60 * 60 * 1000,
+    queryFn: () => api.carteRisqueNationale(horizonJours),
+    staleTime: 60 * 60 * 1000,
   })
 }
 
-export function useMalariaAlerts(regionId?: string) {
+export function useMalariaAlerts(params?: { region_id?: string }) {
   return useQuery({
-    queryKey: queryKeys.malaria.alertes(regionId),
-    queryFn: () => malariaApi.alertes({ region_id: regionId }),
+    queryKey: queryKeys.malaria.alertes(params?.region_id),
+    queryFn: () => api.alertes(params),
     staleTime: 15 * 60 * 1000,
   })
 }
 
 export function useAcknowledgeMalariaAlert() {
-  const queryClient = useQueryClient()
+  const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ alerteId, commentaire }: { alerteId: string; commentaire?: string }) =>
-      malariaApi.acquitterAlerte(alerteId, commentaire),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['malaria', 'alertes'] })
-    },
+    mutationFn: ({ alerteId }: { alerteId: string }) => api.acquitterAlerte(alerteId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['malaria', 'alertes'] }),
   })
 }
 
-export function useMalariaRegionalComparison(dateReference?: string) {
+export function useMalariaWeeklyTrend(regionId: string, semaines = 8) {
   return useQuery({
-    queryKey: [...queryKeys.malaria.comparaison, dateReference],
-    queryFn: () => malariaApi.comparaisonRegionale(dateReference),
-  })
-}
-
-export function useMalariaSeasonality(regionId: string | undefined) {
-  return useQuery({
-    queryKey: queryKeys.malaria.saisonnalite(regionId ?? ''),
-    queryFn: () => malariaApi.saisonnalite(regionId as string),
+    queryKey: queryKeys.malaria.tendance(regionId, semaines),
+    queryFn: () => api.tendanceHebdo(regionId, semaines),
     enabled: !!regionId,
+    staleTime: 60 * 60 * 1000,
   })
 }
 
-export function useMalariaRiskFactors(regionId: string | undefined) {
+export function useMalariaSeasonality(regionId: string) {
   return useQuery({
-    queryKey: queryKeys.malaria.facteursRisque(regionId ?? ''),
-    queryFn: () => malariaApi.facteursRisque(regionId as string),
+    queryKey: queryKeys.malaria.saisonnalite(regionId),
+    queryFn: () => api.saisonnier(regionId),
     enabled: !!regionId,
+    staleTime: 24 * 60 * 60 * 1000,
   })
 }
 
-export function useMalariaWeeklyTrend(regionId: string | undefined, semaines = 26) {
+export function useMalariaRiskFactors(regionId: string) {
   return useQuery({
-    queryKey: queryKeys.malaria.tendance(regionId ?? '', semaines),
-    queryFn: () => malariaApi.tendanceHebdo(regionId as string, semaines),
+    queryKey: queryKeys.malaria.facteursRisque(regionId),
+    queryFn: () => api.facteurs(regionId),
     enabled: !!regionId,
-  })
-}
-
-export function useMalariaNationalStats() {
-  return useQuery({
-    queryKey: queryKeys.malaria.statsNational,
-    queryFn: () => malariaApi.statistiquesNationales(),
+    staleTime: 60 * 60 * 1000,
   })
 }

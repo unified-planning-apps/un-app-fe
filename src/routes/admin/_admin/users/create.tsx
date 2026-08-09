@@ -157,7 +157,7 @@ function RouteComponent() {
                 `Nom d'utilisateur : ${created.username}\nMot de passe temporaire : ${password}\n\nConnectez-vous sur la plateforme puis changez votre mot de passe dans votre profil.`,
               )}`}
               className="flex-1 flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-semibold"
-              style={{ background: 'var(--gradient-brand)', color: 'white' }}
+              style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff', color: 'white' }}
             >
               <Mail size={15} /> Envoyer par email
             </a>
@@ -309,7 +309,7 @@ function RouteComponent() {
               type="submit"
               disabled={registerMutation.isPending}
               className="w-full h-12 rounded-xl text-base font-semibold text-white"
-              style={{ background: 'var(--gradient-brand)', color: 'white', border: 'none' }}
+              style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff', color: 'white', border: 'none' }}
             >
               {registerMutation.isPending ? <Loader2 size={16} className="animate-spin mr-2" /> : <ShieldPlus size={16} className="mr-2" />}
               Créer le compte

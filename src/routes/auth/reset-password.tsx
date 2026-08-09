@@ -151,7 +151,7 @@ function RouteComponent() {
                     disabled={resetPassword.isPending}
                     className="w-full h-12 rounded-xl text-base font-semibold text-white"
                     style={{
-                      background: 'var(--gradient-brand)',
+                      background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff',
                       border: 'none',
                     }}
                   >

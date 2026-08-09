@@ -181,7 +181,7 @@ function RouteComponent() {
                   style={{ backgroundColor: 'var(--background-white-color)', borderColor: 'var(--stroke-dark)' }}
                 >
                   <p className="text-xs mb-1" style={{ color: 'var(--texte-gray)' }}>
-                    {new Date(day.date).toLocaleDateString('fr-MG', { weekday: 'short' })}
+                    {new Date(day.date).toLocaleDateString('en-GB', { weekday: 'short' })}
                   </p>
                   <p className="text-sm font-bold" style={{ color: 'var(--texte-extra-black)' }}>
                     {Math.round(day.temperature_max_c)}°

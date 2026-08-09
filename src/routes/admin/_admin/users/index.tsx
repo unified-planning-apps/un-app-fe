@@ -40,7 +40,7 @@ function RouteComponent() {
         <Link
           to="/admin/users/create"
           className="flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl text-white"
-          style={{ background: 'var(--gradient-brand)' }}
+          style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
         >
           <UserPlus size={16} />
           Créer un compte

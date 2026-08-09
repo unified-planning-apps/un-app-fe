@@ -140,7 +140,7 @@ function RouteComponent() {
             onClick={handleGenerate}
             disabled={generate.isPending}
             className="flex items-center justify-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl text-white"
-            style={{ background: 'var(--gradient-brand)' }}
+            style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
           >
             {generate.isPending ? <Loader2 size={16} className="animate-spin" /> : <FileText size={16} />}
             Générer
@@ -171,7 +171,7 @@ function RouteComponent() {
                 onClick={handleDownload}
                 disabled={download.isPending}
                 className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-xl"
-                style={{ background: 'var(--gradient-brand)', color: 'white' }}
+                style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff', color: 'white' }}
               >
                 <Download size={13} /> Télécharger
               </button>
@@ -204,7 +204,7 @@ function RouteComponent() {
               <div>
                 <p className="text-sm font-medium" style={{ color: 'var(--texte-extra-black)' }}>{r.type_rapport}</p>
                 <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>
-                  {r.region_name ?? 'National'} · {new Date(r.genere_le).toLocaleDateString('fr-MG')}
+                  {r.region_name ?? 'National'} · {new Date(r.genere_le).toLocaleDateString('en-GB')}
                 </p>
               </div>
               <span className="text-xs" style={{ color: 'var(--texte-gray)' }}>{r.taille_ko.toFixed(0)} Ko</span>
@@ -246,7 +246,7 @@ function RouteComponent() {
             onClick={handleExport}
             disabled={exportData.isPending}
             className="flex items-center justify-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl text-white"
-            style={{ background: 'var(--gradient-brand)' }}
+            style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
           >
             {exportData.isPending ? <Loader2 size={16} className="animate-spin" /> : <FileDown size={16} />}
             Exporter

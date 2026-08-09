@@ -156,7 +156,7 @@ function RouteComponent() {
               type="submit"
               disabled={changePassword.isPending}
               className="h-12 rounded-xl text-sm font-semibold px-6 text-white"
-              style={{ background: 'var(--gradient-brand)', color: 'white', border: 'none' }}
+              style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff', color: 'white', border: 'none' }}
             >
               {changePassword.isPending && <Loader2 size={16} className="animate-spin mr-2" />}
               Mettre à jour le mot de passe

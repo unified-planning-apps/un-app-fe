@@ -6,6 +6,7 @@ import { ROLE_LABELS } from '#/shared/constants'
 import { AppName } from '#/shared/constants'
 import BrandLogo from '#/components/BrandLogo'
 import { createFileRoute, Link, Outlet, redirect, useNavigate } from '@tanstack/react-router'
+import { IS_DEMO } from '#/env'
 import {
   LayoutDashboard,
   Map as MapIcon,
@@ -23,6 +24,9 @@ import type { ReactElement } from 'react'
 export const Route = createFileRoute('/admin/_admin')({
   beforeLoad: () => {
     if (typeof window === 'undefined') return
+    // Demo mode: auth store is pre-seeded client-side, skip the check
+    // to avoid SSR/client hydration mismatch (server has no localStorage).
+    if (IS_DEMO) return
     const { isAuthenticated } = useAuthStore.getState()
     if (!isAuthenticated) {
       throw redirect({ to: '/auth/signin' })

@@ -78,13 +78,14 @@ function RouteComponent() {
     .sort((a, b) => b.score_risque - a.score_risque)
     .slice(0, 5)
 
-  const avgTemp = weatherSummary.data
-    ? weatherSummary.data.regions.reduce((sum, r) => sum + (r.temperature_c ?? 0), 0) /
-      Math.max(1, weatherSummary.data.regions.filter((r) => r.temperature_c !== undefined).length)
+  const _regions = weatherSummary.data?.regions ?? []
+  const avgTemp = _regions.length > 0
+    ? _regions.reduce((sum, r) => sum + (r.temperature_c ?? 0), 0) /
+      Math.max(1, _regions.filter((r) => r.temperature_c !== undefined).length)
     : undefined
-  const avgHumidity = weatherSummary.data
-    ? weatherSummary.data.regions.reduce((sum, r) => sum + (r.humidite_pct ?? 0), 0) /
-      Math.max(1, weatherSummary.data.regions.filter((r) => r.humidite_pct !== undefined).length)
+  const avgHumidity = _regions.length > 0
+    ? _regions.reduce((sum, r) => sum + (r.humidite_pct ?? 0), 0) /
+      Math.max(1, _regions.filter((r) => r.humidite_pct !== undefined).length)
     : undefined
 
   const nutritionCrisisCount = (nutritionRiskMap.data?.carte ?? []).filter(
@@ -96,7 +97,7 @@ function RouteComponent() {
       {/* Hero — brand gradient, alert status always visible */}
       <div
         className="rounded-2xl p-6 sm:p-7 flex items-center justify-between gap-4 flex-wrap relative overflow-hidden"
-        style={{ background: 'var(--gradient-brand)' }}
+        style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)' }}
       >
         <div
           className="absolute inset-0 opacity-[0.07] pointer-events-none"
@@ -104,8 +105,8 @@ function RouteComponent() {
           aria-hidden="true"
         />
         <div className="relative z-10">
-          <h1 className="text-2xl font-bold text-white tracking-tight">Tableau de bord</h1>
-          <p className="text-sm text-white/75 mt-1">
+          <h1 className="text-2xl font-bold tracking-tight" style={{ color: "#ffffff" }}>Tableau de bord</h1>
+          <p className="text-sm mt-1" style={{ color: "rgba(255,255,255,0.75)" }}>
             Vue d'ensemble de la situation sanitaire et climatique à Madagascar
           </p>
         </div>
@@ -118,8 +119,8 @@ function RouteComponent() {
             style={{ backgroundColor: totalActiveAlerts > 0 ? '#fb923c' : '#4ade80' }}
             aria-hidden="true"
           />
-          <Bell className="w-4 h-4 text-white" aria-hidden="true" />
-          <span className="text-sm font-semibold text-white">
+          <Bell className="w-4 h-4" style={{ color: "#ffffff" }} aria-hidden="true" />
+          <span className="text-sm font-semibold" style={{ color: "#ffffff" }}>
             {totalActiveAlerts > 0
               ? `${totalActiveAlerts} alerte${totalActiveAlerts > 1 ? 's' : ''} active${totalActiveAlerts > 1 ? 's' : ''}`
               : 'Aucune alerte active'}
@@ -191,7 +192,7 @@ function RouteComponent() {
                     {alert.description}
                   </p>
                   <p className="text-xs mt-0.5" style={{ color: 'var(--texte-gray)' }}>
-                    {alert.region_name} · {alert.domaine} · {new Date(alert.date_detection).toLocaleDateString('fr-MG')}
+                    {alert.region_name} · {alert.domaine} · {new Date(alert.date_detection).toLocaleDateString('en-GB')}
                   </p>
                 </div>
                 <span
@@ -249,12 +250,12 @@ function RouteComponent() {
                     params={{ id: r.region_id }}
                     className="flex items-center justify-between px-5 py-3 hover:bg-gray-50/50 transition-colors"
                   >
-                    <div>
-                      <p className="text-sm font-medium" style={{ color: 'var(--texte-extra-black)' }}>{r.region_name}</p>
-                      <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>{r.cas_prevus_14j} cas prévus (14j)</p>
-                    </div>
+                    <span className="flex flex-col">
+                      <span className="text-sm font-medium" style={{ color: 'var(--texte-extra-black)' }}>{r.region_name}</span>
+                      <span className="text-xs" style={{ color: 'var(--texte-gray)' }}>{r.cas_prevus_14j} cas prévus (14j)</span>
+                    </span>
                     <span
-                      className="text-xs font-semibold px-2.5 py-1 rounded-full capitalize"
+                      className="text-xs font-semibold px-2.5 py-1 rounded-full capitalize flex-shrink-0"
                       style={{ backgroundColor: style.bg, color: style.text }}
                     >
                       {r.niveau_risque}
@@ -280,7 +281,7 @@ function RouteComponent() {
           {[
             { icon: <Thermometer className="w-5 h-5" />, label: 'Température moy.', value: avgTemp !== undefined ? `${avgTemp.toFixed(1)}°C` : '—', color: '#ef4444' },
             { icon: <Droplets className="w-5 h-5" />, label: 'Humidité moy.', value: avgHumidity !== undefined ? `${avgHumidity.toFixed(0)}%` : '—', color: '#0ea5e9' },
-            { icon: <FileText className="w-5 h-5" />, label: 'Régions surveillées', value: weatherSummary.data?.total ?? 22, color: '#22c55e' },
+            { icon: <FileText className="w-5 h-5" />, label: 'Régions surveillées', value: _regions.length || 23, color: '#22c55e' },
           ].map(item => (
             <div
               key={item.label}

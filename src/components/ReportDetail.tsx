@@ -111,7 +111,7 @@ export default function ReportDetail({
                         {date && (
                             <span className="flex items-center gap-1">
                                 <Calendar className="w-3 h-3" />
-                                {new Date(date).toLocaleDateString('fr-MG', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                {new Date(date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
                             </span>
                         )}
                     </div>

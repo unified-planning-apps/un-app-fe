@@ -1,52 +1,54 @@
 /**
  * src/hooks/use-weather.ts
- * =========================
- * React-query hooks wrapping `lib/api/weather.ts`.
  */
-
 import { useQuery } from '@tanstack/react-query'
-import { weatherApi } from '#/lib/api/weather'
 import { queryKeys } from './query-keys'
+import { weatherApi } from '#/lib/api/weather'
+import { demoWeatherApi } from '#/lib/api/demo'
+import { IS_DEMO } from '#/env'
 
-export function useCurrentWeather(regionId: string | undefined) {
+const api = IS_DEMO ? demoWeatherApi : weatherApi
+
+export function useCurrentWeather(regionId: string) {
   return useQuery({
-    queryKey: queryKeys.weather.current(regionId ?? ''),
-    queryFn: () => weatherApi.current(regionId as string),
+    queryKey: queryKeys.weather.current(regionId),
+    queryFn: () => api.current(regionId),
     enabled: !!regionId,
-    staleTime: 60 * 60 * 1000, // mirrors backend's 1h cache
+    staleTime: 30 * 60 * 1000,
   })
 }
 
-export function useWeatherForecast(regionId: string | undefined, jours = 7) {
+export function useWeatherForecast(regionId: string, jours = 7) {
   return useQuery({
-    queryKey: queryKeys.weather.forecast(regionId ?? '', jours),
-    queryFn: () => weatherApi.forecast(regionId as string, jours),
+    queryKey: queryKeys.weather.forecast(regionId, jours),
+    queryFn: () => api.forecast(regionId, jours),
     enabled: !!regionId,
     staleTime: 60 * 60 * 1000,
   })
 }
 
-export function useWeatherHistory(regionId: string | undefined, dateDebut: string, dateFin: string) {
+export function useWeatherHistory(regionId: string, dateDebut: string, dateFin: string) {
   return useQuery({
-    queryKey: queryKeys.weather.history(regionId ?? '', dateDebut, dateFin),
-    queryFn: () => weatherApi.history(regionId as string, dateDebut, dateFin),
-    enabled: !!regionId,
+    queryKey: queryKeys.weather.history(regionId, dateDebut, dateFin),
+    queryFn: () => api.history(regionId, dateDebut, dateFin),
+    enabled: !!regionId && !!dateDebut && !!dateFin,
+    staleTime: 24 * 60 * 60 * 1000,
   })
 }
 
-export function useClimateIndices(regionId: string | undefined) {
+export function useClimateIndices(regionId: string, dateDebut?: string, dateFin?: string) {
   return useQuery({
-    queryKey: queryKeys.weather.indices(regionId ?? ''),
-    queryFn: () => weatherApi.climateIndices(regionId as string),
+    queryKey: queryKeys.weather.indices(regionId),
+    queryFn: () => api.climateIndices(regionId, dateDebut, dateFin),
     enabled: !!regionId,
-    staleTime: 12 * 60 * 60 * 1000,
+    staleTime: 24 * 60 * 60 * 1000,
   })
 }
 
-export function useActiveWeatherAnomalies(regionId?: string) {
+export function useActiveWeatherAnomalies(params?: { region_id?: string; type_anomalie?: string }) {
   return useQuery({
-    queryKey: queryKeys.weather.anomalies(regionId),
-    queryFn: () => weatherApi.activeAnomalies({ region_id: regionId }),
+    queryKey: queryKeys.weather.anomalies(params?.region_id),
+    queryFn: () => api.activeAnomalies(params),
     staleTime: 30 * 60 * 1000,
   })
 }
@@ -54,7 +56,7 @@ export function useActiveWeatherAnomalies(regionId?: string) {
 export function useNationalWeatherSummary() {
   return useQuery({
     queryKey: queryKeys.weather.national,
-    queryFn: () => weatherApi.nationalSummary(),
+    queryFn: () => api.nationalSummary(),
     staleTime: 60 * 60 * 1000,
   })
 }
