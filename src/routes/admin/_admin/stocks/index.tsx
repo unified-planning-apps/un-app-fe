@@ -34,7 +34,7 @@ const STATUT_STYLE: Record<string, { bg: string; text: string }> = {
   sufficient: { bg: '#f0fdf4', text: '#22c55e' },
   low: { bg: '#fff7ed', text: '#f97316' },
   critical: { bg: '#fef2f2', text: '#ef4444' },
-  out of stock: { bg: '#fef2f2', text: '#b91c1c' },
+  'out of stock': { bg: '#fef2f2', text: '#b91c1c' },
 }
 
 function RouteComponent() {
