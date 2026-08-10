@@ -38,12 +38,12 @@ function RouteComponent() {
       { token, new_password: values.new_password },
       {
         onSuccess: () => {
-          toast.success('Mot de passe réinitialisé. Vous pouvez vous connecter.')
+          toast.success('Password reset. You can now sign in.')
           navigate({ to: '/auth/signin' })
         },
         onError: (error) => {
           const message =
-            error instanceof ApiError ? error.message : 'Lien de réinitialisation invalide ou expiré.'
+            error instanceof ApiError ? error.message : 'Invalid or expired reset link.'
           toast.error(message)
         },
       },
@@ -69,7 +69,7 @@ function RouteComponent() {
               </div>
               <div>
                 <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--texte-extra-black)' }}>
-                  Lien invalide
+                  Invalid link
                 </h2>
                 <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
                   Ce lien de réinitialisation est incomplet ou a expiré.
@@ -81,7 +81,7 @@ function RouteComponent() {
                 className="inline-flex items-center gap-1.5 text-sm font-semibold"
                 style={{ color: 'var(--primary)' }}
               >
-                Demander un nouveau lien
+                Request a new link
               </Link>
             </div>
           ) : (
@@ -92,10 +92,10 @@ function RouteComponent() {
                   className="text-3xl font-bold tracking-tight mb-2"
                   style={{ color: 'var(--texte-extra-black)' }}
                 >
-                  Nouveau mot de passe
+                  New password
                 </h2>
                 <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
-                  Choisissez un nouveau mot de passe pour votre compte.
+                  Choose a new password for your account.
                 </p>
               </div>
 
@@ -116,7 +116,7 @@ function RouteComponent() {
                               className="h-14 rounded-xl border-gray-200 pr-10 focus:border-[var(--primary2)]"
                             />
                           </FormControl>
-                          <FloatingLabel htmlFor="reset-new-password">Nouveau mot de passe</FloatingLabel>
+                          <FloatingLabel htmlFor="reset-new-password">New password</FloatingLabel>
                           <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                         </div>
                         <FormMessage />
@@ -138,7 +138,7 @@ function RouteComponent() {
                               className="h-14 rounded-xl border-gray-200 pr-10 focus:border-[var(--primary2)]"
                             />
                           </FormControl>
-                          <FloatingLabel htmlFor="reset-confirm-password">Confirmer le mot de passe</FloatingLabel>
+                          <FloatingLabel htmlFor="reset-confirm-password">Confirm password</FloatingLabel>
                           <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                         </div>
                         <FormMessage />
@@ -156,7 +156,7 @@ function RouteComponent() {
                     }}
                   >
                     {resetPassword.isPending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
-                    Réinitialiser le mot de passe
+                    Reset password
                   </Button>
                 </form>
               </Form>
@@ -169,7 +169,7 @@ function RouteComponent() {
             style={{ color: 'var(--primary)' }}
           >
             <ArrowLeft size={15} />
-            Retour à la connexion
+            Back to sign in
           </Link>
         </div>
       </div>

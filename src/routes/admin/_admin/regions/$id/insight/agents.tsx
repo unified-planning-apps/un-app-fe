@@ -97,7 +97,7 @@ function AgentCard({ agent, colorIndex }: { agent: Agent; colorIndex: number }) 
             }}
           >
             <Send className="w-3 h-3" />
-            Contacter
+            Contact
           </a>
         </div>
 
@@ -149,7 +149,7 @@ function AgentCard({ agent, colorIndex }: { agent: Agent; colorIndex: number }) 
       <div className="px-4 py-2.5 border-t" style={{ borderColor: 'var(--stroke-dark)' }}>
         <p className="text-xs flex items-center gap-1.5" style={{ color: 'var(--texte-gray)' }}>
           <Clock className="w-3 h-3" />
-          Dernier rapport : {new Date(agent.lastReport).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}
+          Last report: {new Date(agent.lastReport).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}
         </p>
       </div>
     </div>
@@ -168,9 +168,9 @@ function RouteComponent() {
       {/* Summary */}
       <div className="grid grid-cols-3 gap-5">
         {[
-          { label: 'Agents actifs', value: `${activeCount}/${agents.length}`, color: '#22c55e', icon: <Activity className="w-4 h-4" /> },
-          { label: 'Rapports total', value: totalReports, color: 'var(--primary2)', icon: <FileText className="w-4 h-4" /> },
-          { label: 'Alertes émises', value: totalAlerts, color: '#ef4444', icon: <Activity className="w-4 h-4" /> },
+          { label: 'Active agents', value: `${activeCount}/${agents.length}`, color: '#22c55e', icon: <Activity className="w-4 h-4" /> },
+          { label: 'Total reports', value: totalReports, color: 'var(--primary2)', icon: <FileText className="w-4 h-4" /> },
+          { label: 'Alerts issued', value: totalAlerts, color: '#ef4444', icon: <Activity className="w-4 h-4" /> },
         ].map(item => (
           <div
             key={item.label}

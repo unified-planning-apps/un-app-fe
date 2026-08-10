@@ -49,9 +49,9 @@ export const MOCK_CARTE_RISQUE: CarteRisqueMalaria = {
 
 // ── Active alerts ─────────────────────────────────────────────────────────
 export const MOCK_MALARIA_ALERTS: AlerteEpidemiologique[] = [
-  { alerte_id: 'ALT-001', region_id: 'MDG-SOF', region_name: 'Sofia', type_alerte: 'seuil_epidemique', severite: 'urgent', statut: 'active', date_detection: dPast(3), description: 'Dépassement du seuil épidémique — 712 cas prévus sur 14 jours, soit +38% vs période précédente', indicateur_declencheur: 'cas_hebdo', valeur_observee: 712, seuil_alerte: 520 },
-  { alerte_id: 'ALT-002', region_id: 'MDG-BOE', region_name: 'Boeny', type_alerte: 'seuil_epidemique', severite: 'alerte', statut: 'active', date_detection: dPast(5), description: 'Tendance à la hausse dans la région Boeny — conditions climatiques favorables aux vecteurs', indicateur_declencheur: 'score_risque', valeur_observee: 0.74, seuil_alerte: 0.70 },
-  { alerte_id: 'ALT-003', region_id: 'MDG-ANA2', region_name: 'Analanjirofo', type_alerte: 'tendance_hausse', severite: 'surveillance', statut: 'active', date_detection: dPast(8), description: 'Augmentation progressive des cas depuis 3 semaines — surveillance renforcée recommandée', indicateur_declencheur: 'tendance_7j', valeur_observee: 452, seuil_alerte: 350 },
+  { alerte_id: 'ALT-001', region_id: 'MDG-SOF', region_name: 'Sofia', type_alerte: 'seuil_epidemique', severite: 'urgent', statut: 'active', date_detection: dPast(3), description: 'Epidemic threshold exceeded — 712 cases predicted over 14 days, +38% vs previous period', indicateur_declencheur: 'cas_hebdo', valeur_observee: 712, seuil_alerte: 520 },
+  { alerte_id: 'ALT-002', region_id: 'MDG-BOE', region_name: 'Boeny', type_alerte: 'seuil_epidemique', severite: 'alerte', statut: 'active', date_detection: dPast(5), description: 'Rising trend in Boeny region — climate conditions favourable to vectors', indicateur_declencheur: 'score_risque', valeur_observee: 0.74, seuil_alerte: 0.70 },
+  { alerte_id: 'ALT-003', region_id: 'MDG-ANA2', region_name: 'Analanjirofo', type_alerte: 'tendance_rising', severite: 'surveillance', statut: 'active', date_detection: dPast(8), description: 'Gradual case increase over 3 weeks — enhanced surveillance recommended', indicateur_declencheur: 'tendance_7j', valeur_observee: 452, seuil_alerte: 350 },
 ]
 
 // ── Weekly trend per region ──────────────────────────────────────────────
@@ -80,7 +80,7 @@ export function getMockWeeklyTrend(regionId: string, semaines: number): Tendance
     periode_fin: today,
     total_cas_periode: data.reduce((s, d) => s + d.cas_confirmes, 0),
     moyenne_hebdo: Math.round(data.reduce((s, d) => s + d.cas_confirmes, 0) / semaines),
-    tendance: base > 50 ? 'hausse' : 'stable',
+    tendance: base > 50 ? 'rising' : 'stable',
     variation_pct_vs_periode_prec: base > 50 ? 14.3 : -3.1,
     data,
   }

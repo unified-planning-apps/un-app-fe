@@ -8,10 +8,10 @@ export const Route = createFileRoute('/admin/_admin/regions/')({
 })
 
 const LEGEND = [
-  { label: 'Faible', color: '#22c55e' },
-  { label: 'Moyen', color: '#eab308' },
-  { label: 'Élevé', color: '#f97316' },
-  { label: 'Très élevé', color: '#ef4444' },
+  { label: 'Low', color: '#22c55e' },
+  { label: 'Moderate', color: '#eab308' },
+  { label: 'High', color: '#f97316' },
+  { label: 'Very high', color: '#ef4444' },
 ]
 
 function RouteComponent() {
@@ -26,10 +26,10 @@ function RouteComponent() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="page-title">
-            Carte des régions
+            Regions Map
           </h1>
           <p className="page-subtitle">
-            Risque paludisme par région — cliquez sur une région pour les détails
+            Malaria risk by region — click a region for details
           </p>
         </div>
         <div className="flex items-center gap-3 text-xs" style={{ color: 'var(--texte-gray)' }}>
@@ -43,9 +43,9 @@ function RouteComponent() {
       </div>
 
       {!isClient ? (
-        <div className="h-150 skeleton rounded-2xl" role="status" aria-label="Chargement de la carte" />
+        <div className="h-150 skeleton rounded-2xl" role="status" aria-label="Loading map" />
       ) : (
-        <Suspense fallback={<div className="h-150 skeleton rounded-2xl" role="status" aria-label="Chargement de la carte" />}>
+        <Suspense fallback={<div className="h-150 skeleton rounded-2xl" role="status" aria-label="Loading map" />}>
           <LazyMap />
         </Suspense>
       )}

@@ -31,10 +31,10 @@ const STOCK_FIELDS: Array<{ key: keyof StockHumanitaireInput; label: string; uni
 ]
 
 const STATUT_STYLE: Record<string, { bg: string; text: string }> = {
-  suffisant: { bg: '#f0fdf4', text: '#22c55e' },
-  faible: { bg: '#fff7ed', text: '#f97316' },
-  critique: { bg: '#fef2f2', text: '#ef4444' },
-  rupture: { bg: '#fef2f2', text: '#b91c1c' },
+  sufficient: { bg: '#f0fdf4', text: '#22c55e' },
+  low: { bg: '#fff7ed', text: '#f97316' },
+  critical: { bg: '#fef2f2', text: '#ef4444' },
+  out of stock: { bg: '#fef2f2', text: '#b91c1c' },
 }
 
 function RouteComponent() {
@@ -56,23 +56,23 @@ function RouteComponent() {
     updateStocks.mutate(
       { regionId, data: form as StockHumanitaireInput },
       {
-        onSuccess: () => toast.success('Stocks mis à jour.'),
-        onError: () => toast.error('Impossible de mettre à jour les stocks.'),
+        onSuccess: () => toast.success('Stocks updated.'),
+        onError: () => toast.error('Unable to update stocks.'),
       },
     )
   }
 
-  const statutStyle = stocks.data ? STATUT_STYLE[stocks.data.statut_stock] ?? STATUT_STYLE.suffisant : undefined
+  const statutStyle = stocks.data ? STATUT_STYLE[stocks.data.statut_stock] ?? STATUT_STYLE.sufficient : undefined
 
   return (
     <div className="max-w-3xl mx-auto space-y-8 pb-10">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="page-title">
-            Stocks humanitaires
+            Humanitarian Stocks
           </h1>
           <p className="page-subtitle">
-            Inventaire RUTF / RUSF / micronutriments par région
+            RUTF / RUSF / micronutrient inventory by region
           </p>
         </div>
         <select
@@ -97,7 +97,7 @@ function RouteComponent() {
               className="rounded-2xl border p-5"
               style={{ backgroundColor: 'var(--background-white-color)', borderColor: 'var(--stroke-dark)' }}
             >
-              <p className="text-xs mb-1" style={{ color: 'var(--texte-gray)' }}>Statut global</p>
+              <p className="text-xs mb-1" style={{ color: 'var(--texte-gray)' }}>Overall status</p>
               <span
                 className="text-sm font-semibold px-2.5 py-1 rounded-full capitalize"
                 style={{ backgroundColor: statutStyle?.bg, color: statutStyle?.text }}
@@ -109,26 +109,26 @@ function RouteComponent() {
               className="rounded-2xl border p-5"
               style={{ backgroundColor: 'var(--background-white-color)', borderColor: 'var(--stroke-dark)' }}
             >
-              <p className="text-xs mb-1" style={{ color: 'var(--texte-gray)' }}>Couverture SAM</p>
-              <p className="text-lg font-bold" style={{ color: 'var(--texte-extra-black)' }}>{stocks.data.jours_couverture_sam} jours</p>
+              <p className="text-xs mb-1" style={{ color: 'var(--texte-gray)' }}>SAM coverage</p>
+              <p className="text-lg font-bold" style={{ color: 'var(--texte-extra-black)' }}>{stocks.data.days_couverture_sam} days</p>
             </div>
             <div
               className="rounded-2xl border p-5"
               style={{ backgroundColor: 'var(--background-white-color)', borderColor: 'var(--stroke-dark)' }}
             >
-              <p className="text-xs mb-1" style={{ color: 'var(--texte-gray)' }}>Couverture MAM</p>
-              <p className="text-lg font-bold" style={{ color: 'var(--texte-extra-black)' }}>{stocks.data.jours_couverture_mam} jours</p>
+              <p className="text-xs mb-1" style={{ color: 'var(--texte-gray)' }}>MAM coverage</p>
+              <p className="text-lg font-bold" style={{ color: 'var(--texte-extra-black)' }}>{stocks.data.days_couverture_mam} days</p>
             </div>
           </div>
 
-          {(stocks.data.statut_stock === 'critique' || stocks.data.statut_stock === 'rupture') && (
+          {(stocks.data.statut_stock === 'critical' || stocks.data.statut_stock === 'out of stock') && (
             <div
               className="rounded-xl p-3 flex items-center gap-2"
               style={{ backgroundColor: '#fef2f2', border: '1px solid #fecaca' }}
             >
               <AlertTriangle size={16} style={{ color: '#ef4444' }} />
               <p className="text-xs" style={{ color: '#b91c1c' }}>
-                Niveau de stock critique — réapprovisionnement urgent recommandé.
+                Critical stock level — urgent replenishment recommended.
               </p>
             </div>
           )}
@@ -140,7 +140,7 @@ function RouteComponent() {
             <div className="flex items-center gap-2 mb-4">
               <Package className="w-5 h-5" style={{ color: 'var(--primary)' }} />
               <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>
-                Mettre à jour l'inventaire
+                Update inventory
               </h2>
             </div>
 
@@ -167,7 +167,7 @@ function RouteComponent() {
               style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
             >
               {updateStocks.isPending ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
-              Enregistrer l'inventaire
+              Save inventory
             </button>
           </div>
         </>

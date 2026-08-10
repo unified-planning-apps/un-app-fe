@@ -99,8 +99,8 @@ export const demoAuthApi = {
   login:          (_creds: object)                           => delay(DEMO_TOKEN_RESPONSE),
   me:             ()                                         => delay(DEMO_TOKEN_RESPONSE.user),
   listUsers:      ()                                         => delay(DEMO_USERS_LIST),
-  changePassword: (_req: object)                            => delay({ message: 'Mot de passe mis à jour (démo).' }),
-  forgotPassword: (_req: object)                            => delay({ message: 'Lien envoyé (démo — aucun email réel).' }),
-  resetPassword:  (_req: object)                            => delay({ message: 'Mot de passe réinitialisé (démo).' }),
+  changePassword: (_req: object)                            => delay({ message: 'Password updated (demo).' }),
+  forgotPassword: (_req: object)                            => delay({ message: 'Link sent (demo — no real email).' }),
+  resetPassword:  (_req: object)                            => delay({ message: 'Password reset (demo).' }),
   register:       (_req: object)                            => delay(DEMO_TOKEN_RESPONSE.user),
 }

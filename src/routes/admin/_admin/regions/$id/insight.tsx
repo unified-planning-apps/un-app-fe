@@ -24,7 +24,7 @@ function InsightLayout() {
           style={{ color: 'var(--texte-gray)' }}
         >
           <ChevronLeft size={16} />
-          Retour
+          Back
         </Link>
         <span style={{ color: 'var(--stroke-gray)' }}>|</span>
         <div className="flex items-center gap-1.5 text-sm" style={{ color: 'var(--texte-gray)' }}>
@@ -49,12 +49,12 @@ function InsightLayout() {
             Région {displayName}
           </h1>
           <p className="text-sm" style={{ color: "rgba(255,255,255,0.75)" }}>
-            {region?.chef_lieu ? `Chef-lieu : ${region.chef_lieu}` : 'Analyse détaillée des données sanitaires et climatiques'}
+            {region?.chef_lieu ? `Capital: ${region.chef_lieu}` : 'Detailed health and climate data analysis'}
           </p>
         </div>
         <div className="relative z-10 hidden sm:flex items-center gap-5">
           <div className="text-center">
-            <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)" }}>Superficie</p>
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)" }}>Area</p>
             <p className="font-bold text-lg" style={{ color: "#ffffff" }}>
               {region ? `${region.area_km2.toLocaleString('en-GB')} km²` : '—'}
             </p>
@@ -75,10 +75,10 @@ function InsightLayout() {
         style={{ borderColor: 'var(--stroke-dark)' }}
       >
         {[
-          { to: `/admin/regions/${regionId}/insight/ai`, label: 'Analyse IA', icon: <Sparkles size={15} />, roles: null },
-          { to: `/admin/regions/${regionId}/insight/history`, label: 'Historique climatique', icon: <History size={15} />, roles: null },
-          { to: `/admin/regions/${regionId}/insight/scenario`, label: 'Scénarios', icon: <FlaskConical size={15} />, roles: ['regional', 'national', 'admin'] },
-          { to: `/admin/regions/${regionId}/insight/reports`, label: 'Rapports terrain', icon: <Rows3 size={15} />, roles: null },
+          { to: `/admin/regions/${regionId}/insight/ai`, label: 'AI Analysis', icon: <Sparkles size={15} />, roles: null },
+          { to: `/admin/regions/${regionId}/insight/history`, label: 'Climate History', icon: <History size={15} />, roles: null },
+          { to: `/admin/regions/${regionId}/insight/scenario`, label: 'Scenarios', icon: <FlaskConical size={15} />, roles: ['regional', 'national', 'admin'] },
+          { to: `/admin/regions/${regionId}/insight/reports`, label: 'Field Reports', icon: <Rows3 size={15} />, roles: null },
           { to: `/admin/regions/${regionId}/insight/agents`, label: 'Agents', icon: <Users size={15} />, roles: ['regional', 'national', 'admin'] },
         ].filter(({ roles }) => roles === null || roles.includes(role))
          .map(({ to, label, icon }) => (

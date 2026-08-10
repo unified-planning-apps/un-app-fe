@@ -66,7 +66,7 @@ function PasswordBlock({ password, onRegenerate }: { password: string; onRegener
       <button
         type="button"
         onClick={onRegenerate}
-        title="Regénérer"
+        title="Regenerate"
         className="p-2 rounded-lg hover:opacity-70"
         style={{ color: 'var(--texte-gray)' }}
       >
@@ -75,7 +75,7 @@ function PasswordBlock({ password, onRegenerate }: { password: string; onRegener
       <button
         type="button"
         onClick={handleCopy}
-        title="Copier"
+        title="Copy"
         className="p-2 rounded-lg hover:opacity-70"
         style={{ color: copied ? '#22c55e' : 'var(--texte-gray)' }}
       >
@@ -111,10 +111,10 @@ function RouteComponent() {
       {
         onSuccess: () => {
           setCreated({ username: values.username, email: values.email })
-          toast.success('Compte créé. Communiquez les identifiants en lieu sûr.')
+          toast.success('Account created. Communiquez les identifiants en lieu sûr.')
         },
         onError: (error) => {
-          const message = error instanceof NetworkError ? 'Serveur inaccessible.' : error instanceof ApiError ? error.message : 'Impossible de créer le compte.'
+          const message = error instanceof NetworkError ? 'Server unreachable.' : error instanceof ApiError ? error.message : 'Unable to create the account.'
           toast.error(message)
         },
       },
@@ -134,39 +134,39 @@ function RouteComponent() {
           >
             <Check size={22} />
           </div>
-          <h2 className="font-semibold text-lg mb-1" style={{ color: 'var(--texte-extra-black)' }}>Compte créé</h2>
+          <h2 className="font-semibold text-lg mb-1" style={{ color: 'var(--texte-extra-black)' }}>Account created</h2>
           <p className="text-sm mb-5" style={{ color: 'var(--texte-gray)' }}>
-            Transmettez ces identifiants à <strong>{created.username}</strong> par un canal sécurisé
+            Share these credentials with <strong>{created.username}</strong> par un canal sécurisé
             (l'utilisateur pourra se connecter immédiatement avec ce mot de passe).
           </p>
 
           <div className="space-y-3 text-left">
             <div>
-              <p className="text-xs mb-1" style={{ color: 'var(--texte-gray)' }}>Nom d'utilisateur</p>
+              <p className="text-xs mb-1" style={{ color: 'var(--texte-gray)' }}>Username</p>
               <p className="text-sm font-mono" style={{ color: 'var(--texte-extra-black)' }}>{created.username}</p>
             </div>
             <div>
-              <p className="text-xs mb-1" style={{ color: 'var(--texte-gray)' }}>Mot de passe</p>
+              <p className="text-xs mb-1" style={{ color: 'var(--texte-gray)' }}>Password</p>
               <PasswordBlock password={password} onRegenerate={() => setPassword(generateStrongPassword())} />
             </div>
           </div>
 
           <div className="flex items-center gap-3 mt-6">
             <a
-              href={`mailto:${created.email}?subject=${encodeURIComponent('Vos identifiants HealthShield')}&body=${encodeURIComponent(
-                `Nom d'utilisateur : ${created.username}\nMot de passe temporaire : ${password}\n\nConnectez-vous sur la plateforme puis changez votre mot de passe dans votre profil.`,
+              href={`mailto:${created.email}?subject=${encodeURIComponent('Your HealthShield credentials')}&body=${encodeURIComponent(
+                `Username : ${created.username}\nPassword temporaire : ${password}\n\nSign in to the platform and change your password from your profile.`,
               )}`}
               className="flex-1 flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-semibold"
               style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff', color: 'white' }}
             >
-              <Mail size={15} /> Envoyer par email
+              <Mail size={15} /> Send by email
             </a>
             <Button
               variant="outline"
               className="flex-1 h-11 rounded-xl text-sm font-semibold"
               onClick={() => navigate({ to: '/admin/users' })}
             >
-              Retour à la liste
+              Back to list
             </Button>
           </div>
         </div>
@@ -178,10 +178,10 @@ function RouteComponent() {
     <div className="max-w-lg mx-auto space-y-6 pb-10">
       <div>
         <h1 className="page-title">
-          Créer un compte national / régional
+          Create a national / regional account
         </h1>
         <p className="page-subtitle">
-          Les comptes avec un rôle élevé sont créés uniquement par un administrateur.
+          Elevated-role accounts are created by an administrator only.
           Un mot de passe fort est généré automatiquement — communiquez-le à l'utilisateur
           par un canal externe sécurisé.
         </p>
@@ -202,7 +202,7 @@ function RouteComponent() {
                     <FormControl>
                       <FloatingInput {...field} id="full-name" className="h-14 rounded-xl border-gray-200" />
                     </FormControl>
-                    <FloatingLabel htmlFor="full-name">Nom et prénom</FloatingLabel>
+                    <FloatingLabel htmlFor="full-name">Full name</FloatingLabel>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -217,7 +217,7 @@ function RouteComponent() {
                     <FormControl>
                       <FloatingInput {...field} id="create-username" autoComplete="off" className="h-14 rounded-xl border-gray-200" />
                     </FormControl>
-                    <FloatingLabel htmlFor="create-username">Nom d'utilisateur</FloatingLabel>
+                    <FloatingLabel htmlFor="create-username">Username</FloatingLabel>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -247,7 +247,7 @@ function RouteComponent() {
                     <FormControl>
                       <FloatingInput {...field} id="create-organisation" className="h-14 rounded-xl border-gray-200" />
                     </FormControl>
-                    <FloatingLabel htmlFor="create-organisation">Organisation (optionnel)</FloatingLabel>
+                    <FloatingLabel htmlFor="create-organisation">Organisation (optional)</FloatingLabel>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -261,7 +261,7 @@ function RouteComponent() {
                   <FormControl>
                     <FloatingLabelSelect
                       id="create-role-select"
-                      label="Rôle"
+                      label="Role"
                       className="w-full h-14 rounded-xl border-gray-200"
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -284,7 +284,7 @@ function RouteComponent() {
                     <FormControl>
                       <FloatingLabelSelect
                         id="create-region-select"
-                        label="Région"
+                        label="Region"
                         className="w-full h-14 rounded-xl border-gray-200"
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -301,7 +301,7 @@ function RouteComponent() {
             )}
 
             <div>
-              <p className="text-xs mb-1.5" style={{ color: 'var(--texte-gray)' }}>Mot de passe généré automatiquement</p>
+              <p className="text-xs mb-1.5" style={{ color: 'var(--texte-gray)' }}>Auto-generated password</p>
               <PasswordBlock password={password} onRegenerate={() => setPassword(generateStrongPassword())} />
             </div>
 
@@ -312,7 +312,7 @@ function RouteComponent() {
               style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff', color: 'white', border: 'none' }}
             >
               {registerMutation.isPending ? <Loader2 size={16} className="animate-spin mr-2" /> : <ShieldPlus size={16} className="mr-2" />}
-              Créer le compte
+              Create account
             </Button>
           </form>
         </Form>

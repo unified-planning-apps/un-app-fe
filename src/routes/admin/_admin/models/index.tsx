@@ -20,8 +20,8 @@ export const Route = createFileRoute('/admin/_admin/models/')({
 
 const STATUT_STYLE: Record<string, { bg: string; text: string; label: string }> = {
   optimal: { bg: '#f0fdf4', text: '#22c55e', label: 'Optimal' },
-  surveillance: { bg: '#fff7ed', text: '#f97316', label: 'Surveillance' },
-  retraining_requis: { bg: '#fef2f2', text: '#ef4444', label: 'Retraining requis' },
+  surveillance: { bg: '#fff7ed', text: '#f97316', label: 'Monitoring' },
+  retraining_requis: { bg: '#fef2f2', text: '#ef4444', label: 'Retraining required' },
 }
 
 const NIVEAU_STYLE: Record<string, { bg: string; text: string }> = {
@@ -56,7 +56,7 @@ function RouteComponent() {
     }
     batch.mutate(
       { regions: selectedRegions, horizon_jours: 14, inclure_shap: false },
-      { onError: () => toast.error('Le calcul par lot a échoué.') },
+      { onError: () => toast.error('Batch prediction failed.') },
     )
   }
 
@@ -65,18 +65,18 @@ function RouteComponent() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="page-title">
-            Santé des modèles ML
+            ML Model Health
           </h1>
           <p className="page-subtitle">
-            Performance, dérive (PSI), backtest et calculs multi-régions
+            Performance, drift (PSI), backtest and multi-region predictions
           </p>
         </div>
         {isAdmin && (
           <button
             onClick={() =>
               retrain.mutate('tous', {
-                onSuccess: () => toast.success('Retraining lancé en arrière-plan.'),
-                onError: () => toast.error('Impossible de lancer le retraining.'),
+                onSuccess: () => toast.success('Retraining started in background.'),
+                onError: () => toast.error('Unable to start retraining.'),
               })
             }
             disabled={retrain.isPending}
@@ -84,7 +84,7 @@ function RouteComponent() {
             style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
           >
             <RefreshCw size={14} className={retrain.isPending ? 'animate-spin' : ''} />
-            Forcer le retraining
+            Force retraining
           </button>
         )}
       </div>
@@ -120,15 +120,15 @@ function RouteComponent() {
                   <p className="font-semibold text-sm" style={{ color: 'var(--texte-extra-black)' }}>{m.version}</p>
                 </div>
                 <div>
-                  <p className="opacity-70">Score de dérive (PSI)</p>
+                  <p className="opacity-70">Drift score (PSI)</p>
                   <p className="font-semibold text-sm" style={{ color: 'var(--texte-extra-black)' }}>{m.drift_score.toFixed(3)}</p>
                 </div>
                 <div>
-                  <p className="opacity-70">Prédictions (7j)</p>
+                  <p className="opacity-70">Predictions (7d)</p>
                   <p className="font-semibold text-sm" style={{ color: 'var(--texte-extra-black)' }}>{m.nb_predictions_7j}</p>
                 </div>
                 <div>
-                  <p className="opacity-70">Entraîné le</p>
+                  <p className="opacity-70">Trained on</p>
                   <p className="font-semibold text-sm" style={{ color: 'var(--texte-extra-black)' }}>
                     {m.date_entrainement ? new Date(m.date_entrainement).toLocaleDateString('en-GB') : '—'}
                   </p>
@@ -146,7 +146,7 @@ function RouteComponent() {
       >
         <div className="flex items-center gap-2 mb-4">
           <History className="w-5 h-5" style={{ color: 'var(--primary)' }} />
-          <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>Backtest — performance historique</h2>
+          <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>Backtest — historical performance</h2>
         </div>
         <div className="flex items-center gap-3 flex-wrap mb-4">
           <select
@@ -168,15 +168,15 @@ function RouteComponent() {
           </select>
         </div>
 
-        {backtest.isLoading && <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Calcul du backtest…</p>}
+        {backtest.isLoading && <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Computing backtest…</p>}
         {backtest.data && (
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-5">
             {[
               { label: 'MAE', value: backtest.data.mae.toFixed(2) },
               { label: 'RMSE', value: backtest.data.rmse.toFixed(2) },
               { label: 'MAPE', value: `${backtest.data.mape_pct.toFixed(1)}%` },
-              { label: 'Corrélation', value: backtest.data.correlation.toFixed(2) },
-              { label: 'Biais', value: backtest.data.biais.toFixed(2) },
+              { label: 'Correlation', value: backtest.data.correlation.toFixed(2) },
+              { label: 'Bias', value: backtest.data.biais.toFixed(2) },
             ].map((item) => (
               <div key={item.label}>
                 <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>{item.label}</p>
@@ -194,7 +194,7 @@ function RouteComponent() {
       >
         <div className="flex items-center gap-2 mb-4">
           <Layers className="w-5 h-5" style={{ color: 'var(--primary)' }} />
-          <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>Calcul multi-régions</h2>
+          <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>Multi-region predictions</h2>
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
           {REGIONS.map((r) => (
@@ -217,7 +217,7 @@ function RouteComponent() {
           style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
         >
           {batch.isPending ? <Loader2 size={16} className="animate-spin" /> : <Play size={16} />}
-          Lancer ({selectedRegions.length} région{selectedRegions.length > 1 ? 's' : ''})
+          Run ({selectedRegions.length} région{selectedRegions.length > 1 ? 's' : ''})
         </button>
 
         {batch.data && (
@@ -243,7 +243,7 @@ function RouteComponent() {
             })}
             {batch.data.regions_erreur.length > 0 && (
               <p className="text-xs pt-2" style={{ color: '#ef4444' }}>
-                Erreur pour : {batch.data.regions_erreur.join(', ')}
+                Error for: {batch.data.regions_erreur.join(', ')}
               </p>
             )}
           </div>

@@ -34,7 +34,7 @@ const MOCK_REPORTS: Report[] = [
   { id: 2, agentName: 'Vola Ratsima', agentAvatar: 'VR', region: 'Analamanga', reportType: 'alert', report: 'Vague de chaleur signalée — température dépasse 38°C dans 3 communes. Risque de coup de chaleur pour les enfants.', date: '2025-05-12', severity: 'high', status: 'reviewed' },
   { id: 3, agentName: 'Tiana Andry', agentAvatar: 'TA', region: 'Analamanga', reportType: 'message', report: 'Campagne de sensibilisation sur l\'hygiène complétée dans 5 fokontany. 240 ménages visités.', date: '2025-05-11', status: 'resolved' },
   { id: 4, agentName: 'Koto Mamy', agentAvatar: 'KM', region: 'Analamanga', reportType: 'alert', report: 'Pénurie de riz signalée dans le marché de Sabotsy Namehana. Prix a augmenté de 35% en 2 semaines.', date: '2025-05-11', severity: 'medium', status: 'pending' },
-  { id: 5, agentName: 'Niry Solo', agentAvatar: 'NS', region: 'Analamanga', reportType: 'other', report: 'Rapport mensuel de suivi des indicateurs nutritionnels. 12 enfants en état de malnutrition aiguë identifiés.', date: '2025-05-10', status: 'reviewed' },
+  { id: 5, agentName: 'Niry Solo', agentAvatar: 'NS', region: 'Analamanga', reportType: 'other', report: 'Report mensuel de suivi des indicateurs nutritionnels. 12 enfants en état de malnutrition aiguë identifiés.', date: '2025-05-10', status: 'reviewed' },
   { id: 6, agentName: 'Hery Rado', agentAvatar: 'HR', region: 'Analamanga', reportType: 'message', report: 'Réunion communautaire tenue à Antehiroka. Les habitants demandent plus d\'agents de terrain.', date: '2025-05-10', status: 'resolved' },
   { id: 7, agentName: 'Fara Lova', agentAvatar: 'FL', region: 'Analamanga', reportType: 'alert', report: '3 cas suspects de choléra près du fleuve Ikopa. Prélèvements envoyés au laboratoire central.', date: '2025-05-09', severity: 'high', status: 'pending' },
 ]
@@ -98,7 +98,7 @@ function RouteComponent() {
           <Search className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--texte-gray)' }} />
           <input
             type="text"
-            placeholder="Rechercher un rapport ou agent..."
+            placeholder="Search reports or agents..."
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="flex-1 text-sm bg-transparent outline-none"
@@ -118,7 +118,7 @@ function RouteComponent() {
                 : { backgroundColor: 'transparent', color: 'var(--texte-gray)', borderColor: 'var(--stroke-dark)' }
               }
             >
-              {s === 'all' ? 'Tous' : REPORT_STATUS_CONFIG[s as ReportStatus]?.label}
+              {s === 'all' ? 'All' : REPORT_STATUS_CONFIG[s as ReportStatus]?.label}
             </button>
           ))}
         </div>
@@ -129,7 +129,7 @@ function RouteComponent() {
         {filtered.length === 0 && (
           <div className="text-center py-12" style={{ color: 'var(--texte-gray)' }}>
             <FileText className="w-10 h-10 mx-auto mb-3 opacity-30" />
-            <p className="text-sm">Aucun rapport trouvé</p>
+            <p className="text-sm">No reports found</p>
           </div>
         )}
         {filtered.map((report, i) => (

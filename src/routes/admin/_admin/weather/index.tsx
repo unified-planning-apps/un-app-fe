@@ -9,9 +9,9 @@ export const Route = createFileRoute('/admin/_admin/weather/')({
 })
 
 const ANOMALY_LABELS: Record<string, string> = {
-  chaleur_extreme: 'Chaleur extrême',
-  secheresse: 'Sécheresse',
-  inondation: 'Inondation',
+  chaleur_extreme: 'Extreme heat',
+  secheresse: 'Drought',
+  inondation: 'Flooding',
   cyclone: 'Cyclone',
 }
 
@@ -31,10 +31,10 @@ function RouteComponent() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="page-title">
-            Météo nationale
+            National Weather
           </h1>
           <p className="page-subtitle">
-            Conditions actuelles dans les 22 régions de Madagascar
+            Current conditions across Madagascar's 23 regions
           </p>
         </div>
         <button
@@ -43,7 +43,7 @@ function RouteComponent() {
           style={{ borderColor: 'var(--stroke-dark)', color: 'var(--texte-gray)' }}
         >
           <RefreshCw size={14} className={summary.isFetching ? 'animate-spin' : ''} />
-          Actualiser
+          Refresh
         </button>
       </div>
 
@@ -56,7 +56,7 @@ function RouteComponent() {
           <div className="flex items-center gap-2 p-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
             <AlertTriangle className="w-5 h-5" style={{ color: '#ef4444' }} />
             <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>
-              Anomalies climatiques actives
+              Active climate anomalies
             </h2>
           </div>
           <div className="divide-y" style={{ borderColor: 'var(--stroke-dark)' }}>
@@ -91,11 +91,11 @@ function RouteComponent() {
         <div className="flex items-center gap-2 p-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
           <Thermometer className="w-5 h-5" style={{ color: 'var(--primary)' }} />
           <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>
-            Conditions actuelles par région
+            Current conditions by region
           </h2>
           {summary.data?.source && (
             <span className="text-xs ml-auto" style={{ color: 'var(--texte-gray)' }}>
-              Source : {summary.data.source}
+              Source: {summary.data.source}
             </span>
           )}
         </div>
@@ -108,8 +108,8 @@ function RouteComponent() {
 
         {summary.isError && (
           <ErrorState
-            title="Météo nationale indisponible"
-            description="Le service météo n'a pas répondu. Vérifiez que l'API est démarrée, puis réessayez."
+            title="National Weather indisponible"
+            description="The weather service did not respond. Please check the API is running and retry."
             onRetry={() => summary.refetch()}
           />
         )}
@@ -122,7 +122,7 @@ function RouteComponent() {
                   {r.region_name}
                 </p>
                 {r.erreur ? (
-                  <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Données indisponibles</p>
+                  <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Data unavailable</p>
                 ) : (
                   <div className="flex items-center gap-4 text-xs" style={{ color: 'var(--texte-gray)' }}>
                     <span className="flex items-center gap-1">

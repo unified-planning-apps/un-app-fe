@@ -20,17 +20,17 @@ export const Route = createFileRoute('/admin/_admin/reports/')({
 })
 
 const TYPE_OPTIONS = [
-  { value: 'paludisme_hebdomadaire', label: 'Paludisme — hebdomadaire' },
-  { value: 'nutrition_hebdomadaire', label: 'Nutrition — hebdomadaire' },
-  { value: 'combine_hebdomadaire', label: 'Combiné — hebdomadaire' },
-  { value: 'mensuel', label: 'Mensuel' },
+  { value: 'paludisme_hebdomadaire', label: 'Malaria — weekly' },
+  { value: 'nutrition_hebdomadaire', label: 'Nutrition — weekly' },
+  { value: 'combine_hebdomadaire', label: 'Combined — weekly' },
+  { value: 'mensuel', label: 'Monthly' },
 ]
 
 const STATUT_STYLE: Record<string, { bg: string; text: string; label: string }> = {
-  en_attente: { bg: '#fff7ed', text: '#f97316', label: 'En attente' },
-  en_cours: { bg: '#eff6ff', text: '#0ea5e9', label: 'En cours' },
-  termine: { bg: '#f0fdf4', text: '#22c55e', label: 'Terminé' },
-  erreur: { bg: '#fef2f2', text: '#ef4444', label: 'Erreur' },
+  en_attente: { bg: '#fff7ed', text: '#f97316', label: 'Pending' },
+  en_cours: { bg: '#eff6ff', text: '#0ea5e9', label: 'Processing' },
+  termine: { bg: '#f0fdf4', text: '#22c55e', label: 'Done' },
+  erreur: { bg: '#fef2f2', text: '#ef4444', label: 'Error' },
 }
 
 function RouteComponent() {
@@ -59,8 +59,8 @@ function RouteComponent() {
         inclure_nutrition: true,
       },
       {
-        onSuccess: () => toast.success('Export téléchargé.'),
-        onError: () => toast.error("L'export a échoué."),
+        onSuccess: () => toast.success('Export downloaded.'),
+        onError: () => toast.error("Export failed."),
       },
     )
   }
@@ -68,7 +68,7 @@ function RouteComponent() {
   const handleGenerate = () => {
     generate.mutate(
       {
-        type_rapport: typeRapport as never,
+        type_rapport: typeReport as never,
         format: 'pdf',
         langue: 'fr',
         region_id: regionId || null,
@@ -80,9 +80,9 @@ function RouteComponent() {
       {
         onSuccess: (res) => {
           setRapportId(res.rapport_id)
-          toast.success('Génération du rapport lancée.')
+          toast.success('Report generation started.')
         },
-        onError: () => toast.error('Impossible de lancer la génération.'),
+        onError: () => toast.error('Unable to start report generation.'),
       },
     )
   }
@@ -91,7 +91,7 @@ function RouteComponent() {
     if (!rapportId) return
     download.mutate(
       { rapportId, filename: `${typeRapport}-${rapportId}.pdf` },
-      { onError: () => toast.error('Le téléchargement a échoué.') },
+      { onError: () => toast.error('Download failed.') },
     )
   }
 
@@ -99,10 +99,10 @@ function RouteComponent() {
     <div className="space-y-8 pb-10">
       <div>
         <h1 className="page-title">
-          Rapports UNICEF
+          UNICEF Reports
         </h1>
         <p className="page-subtitle">
-          Génération, historique et planification des rapports paludisme/nutrition
+          Generation, history and scheduling of malaria/nutrition reports
         </p>
       </div>
 
@@ -112,7 +112,7 @@ function RouteComponent() {
         style={{ backgroundColor: 'var(--background-white-color)', borderColor: 'var(--stroke-dark)' }}
       >
         <h2 className="font-semibold text-base mb-4" style={{ color: 'var(--texte-extra-black)' }}>
-          Générer un nouveau rapport
+          Generate a new report
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
           <select
@@ -131,7 +131,7 @@ function RouteComponent() {
             className="text-sm px-3 py-2.5 rounded-xl border bg-transparent"
             style={{ borderColor: 'var(--stroke-dark)', color: 'var(--texte-black)' }}
           >
-            <option value="">National (22 régions)</option>
+            <option value="">National (23 regions)</option>
             {REGIONS.map((r) => (
               <option key={r.id} value={r.id}>{r.name}</option>
             ))}
@@ -143,7 +143,7 @@ function RouteComponent() {
             style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
           >
             {generate.isPending ? <Loader2 size={16} className="animate-spin" /> : <FileText size={16} />}
-            Générer
+            Generate
           </button>
         </div>
 
@@ -163,7 +163,7 @@ function RouteComponent() {
                 {STATUT_STYLE[status.data.statut]?.label ?? status.data.statut}
               </span>
               <span className="text-xs" style={{ color: 'var(--texte-gray)' }}>
-                Rapport {rapportId}
+                Report {rapportId}
               </span>
             </div>
             {status.data.statut === 'termine' && (
@@ -173,7 +173,7 @@ function RouteComponent() {
                 className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-xl"
                 style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff', color: 'white' }}
               >
-                <Download size={13} /> Télécharger
+                <Download size={13} /> Download
               </button>
             )}
           </div>
@@ -188,14 +188,14 @@ function RouteComponent() {
         <div className="flex items-center gap-2 p-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
           <FileText className="w-5 h-5" style={{ color: 'var(--primary)' }} />
           <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>
-            Historique des rapports
+            Report history
           </h2>
         </div>
         {history.data && history.data.length === 0 && (
           <EmptyState
             icon={<FileText size={20} />}
-            title="Aucun rapport généré"
-            description="Générez votre premier rapport avec le formulaire ci-dessus : il apparaîtra ici, prêt à télécharger."
+            title="No reports generated"
+            description="Generate your first report using the form above — it will appear here ready to download."
           />
         )}
         <div className="divide-y" style={{ borderColor: 'var(--stroke-dark)' }}>
@@ -221,7 +221,7 @@ function RouteComponent() {
         <div className="flex items-center gap-2 mb-4">
           <FileDown className="w-5 h-5" style={{ color: 'var(--primary)' }} />
           <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>
-            Export brut (CSV / JSON)
+            Raw export (CSV / JSON)
           </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -249,11 +249,11 @@ function RouteComponent() {
             style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
           >
             {exportData.isPending ? <Loader2 size={16} className="animate-spin" /> : <FileDown size={16} />}
-            Exporter
+            Export
           </button>
         </div>
         <p className="text-xs mt-3" style={{ color: 'var(--texte-gray)' }}>
-          Inclut météo, paludisme et nutrition pour la région sélectionnée.
+          Includes weather, malaria and nutrition data for the selected region.
         </p>
       </div>
 
@@ -266,14 +266,14 @@ function RouteComponent() {
           <div className="flex items-center gap-2 p-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
             <Calendar className="w-5 h-5" style={{ color: 'var(--primary)' }} />
             <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>
-              Rapports planifiés
+              Scheduled reports
             </h2>
           </div>
           {schedules.data && schedules.data.length === 0 && (
             <EmptyState
               icon={<Calendar size={20} />}
-              title="Aucune planification active"
-              description="Les rapports planifiés sont envoyés automatiquement par email à la fréquence choisie."
+              title="No active schedules"
+              description="Scheduled reports are sent automatically by email at the chosen frequency."
             />
           )}
           <div className="divide-y" style={{ borderColor: 'var(--stroke-dark)' }}>
@@ -282,7 +282,7 @@ function RouteComponent() {
                 <div>
                   <p className="text-sm font-medium" style={{ color: 'var(--texte-extra-black)' }}>{p.type_rapport}</p>
                   <p className="text-xs flex items-center gap-1" style={{ color: 'var(--texte-gray)' }}>
-                    <Send size={12} /> {p.destinataires_email.length} destinataire(s) · {p.frequence}
+                    <Send size={12} /> {p.destinataires_email.length} recipient(s) · {p.frequence}
                   </p>
                 </div>
                 <button

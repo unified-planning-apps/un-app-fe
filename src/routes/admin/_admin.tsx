@@ -55,26 +55,26 @@ interface NavSection {
  */
 const NAV_SECTIONS: readonly NavSection[] = [
   {
-    label: 'Suivi',
+    label: 'Monitoring',
     items: [
-      { to: '/admin/dashboard', label: 'Tableau de bord', icon: <LayoutDashboard size={17} /> },
-      { to: '/admin/regions', label: 'Carte des régions', icon: <MapIcon size={17} /> },
-      { to: '/admin/weather', label: 'Météo nationale', icon: <CloudSun size={17} /> },
+      { to: '/admin/dashboard', label: 'Dashboard', icon: <LayoutDashboard size={17} /> },
+      { to: '/admin/regions', label: 'Regions Map', icon: <MapIcon size={17} /> },
+      { to: '/admin/weather', label: 'National Weather', icon: <CloudSun size={17} /> },
     ],
   },
   {
-    label: 'Ressources',
+    label: 'Resources',
     items: [
-      { to: '/admin/recipes', label: 'Recettes nutritionnelles', icon: <Salad size={17} /> },
-      { to: '/admin/stocks', label: 'Stocks humanitaires', icon: <Package size={17} />, roles: ['national', 'admin'] },
-      { to: '/admin/reports', label: 'Rapports', icon: <FileBarChart size={17} /> },
+      { to: '/admin/recipes', label: 'Nutrition Recipes', icon: <Salad size={17} /> },
+      { to: '/admin/stocks', label: 'Humanitarian Stocks', icon: <Package size={17} />, roles: ['national', 'admin'] },
+      { to: '/admin/reports', label: 'Reports', icon: <FileBarChart size={17} /> },
     ],
   },
   {
     label: 'Administration',
     items: [
-      { to: '/admin/models', label: 'Modèles ML', icon: <Activity size={17} />, roles: ['national', 'admin'] },
-      { to: '/admin/users', label: 'Utilisateurs', icon: <Users size={17} />, roles: ['admin'] },
+      { to: '/admin/models', label: 'ML Models', icon: <Activity size={17} />, roles: ['national', 'admin'] },
+      { to: '/admin/users', label: 'Users', icon: <Users size={17} />, roles: ['admin'] },
     ],
   },
 ]
@@ -128,7 +128,7 @@ function AdminLayout() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto px-3 py-5 space-y-6" aria-label="Navigation principale">
+        <nav className="flex-1 overflow-y-auto px-3 py-5 space-y-6" aria-label="Main navigation">
           {visibleSections.map((section) => (
             <div key={section.label}>
               <p className="nav-section-label px-3 mb-2">{section.label}</p>
@@ -146,7 +146,7 @@ function AdminLayout() {
           <Link
             to="/admin/profile"
             className="group flex items-center gap-3 rounded-lg p-2.5 transition-colors hover:bg-[var(--background-gray-color)]"
-            title="Voir mon profil"
+            title="View my profile"
           >
             <div
               className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0"
@@ -175,7 +175,7 @@ function AdminLayout() {
             style={{ color: '#dc2626' }}
           >
             <LogOut size={15} />
-            Se déconnecter
+            Sign out
           </button>
         </div>
       </aside>
@@ -187,7 +187,7 @@ function AdminLayout() {
           style={{ backgroundColor: 'var(--background-white-color)', borderColor: 'var(--stroke-dark)' }}
         >
           <p className="text-sm font-semibold" style={{ color: 'var(--texte-black)' }}>
-            Madagascar · Paludisme & Nutrition
+            Madagascar · Malaria & Nutrition Surveillance
           </p>
           <div className="flex items-center gap-1.5">
             <ParaglideLocaleSwitcher />

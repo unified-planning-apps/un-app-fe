@@ -30,13 +30,13 @@ function RouteComponent() {
     const onSubmit = (values: LoginRequest) => {
         login.mutate(values, {
             onSuccess: () => {
-                toast.success('Connexion réussie.')
+                toast.success('Signed in successfully.')
                 navigate({ to: '/admin/dashboard' })
             },
             onError: (error) => {
-                let message = 'Identifiants incorrects.'
+                let message = 'Incorrect credentials.'
                 if (error instanceof NetworkError) {
-                    message = 'Serveur inaccessible. Vérifiez que le backend est démarré.'
+                    message = 'Server unreachable. Please check the backend is running.'
                 } else if (error instanceof ApiError) {
                     message = error.message
                 }
@@ -89,7 +89,7 @@ function RouteComponent() {
                                 className="text-3xl font-bold tracking-tight mb-2"
                                 style={{ color: 'var(--texte-extra-black)' }}
                             >
-                                Ravi de vous revoir !
+                                Welcome back!
                             </h2>
                             <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
                                 Veuillez saisir vos informations dans les champs ci-dessous pour accéder à votre compte.
@@ -113,7 +113,7 @@ function RouteComponent() {
                                                         className="h-14 rounded-xl border-gray-200 bg-white focus:border-[var(--primary2)]"
                                                     />
                                                 </FormControl>
-                                                <FloatingLabel htmlFor="floating-username">Nom d'utilisateur</FloatingLabel>
+                                                <FloatingLabel htmlFor="floating-username">Username</FloatingLabel>
                                             </div>
                                             <FormMessage />
                                         </FormItem>
@@ -134,7 +134,7 @@ function RouteComponent() {
                                                         className="h-14 rounded-xl border-gray-200 pr-10 focus:border-[var(--primary2)]"
                                                     />
                                                 </FormControl>
-                                                <FloatingLabel htmlFor="floating-password">Mot de passe</FloatingLabel>
+                                                <FloatingLabel htmlFor="floating-password">Password</FloatingLabel>
                                                 <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                                             </div>
                                             <FormMessage />
@@ -148,7 +148,7 @@ function RouteComponent() {
                                         className="text-sm font-semibold"
                                         style={{ color: 'var(--texte-extra-black)' }}
                                     >
-                                        Mot de passe oublié ?
+                                        Password oublié ?
                                     </Link>
                                 </div>
 
@@ -163,7 +163,7 @@ function RouteComponent() {
                                     disabled={login.isPending}
                                 >
                                     {login.isPending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
-                                    Se connecter
+                                    Sign in
                                 </Button>
 
                                 <p className="text-center text-sm" style={{ color: 'var(--texte-gray)' }}>

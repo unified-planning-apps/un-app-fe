@@ -17,21 +17,21 @@ type ReportDetailProps = {
 }
 
 export const REPORT_TYPE_CONFIG: Record<ReportType, { label: string; icon: React.ReactNode; color: string; bg: string }> = {
-    alert: { label: 'Alerte', icon: <AlertTriangle className="w-3.5 h-3.5" />, color: '#ef4444', bg: '#fef2f2' },
+    alert: { label: 'Alert', icon: <AlertTriangle className="w-3.5 h-3.5" />, color: '#ef4444', bg: '#fef2f2' },
     message: { label: 'Message', icon: <MessageCircle className="w-3.5 h-3.5" />, color: '#0ea5e9', bg: '#eff6ff' },
-    other: { label: 'Rapport', icon: <FileText className="w-3.5 h-3.5" />, color: '#8b5cf6', bg: '#f5f3ff' },
+    other: { label: 'Report', icon: <FileText className="w-3.5 h-3.5" />, color: '#8b5cf6', bg: '#f5f3ff' },
 }
 
 export const REPORT_SEVERITY_CONFIG: Record<ReportSeverity, { label: string; color: string; bg: string }> = {
-    high: { label: 'Critique', color: '#ef4444', bg: '#fef2f2' },
-    medium: { label: 'Moyen', color: '#f97316', bg: '#fff7ed' },
-    low: { label: 'Bas', color: '#22c55e', bg: '#f0fdf4' },
+    high: { label: 'Critical', color: '#ef4444', bg: '#fef2f2' },
+    medium: { label: 'Moderate', color: '#f97316', bg: '#fff7ed' },
+    low: { label: 'Low', color: '#22c55e', bg: '#f0fdf4' },
 }
 
 export const REPORT_STATUS_CONFIG: Record<ReportStatus, { label: string; color: string; bg: string }> = {
-    pending: { label: 'En attente', color: '#f97316', bg: '#fff7ed' },
-    reviewed: { label: 'Traité', color: '#0ea5e9', bg: '#eff6ff' },
-    resolved: { label: 'Résolu', color: '#22c55e', bg: '#f0fdf4' },
+    pending: { label: 'Pending', color: '#f97316', bg: '#fff7ed' },
+    reviewed: { label: 'Reviewed', color: '#0ea5e9', bg: '#eff6ff' },
+    resolved: { label: 'Resolved', color: '#22c55e', bg: '#f0fdf4' },
 }
 
 function AvatarCircle({ initials, color }: { initials: string; color: string }) {

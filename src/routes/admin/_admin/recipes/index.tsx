@@ -10,11 +10,11 @@ export const Route = createFileRoute('/admin/_admin/recipes/')({
 })
 
 const CIBLE_OPTIONS = [
-  { value: '', label: 'Toutes les cibles' },
-  { value: 'enfants_6_23m', label: 'Enfants 6-23 mois' },
-  { value: 'enfants_2_5ans', label: 'Enfants 2-5 ans' },
-  { value: 'femmes_enceintes', label: 'Femmes enceintes' },
-  { value: 'famille', label: 'Famille' },
+  { value: '', label: 'All targets' },
+  { value: 'enfants_6_23m', label: 'Children 6-23 months' },
+  { value: 'enfants_2_5ans', label: 'Children 2-5 years' },
+  { value: 'femmes_enceintes', label: 'Pregnant women' },
+  { value: 'famille', label: 'Family' },
 ]
 
 function RouteComponent() {
@@ -31,10 +31,10 @@ function RouteComponent() {
     <div className="space-y-7 pb-10">
       <div>
         <h1 className="page-title">
-          Recettes nutritionnelles
+          Nutrition Recipes
         </h1>
         <p className="page-subtitle">
-          Recettes adaptées au contexte local, optimisées pour les besoins des enfants de moins de 5 ans
+          Locally adapted recipes, optimised for children under 5
         </p>
       </div>
 
@@ -49,7 +49,7 @@ function RouteComponent() {
           className="text-sm px-3 py-2 rounded-xl border bg-transparent"
           style={{ borderColor: 'var(--stroke-dark)', color: 'var(--texte-black)' }}
         >
-          <option value="">Toutes les régions</option>
+          <option value="">All regions</option>
           {REGIONS.map((r) => (
             <option key={r.id} value={r.id}>{r.name}</option>
           ))}
@@ -73,8 +73,8 @@ function RouteComponent() {
       {recipes.data && recipes.data.length === 0 && (
         <EmptyState
           icon={<ChefHat size={22} />}
-          title="Aucune recette pour ces filtres"
-          description="Essayez d'élargir la recherche : toutes les régions ou toutes les cibles."
+          title="No recipes for these filters"
+          description="Try broadening the search: all regions or all targets."
         />
       )}
 

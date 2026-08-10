@@ -31,10 +31,10 @@ function RouteComponent() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="page-title">
-            Utilisateurs
+            Users
           </h1>
           <p className="page-subtitle">
-            Gestion des comptes ayant accès à la plateforme
+            Manage accounts with platform access
           </p>
         </div>
         <Link
@@ -43,7 +43,7 @@ function RouteComponent() {
           style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
         >
           <UserPlus size={16} />
-          Créer un compte
+          Create account
         </Link>
       </div>
 
@@ -54,7 +54,7 @@ function RouteComponent() {
         <div className="flex items-center gap-2 p-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
           <Users className="w-5 h-5" style={{ color: 'var(--primary)' }} />
           <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>
-            {users.data?.length ?? 0} compte(s)
+            {users.data?.length ?? 0} account(s)
           </h2>
         </div>
         {users.isLoading && (
@@ -81,7 +81,7 @@ function RouteComponent() {
                 <div className="flex items-center gap-2">
                   {!u.is_active && (
                     <span className="text-xs font-medium px-2 py-0.5 rounded-full" style={{ backgroundColor: '#f9fafb', color: '#6b7280' }}>
-                      Inactif
+                      Inactive
                     </span>
                   )}
                   <span

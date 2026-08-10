@@ -46,23 +46,23 @@ function ShapPanel({ regionId, modele }: { regionId: string; modele: 'paludisme'
         className="flex items-center justify-between w-full text-xs font-semibold"
         style={{ color: 'var(--texte-extra-black)' }}
       >
-        <span>Détail SHAP — modèle {modele}</span>
+        <span>SHAP detail — model {modele}</span>
         <ChevronDown size={14} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
         <div className="mt-2 space-y-2">
           {shap.isLoading && (
             <p className="text-xs flex items-center gap-1.5" style={{ color: 'var(--texte-gray)' }}>
-              <Loader2 size={12} className="animate-spin" /> Chargement de l'explicabilité…
+              <Loader2 size={12} className="animate-spin" /> Loading explainability…
             </p>
           )}
           {shap.isError && (
-            <p className="text-xs" style={{ color: '#ef4444' }}>Explicabilité indisponible pour cette région.</p>
+            <p className="text-xs" style={{ color: '#ef4444' }}>Explainability unavailable for this region.</p>
           )}
           {shap.data && (
             <>
               <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>
-                Valeur prédite : <strong>{shap.data.valeur_predite.toFixed(3)}</strong> (base : {shap.data.valeur_base.toFixed(3)})
+                Predicted value: <strong>{shap.data.valeur_predite.toFixed(3)}</strong> (base: {shap.data.valeur_base.toFixed(3)})
               </p>
               <div className="space-y-1.5">
                 {shap.data.features.map((f, i) => {
@@ -112,35 +112,35 @@ function RouteComponent() {
       <div>
         <h2 className="text-sm font-semibold mb-3 flex items-center gap-2" style={{ color: 'var(--texte-extra-black)' }}>
           <Sun className="w-4 h-4" style={{ color: 'var(--primary2)' }} />
-          Conditions climatiques actuelles — {displayName}
+          Current climate conditions — {displayName}
         </h2>
         {weather.isLoading && <SkeletonCards count={4} height={96} />}
         {weather.data && (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             <WeatherDetail
-              name="Température"
+              name="Temperature"
               description={weather.data.description}
               value={`${weather.data.temperature_c}°C`}
               icon={<Thermometer className="w-4 h-4" />}
               color="#ef4444"
             />
             <WeatherDetail
-              name="Humidité"
+              name="Humidity"
               description="Relative"
               value={`${weather.data.humidite_pct}%`}
               icon={<Droplets className="w-4 h-4" />}
               color="#0ea5e9"
             />
             <WeatherDetail
-              name="Pluviométrie"
-              description="Précipitations"
+              name="Rainfall"
+              description="Precipitation"
               value={`${weather.data.precipitations_mm}mm`}
               icon={<CloudRain className="w-4 h-4" />}
               color="#6366f1"
             />
             <WeatherDetail
-              name="Vent"
-              description="Vitesse moyenne"
+              name="Wind"
+              description="Average speed"
               value={`${weather.data.vent_kmh} km/h`}
               icon={<Wind className="w-4 h-4" />}
               color="#8b5cf6"
@@ -153,7 +153,7 @@ function RouteComponent() {
       <div>
         <h2 className="text-sm font-semibold mb-3 flex items-center gap-2" style={{ color: 'var(--texte-extra-black)' }}>
           <CloudRain className="w-4 h-4" style={{ color: 'var(--primary2)' }} />
-          Prévisions à 7 jours
+          7-day forecast
         </h2>
         {forecast.isLoading && <SkeletonRows rows={1} height={92} />}
         {forecast.data && (
@@ -166,9 +166,9 @@ function RouteComponent() {
                 <AlertTriangle size={16} style={{ color: '#ef4444' }} />
                 <p className="text-xs" style={{ color: '#b91c1c' }}>
                   {[
-                    forecast.data.alerte_cyclone && 'Alerte cyclone',
-                    forecast.data.alerte_secheresse && 'Alerte sécheresse',
-                    forecast.data.alerte_inondation && 'Alerte inondation',
+                    forecast.data.alerte_cyclone && 'Cyclone alert',
+                    forecast.data.alerte_secheresse && 'Drought alert',
+                    forecast.data.alerte_inondation && 'Flood alert',
                   ].filter(Boolean).join(' · ')}
                 </p>
               </div>
@@ -206,7 +206,7 @@ function RouteComponent() {
           <div className="flex items-center gap-2 p-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
             <Activity className="w-5 h-5" style={{ color: 'var(--primary)' }} />
             <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>
-              Risques sanitaires — Prédiction ML combinée
+              Health risks — Combined ML prediction
             </h2>
           </div>
           <div className="p-5 space-y-4">
@@ -214,7 +214,7 @@ function RouteComponent() {
             {prediction.data && (
               <>
                 {[
-                  { label: 'Paludisme', risk: prediction.data.score_paludisme, color: '#ef4444', modele: 'paludisme' as const },
+                  { label: 'Malaria', risk: prediction.data.score_paludisme, color: '#ef4444', modele: 'paludisme' as const },
                   { label: 'Nutrition', risk: prediction.data.score_nutrition, color: '#eab308', modele: 'nutrition' as const },
                 ].map((item) => (
                   <div key={item.label}>
@@ -233,7 +233,7 @@ function RouteComponent() {
                 ))}
 
                 <div className="pt-2">
-                  <p className="text-xs font-semibold mb-2" style={{ color: 'var(--texte-extra-black)' }}>Recommandations prioritaires</p>
+                  <p className="text-xs font-semibold mb-2" style={{ color: 'var(--texte-extra-black)' }}>Priority recommendations</p>
                   <ul className="space-y-1.5">
                     {prediction.data.recommandations_prioritaires.map((rec, i) => (
                       <li key={i} className="text-xs flex items-start gap-1.5" style={{ color: 'var(--texte-gray)' }}>
@@ -254,14 +254,14 @@ function RouteComponent() {
         >
           <div className="flex items-center gap-2 p-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
             <TrendingUp className="w-5 h-5" style={{ color: 'var(--primary)' }} />
-            <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>Cas paludisme — tendance</h2>
+            <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>Malaria cases — trend</h2>
           </div>
           <div className="p-5">
             <div className="mb-4">
               <p className="text-3xl font-bold" style={{ color: 'var(--texte-extra-black)' }}>
                 {weeklyTrend.data?.total_cas_periode ?? '—'}
               </p>
-              <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>cas confirmés sur la période</p>
+              <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>confirmed cases over the period</p>
             </div>
             {chartData.length > 0 && <MiniBarChart data={chartData} />}
           </div>
@@ -273,7 +273,7 @@ function RouteComponent() {
               >
                 <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: prediction.data.couleur_carte }} />
                 <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>
-                  Niveau d'alerte global : <strong>{prediction.data.niveau_alerte_global}</strong>. Intervention recommandée.
+                  Overall alert level: <strong>{prediction.data.niveau_alerte_global}</strong>. Intervention recommended.
                 </p>
               </div>
             </div>
@@ -290,20 +290,20 @@ function RouteComponent() {
           <div className="flex items-center gap-2 p-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
             <Leaf className="w-5 h-5 text-green-500" />
             <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>
-              Facteurs de risque principaux
+              Main risk factors
             </h2>
           </div>
           <div className="divide-y" style={{ borderColor: 'var(--stroke-dark)' }}>
-            {prediction.data.top_facteurs_risque.length === 0 && (
-              <p className="p-4 text-xs" style={{ color: 'var(--texte-gray)' }}>Aucun facteur détaillé disponible.</p>
+            {prediction.data.top_factors_risque.length === 0 && (
+              <p className="p-4 text-xs" style={{ color: 'var(--texte-gray)' }}>No detailed factors available.</p>
             )}
-            {prediction.data.top_facteurs_risque.map((f, i) => (
+            {prediction.data.top_factors_risque.map((f, i) => (
               <div key={i} className="p-5 flex items-start gap-3">
                 <span
                   className="text-xs font-medium px-2 py-0.5 rounded-full"
                   style={{ backgroundColor: PRIORITY_STYLE.bg, color: PRIORITY_STYLE.text }}
                 >
-                  {f.modele ?? 'facteur'}
+                  {f.modele ?? 'factor'}
                 </span>
                 <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>
                   {f.nom ?? 'Facteur'} — contribution {f.contribution_pct?.toFixed(1) ?? '—'}%

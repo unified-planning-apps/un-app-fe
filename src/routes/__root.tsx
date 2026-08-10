@@ -25,10 +25,10 @@ const THEME_INIT_SCRIPT = `(function(){try{var stored=window.localStorage.getIte
 
 
 function RootErrorComponent({ error }: { error: unknown }) {
-  const message = error instanceof Error ? error.message : 'Une erreur inattendue est survenue.'
+  const message = error instanceof Error ? error.message : 'An unexpected error occurred.'
   return (
     <html lang="en">
-      <head><meta charSet="utf-8" /><title>Erreur — HealthShield</title></head>
+      <head><meta charSet="utf-8" /><title>Error — HealthShield</title></head>
       <body style={{ fontFamily: 'Open Sans, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', margin: 0, background: '#f6f8f9' }}>
         <div style={{ textAlign: 'center', maxWidth: 480, padding: '2rem' }}>
           <p style={{ fontSize: '3rem', margin: '0 0 1rem' }}>⚠️</p>
@@ -66,7 +66,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Surveillance Sanitaire Madagascar',
+        title: 'Health Surveillance Madagascar',
       },
     ],
     links: [

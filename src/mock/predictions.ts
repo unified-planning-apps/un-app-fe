@@ -44,10 +44,10 @@ export function getMockCombinedPrediction(regionId: string): PredictionCombinee 
     precipitations_prevues_mm: 8,
     top_facteurs_risque: TOP_FACTEURS,
     recommandations_prioritaires: [
-      'Renforcer la distribution de moustiquaires imprégnées dans les fokontany à risque',
-      'Intensifier la surveillance épidémiologique hebdomadaire',
-      'Assurer la disponibilité des stocks RUTF dans les CSB',
-      'Organiser des séances de sensibilisation nutrition pour les mères',
+      'Strengthen distribution of insecticide-treated nets in high-risk fokontany',
+      'Intensify weekly epidemiological monitoring',
+      'Ensure RUTF stock availability at Community Health Centres',
+      'Organise nutrition awareness sessions for mothers',
     ],
     niveau_confiance: 0.78,
     ...base,
@@ -72,7 +72,7 @@ export function getMockShap(regionId: string, modele: 'paludisme' | 'nutrition')
 
 // ── Model health ──────────────────────────────────────────────────────────
 export const MOCK_MODEL_HEALTH: SanteModele[] = [
-  { modele: 'paludisme', version: '2.3.1', statut: 'surveillance', drift_score: 0.142, nb_predictions_7j: 1247, date_entrainement: '2025-06-15T08:00:00Z', metriques: { mae: 18.4, rmse: 24.7, mape_pct: 12.3 } },
+  { modele: 'paludisme', version: '2.3.1', statut: 'monitoring', drift_score: 0.142, nb_predictions_7j: 1247, date_entrainement: '2025-06-15T08:00:00Z', metriques: { mae: 18.4, rmse: 24.7, mape_pct: 12.3 } },
   { modele: 'nutrition', version: '1.8.4', statut: 'optimal', drift_score: 0.078, nb_predictions_7j: 891, date_entrainement: '2025-07-01T08:00:00Z', metriques: { mae: 1.2, rmse: 1.8, mape_pct: 9.1 } },
 ]
 
@@ -111,9 +111,9 @@ export function getMockScenario(params: { region_id: string; scenario_cyclone?: 
       ? 'Un cyclone tropical augmenterait significativement les gîtes larvaires (+280% précipitations estimées). L\'impact nutritionnel serait modéré mais rapide via la destruction des cultures et des routes d\'accès.'
       : isDrought
       ? 'La sécheresse réduit le risque paludéen (moins de gîtes larvaires) mais aggrave fortement la malnutrition par la réduction des récoltes et l\'augmentation des prix alimentaires.'
-      : 'Impact modéré selon les paramètres saisis.',
+      : 'Moderate impact based on the entered parameters.',
     recommandations_scenario: isCyclone
-      ? ['Pré-positionner les stocks de moustiquaires', 'Activer le plan de continuité des CSB', 'Prévoir une distribution RUTF préventive']
-      : ['Renforcer la surveillance nutritionnelle', 'Activer les mécanismes de transferts monétaires', 'Sécuriser les stocks alimentaires locaux'],
+      ? ['Pre-position mosquito net stocks', 'Activate Community Health Centre continuity plan', 'Plan a preventive RUTF distribution']
+      : ['Strengthen nutritional monitoring', 'Activate cash transfer mechanisms', 'Secure local food stocks'],
   }
 }

@@ -41,7 +41,7 @@ function RouteComponent() {
         setSubmitted(true)
       },
       onError: () => {
-        toast.error(error instanceof NetworkError ? 'Serveur inaccessible. Vérifiez que le backend est démarré.' : "Impossible d'envoyer la demande. Réessayez plus tard.")
+        toast.error(error instanceof NetworkError ? 'Server unreachable. Please check the backend is running.' : "Unable to send the request. Please try again later.")
       },
     })
   }
@@ -63,10 +63,10 @@ function RouteComponent() {
                   className="text-3xl font-bold tracking-tight mb-2"
                   style={{ color: 'var(--texte-extra-black)' }}
                 >
-                  Mot de passe oublié ?
+                  Forgot your password?
                 </h2>
                 <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
-                  Indiquez votre email, nous vous envoyons un lien de réinitialisation.
+                  Enter your email and we will send you a reset link.
                 </p>
               </div>
 
@@ -104,7 +104,7 @@ function RouteComponent() {
                     }}
                   >
                     {forgotPassword.isPending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
-                    Envoyer le lien
+                    Send reset link
                   </Button>
                 </form>
               </Form>
@@ -119,10 +119,10 @@ function RouteComponent() {
               </div>
               <div>
                 <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--texte-extra-black)' }}>
-                  Vérifiez votre boîte mail
+                  Check your inbox
                 </h2>
                 <p className="text-sm" style={{ color: 'var(--texte-gray)' }}>
-                  Si un compte existe avec cette adresse, un lien de réinitialisation vient de lui être envoyé.
+                  If an account exists with this address, a reset link has just been sent.
                 </p>
               </div>
 
@@ -132,10 +132,10 @@ function RouteComponent() {
                   style={{ backgroundColor: 'var(--background-gray-color)' }}
                 >
                   <p className="text-xs font-semibold" style={{ color: 'var(--texte-extra-black)' }}>
-                    Mode développement — pas d'email configuré
+                    Development mode — no email configured
                   </p>
                   <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>
-                    Le lien de réinitialisation est affiché ici uniquement en développement :
+                    The reset link is shown here in development mode only:
                   </p>
                   <Link
                     to="/auth/reset-password"
@@ -144,7 +144,7 @@ function RouteComponent() {
                     style={{ color: 'var(--primary)' }}
                   >
                     <KeyRound size={13} />
-                    Réinitialiser mon mot de passe maintenant
+                    Reset my password now
                   </Link>
                 </div>
               )}
@@ -157,7 +157,7 @@ function RouteComponent() {
             style={{ color: 'var(--primary)' }}
           >
             <ArrowLeft size={15} />
-            Retour à la connexion
+            Back to sign in
           </Link>
         </div>
       </div>

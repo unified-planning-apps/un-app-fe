@@ -70,7 +70,7 @@ export default function MapView() {
                                         </p>
                                     )}
                                     <Button className='cursor-pointer w-full' size="sm" onClick={() => handleRegionNavigation(region.id)}>
-                                        Voir les détails
+                                        View details
                                     </Button>
                                 </div>
                             </Popup>

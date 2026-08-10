@@ -110,11 +110,11 @@ function RouteComponent() {
         const { confirmPassword, ...payload } = values
         registerMutation.mutate(payload, {
             onSuccess: () => {
-                toast.success('Compte créé avec succès. Vous pouvez maintenant vous connecter.')
+                toast.success('Account created successfully. You can now sign in.')
                 navigate({ to: '/auth/signin' })
             },
             onError: (error) => {
-                const message = error instanceof NetworkError ? 'Serveur inaccessible. Vérifiez que le backend est démarré.' : error instanceof ApiError ? error.message : 'Impossible de créer le compte.'
+                const message = error instanceof NetworkError ? 'Server unreachable. Please check the backend is running.' : error instanceof ApiError ? error.message : 'Unable to create the account.'
                 toast.error(message)
             },
         })
@@ -206,7 +206,7 @@ function RouteComponent() {
                                                                 className="h-14 rounded-xl border-gray-200"
                                                             />
                                                         </FormControl>
-                                                        <FloatingLabel htmlFor="floating-username">Nom d'utilisateur</FloatingLabel>
+                                                        <FloatingLabel htmlFor="floating-username">Username</FloatingLabel>
                                                     </div>
                                                     <FormMessage />
                                                 </FormItem>
@@ -260,8 +260,8 @@ function RouteComponent() {
                                             className="rounded-xl p-3 text-xs"
                                             style={{ backgroundColor: 'var(--background-gray-color)', color: 'var(--texte-gray)' }}
                                         >
-                                            Les comptes créés ici sont en lecture seule (rôle « Lecture seule »).
-                                            Les rôles Régional et National sont attribués par un administrateur.
+                                            Accounts created here are read-only (rôle « Lecture seule »).
+                                            Regional and National roles are assigned by an administrator.
                                         </div>
                                         <FormField
                                             control={form.control}
@@ -277,7 +277,7 @@ function RouteComponent() {
                                                                 className="h-14 rounded-xl border-gray-200 pr-10"
                                                             />
                                                         </FormControl>
-                                                        <FloatingLabel htmlFor="floating-password">Mot de passe</FloatingLabel>
+                                                        <FloatingLabel htmlFor="floating-password">Password</FloatingLabel>
                                                         <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                                                     </div>
                                                     <PasswordStrength password={password} />
@@ -299,7 +299,7 @@ function RouteComponent() {
                                                                 className="h-14 rounded-xl border-gray-200 pr-10"
                                                             />
                                                         </FormControl>
-                                                        <FloatingLabel htmlFor="floating-confirm-password">Confirmer le mot de passe</FloatingLabel>
+                                                        <FloatingLabel htmlFor="floating-confirm-password">Confirm password</FloatingLabel>
                                                         <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                                                     </div>
                                                     <FormMessage />
@@ -321,7 +321,7 @@ function RouteComponent() {
                                         }}
                                         type='button'
                                         onClick={nextStep}>
-                                        Suivant
+                                        Next
                                     </Button>
                                 ) : (
                                     <div className="flex gap-3">
@@ -330,7 +330,7 @@ function RouteComponent() {
                                             variant='outline'
                                             type='button'
                                             onClick={prevStep}>
-                                            Retour
+                                            Back
                                         </Button>
                                         <Button
                                             className='flex-1 h-12 rounded-xl text-base font-semibold text-white'

@@ -20,18 +20,18 @@ export const RegisterRequestSchema = z
   .object({
     username: z
       .string()
-      .min(3, "Le nom d'utilisateur doit contenir au moins 3 caractères.")
+      .min(3, "Username must be at least 3 characters.")
       .max(50),
-    email: z.string().email('Adresse email invalide.'),
-    password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères.'),
-    confirmPassword: z.string().min(1, 'Veuillez confirmer le mot de passe.'),
+    email: z.string().email('Invalid email address.'),
+    password: z.string().min(6, 'Password must be at least 6 characters.'),
+    confirmPassword: z.string().min(1, 'Please confirm your password.'),
     full_name: z.string().optional(),
     organisation: z.string().optional(),
     role: RoleSchema.default('viewer'),
     region_id: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Les mots de passe ne correspondent pas.',
+    message: 'Passwords do not match.',
     path: ['confirmPassword'],
   })
   .refine((data) => data.role === 'viewer' || data.role === 'national' || !!data.region_id || data.role === 'admin', {
@@ -44,15 +44,15 @@ export type RegisterFormValues = z.infer<typeof RegisterRequestSchema>
 export type RegisterRequest = Omit<RegisterFormValues, 'confirmPassword'>
 
 export const ChangePasswordRequestSchema = z.object({
-  old_password: z.string().min(1, 'Le mot de passe actuel est requis.'),
-  new_password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères.'),
+  old_password: z.string().min(1, 'Current password is required.'),
+  new_password: z.string().min(6, 'Password must be at least 6 characters.'),
 })
 export type ChangePasswordRequest = z.infer<typeof ChangePasswordRequestSchema>
 
 export const ChangePasswordFormSchema = ChangePasswordRequestSchema.extend({
-  confirm_password: z.string().min(1, 'Veuillez confirmer le mot de passe.'),
+  confirm_password: z.string().min(1, 'Please confirm your password.'),
 }).refine((data) => data.new_password === data.confirm_password, {
-  message: 'Les mots de passe ne correspondent pas.',
+  message: 'Passwords do not match.',
   path: ['confirm_password'],
 })
 export type ChangePasswordFormValues = z.infer<typeof ChangePasswordFormSchema>
@@ -78,7 +78,7 @@ export const TokenResponseSchema = z.object({
 export type TokenResponse = z.infer<typeof TokenResponseSchema>
 
 export const ForgotPasswordRequestSchema = z.object({
-  email: z.string().email('Adresse email invalide.'),
+  email: z.string().email('Invalid email address.'),
 })
 export type ForgotPasswordRequest = z.infer<typeof ForgotPasswordRequestSchema>
 
@@ -91,11 +91,11 @@ export interface ForgotPasswordResponse {
 
 export const ResetPasswordFormSchema = z
   .object({
-    new_password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères.'),
-    confirm_password: z.string().min(1, 'Veuillez confirmer le mot de passe.'),
+    new_password: z.string().min(6, 'Password must be at least 6 characters.'),
+    confirm_password: z.string().min(1, 'Please confirm your password.'),
   })
   .refine((data) => data.new_password === data.confirm_password, {
-    message: 'Les mots de passe ne correspondent pas.',
+    message: 'Passwords do not match.',
     path: ['confirm_password'],
   })
 export type ResetPasswordFormValues = z.infer<typeof ResetPasswordFormSchema>

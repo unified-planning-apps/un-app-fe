@@ -51,7 +51,7 @@ function RouteComponent() {
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold flex items-center gap-2" style={{ color: 'var(--texte-extra-black)' }}>
           <History className="w-4 h-4" style={{ color: 'var(--primary2)' }} />
-          Historique climatique
+          Climate history
         </h2>
         <div className="flex items-center gap-1.5">
           {[14, 30, 90].map((d) => (
@@ -72,8 +72,8 @@ function RouteComponent() {
       {history.isLoading && <SkeletonCards count={2} height={180} />}
       {history.isError && (
         <ErrorState
-          title="Historique indisponible"
-          description="Aucune donnée climatique enregistrée pour cette période, ou le service n'a pas répondu."
+          title="History unavailable"
+          description="No climate data recorded for this period, or the service did not respond."
           onRetry={() => history.refetch()}
         />
       )}
@@ -86,7 +86,7 @@ function RouteComponent() {
           >
             <div className="flex items-center gap-2 mb-4">
               <Thermometer className="w-4 h-4" style={{ color: '#ef4444' }} />
-              <p className="text-sm font-semibold" style={{ color: 'var(--texte-extra-black)' }}>Température moyenne (°C)</p>
+              <p className="text-sm font-semibold" style={{ color: 'var(--texte-extra-black)' }}>Average temperature (°C)</p>
             </div>
             <Chart data={history.data} dataKey="temperature_moy_c" color="#ef4444" unit="°C" />
           </div>
@@ -96,7 +96,7 @@ function RouteComponent() {
           >
             <div className="flex items-center gap-2 mb-4">
               <CloudRain className="w-4 h-4" style={{ color: '#0ea5e9' }} />
-              <p className="text-sm font-semibold" style={{ color: 'var(--texte-extra-black)' }}>Précipitations (mm)</p>
+              <p className="text-sm font-semibold" style={{ color: 'var(--texte-extra-black)' }}>Precipitation (mm)</p>
             </div>
             <Chart data={history.data} dataKey="precipitations_mm" color="#0ea5e9" unit="mm" />
           </div>
@@ -105,7 +105,7 @@ function RouteComponent() {
 
       {history.data && history.data.length === 0 && (
         <p className="text-sm text-center py-8" style={{ color: 'var(--texte-gray)' }}>
-          Aucune donnée historique disponible pour cette période.
+          No historical data available for this period.
         </p>
       )}
     </div>

@@ -105,9 +105,9 @@ function RouteComponent() {
           aria-hidden="true"
         />
         <div className="relative z-10">
-          <h1 className="text-2xl font-bold tracking-tight" style={{ color: "#ffffff" }}>Tableau de bord</h1>
+          <h1 className="text-2xl font-bold tracking-tight" style={{ color: "#ffffff" }}>Dashboard</h1>
           <p className="text-sm mt-1" style={{ color: "rgba(255,255,255,0.75)" }}>
-            Vue d'ensemble de la situation sanitaire et climatique à Madagascar
+            Overview of the health and climate situation in Madagascar
           </p>
         </div>
         <div
@@ -123,7 +123,7 @@ function RouteComponent() {
           <span className="text-sm font-semibold" style={{ color: "#ffffff" }}>
             {totalActiveAlerts > 0
               ? `${totalActiveAlerts} alerte${totalActiveAlerts > 1 ? 's' : ''} active${totalActiveAlerts > 1 ? 's' : ''}`
-              : 'Aucune alerte active'}
+              : 'No active alerts'}
           </span>
         </div>
       </div>
@@ -132,25 +132,25 @@ function RouteComponent() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard
           icon={<Activity className="w-5 h-5" />}
-          label="Régions en risque élevé (paludisme)"
+          label="High-risk regions (malaria)"
           value={(malariaRiskMap.data?.carte ?? []).filter((r) => r.niveau_risque === 'élevé' || r.niveau_risque === 'très élevé').length}
           color="#ef4444"
         />
         <StatCard
           icon={<Bell className="w-5 h-5" />}
-          label="Alertes actives"
+          label="Active alerts"
           value={totalActiveAlerts}
           color="#f97316"
         />
         <StatCard
           icon={<Users className="w-5 h-5" />}
-          label="Régions en crise nutritionnelle"
+          label="Regions in nutritional crisis"
           value={nutritionCrisisCount}
           color="#8b5cf6"
         />
         <StatCard
           icon={<Thermometer className="w-5 h-5" />}
-          label="Température moyenne"
+          label="Average temperature"
           value={avgTemp !== undefined ? `${avgTemp.toFixed(1)}°C` : '—'}
           color="#0ea5e9"
         />
@@ -165,15 +165,15 @@ function RouteComponent() {
           <div className="flex items-center justify-between p-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5" style={{ color: 'var(--primary)' }} />
-              <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>Alertes récentes</h2>
+              <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>Recent alerts</h2>
             </div>
           </div>
           <div className="divide-y" style={{ borderColor: 'var(--stroke-dark)' }}>
             {allAlerts.length === 0 && (
               <EmptyState
                 icon={<Bell size={20} />}
-                title="Aucune alerte active"
-                description="Les 22 régions sont sous surveillance continue. Les nouvelles alertes paludisme et nutrition apparaîtront ici."
+                title="No active alerts"
+                description="All 23 regions are under continuous surveillance. New malaria and nutrition alerts will appear here."
               />
             )}
             {allAlerts.map((alert) => (
@@ -210,18 +210,18 @@ function RouteComponent() {
                       acknowledge.mutate(
                         { alerteId: alert.alerte_id },
                         {
-                          onSuccess: () => toast.success('Alerte acquittée.'),
-                          onError: () => toast.error("Impossible d'acquitter l'alerte."),
+                          onSuccess: () => toast.success('Alert acknowledged.'),
+                          onError: () => toast.error("Unable to acknowledge the alert."),
                         },
                       )
                     }
                     disabled={acknowledge.isPending}
-                    title="Acquitter cette alerte"
+                    title="Acknowledge cette alerte"
                     className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full flex-shrink-0 border transition-colors hover:opacity-80"
                     style={{ borderColor: 'var(--stroke-dark)', color: 'var(--texte-gray)' }}
                   >
                     {acknowledge.isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
-                    Acquitter
+                    Acknowledge
                   </button>
                 )}
               </div>
@@ -238,7 +238,7 @@ function RouteComponent() {
           >
             <div className="flex items-center gap-2 p-5 border-b" style={{ borderColor: 'var(--stroke-dark)' }}>
               <TrendingUp className="w-5 h-5" style={{ color: 'var(--primary)' }} />
-              <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>Régions à plus haut risque</h2>
+              <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>Highest-risk regions</h2>
             </div>
             <div className="divide-y" style={{ borderColor: 'var(--stroke-dark)' }}>
               {topRiskRegions.map((r) => {
@@ -252,7 +252,7 @@ function RouteComponent() {
                   >
                     <span className="flex flex-col">
                       <span className="text-sm font-medium" style={{ color: 'var(--texte-extra-black)' }}>{r.region_name}</span>
-                      <span className="text-xs" style={{ color: 'var(--texte-gray)' }}>{r.cas_prevus_14j} cas prévus (14j)</span>
+                      <span className="text-xs" style={{ color: 'var(--texte-gray)' }}>{r.cas_prevus_14j} cases predicted (14d)</span>
                     </span>
                     <span
                       className="text-xs font-semibold px-2.5 py-1 rounded-full capitalize flex-shrink-0"
@@ -275,13 +275,13 @@ function RouteComponent() {
       >
         <div className="flex items-center gap-2 mb-4">
           <Wind className="w-5 h-5" style={{ color: 'var(--primary)' }} />
-          <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>Conditions climatiques nationales</h2>
+          <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>National climate conditions</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
           {[
-            { icon: <Thermometer className="w-5 h-5" />, label: 'Température moy.', value: avgTemp !== undefined ? `${avgTemp.toFixed(1)}°C` : '—', color: '#ef4444' },
-            { icon: <Droplets className="w-5 h-5" />, label: 'Humidité moy.', value: avgHumidity !== undefined ? `${avgHumidity.toFixed(0)}%` : '—', color: '#0ea5e9' },
-            { icon: <FileText className="w-5 h-5" />, label: 'Régions surveillées', value: _regions.length || 23, color: '#22c55e' },
+            { icon: <Thermometer className="w-5 h-5" />, label: 'Avg. temperature', value: avgTemp !== undefined ? `${avgTemp.toFixed(1)}°C` : '—', color: '#ef4444' },
+            { icon: <Droplets className="w-5 h-5" />, label: 'Avg. humidity', value: avgHumidity !== undefined ? `${avgHumidity.toFixed(0)}%` : '—', color: '#0ea5e9' },
+            { icon: <FileText className="w-5 h-5" />, label: 'Monitored regions', value: _regions.length || 23, color: '#22c55e' },
           ].map(item => (
             <div
               key={item.label}

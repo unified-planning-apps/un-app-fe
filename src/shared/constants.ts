@@ -15,14 +15,11 @@ export enum Role {
 }
 
 export const ROLE_LABELS: Record<Role, string> = {
-    [Role.Admin]: 'Administrateur',
+    [Role.Admin]: 'Administrator',
     [Role.National]: 'National',
-    [Role.Regional]: 'Régional',
-    [Role.Viewer]: 'Lecture seule',
+    [Role.Regional]: 'Regional',
+    [Role.Viewer]: 'Read-only',
 }
 
-// Region data now lives in `#/lib/regions` (sourced from the backend's
-// `config/regions_metadata.json`). Re-exported here for convenience /
-// backward compatibility with existing imports of `shared/constants`.
 export { REGIONS, REGION_BY_ID, getRegionName, getRegionMeta } from '#/lib/regions'
 export type { RegionMeta } from '#/lib/regions'

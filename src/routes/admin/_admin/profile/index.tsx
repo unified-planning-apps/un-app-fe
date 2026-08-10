@@ -31,11 +31,11 @@ function RouteComponent() {
       { old_password: values.old_password, new_password: values.new_password },
       {
         onSuccess: () => {
-          toast.success('Mot de passe mis à jour avec succès.')
+          toast.success('Password updated successfully.')
           form.reset()
         },
         onError: (error) => {
-          const message = error instanceof NetworkError ? 'Serveur inaccessible.' : error instanceof ApiError ? error.message : 'Impossible de changer le mot de passe.'
+          const message = error instanceof NetworkError ? 'Server unreachable.' : error instanceof ApiError ? error.message : 'Unable to change password.'
           toast.error(message)
         },
       },
@@ -46,10 +46,10 @@ function RouteComponent() {
     <div className="max-w-2xl mx-auto space-y-8 pb-10">
       <div>
         <h1 className="page-title">
-          Mon profil
+          My Profile
         </h1>
         <p className="page-subtitle">
-          Informations de votre compte et sécurité
+          Account information and security
         </p>
       </div>
 
@@ -101,7 +101,7 @@ function RouteComponent() {
         <div className="flex items-center gap-2 mb-4">
           <Lock className="w-5 h-5" style={{ color: 'var(--primary)' }} />
           <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>
-            Changer le mot de passe
+            Change Password
           </h2>
         </div>
 
@@ -116,7 +116,7 @@ function RouteComponent() {
                     <FormControl>
                       <FloatingInput {...field} id="old-password" type="password" className="h-14 rounded-xl border-gray-200" />
                     </FormControl>
-                    <FloatingLabel htmlFor="old-password">Mot de passe actuel</FloatingLabel>
+                    <FloatingLabel htmlFor="old-password">Current password</FloatingLabel>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -131,7 +131,7 @@ function RouteComponent() {
                     <FormControl>
                       <FloatingInput {...field} id="new-password" type="password" className="h-14 rounded-xl border-gray-200" />
                     </FormControl>
-                    <FloatingLabel htmlFor="new-password">Nouveau mot de passe</FloatingLabel>
+                    <FloatingLabel htmlFor="new-password">New password</FloatingLabel>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -146,7 +146,7 @@ function RouteComponent() {
                     <FormControl>
                       <FloatingInput {...field} id="confirm-password" type="password" className="h-14 rounded-xl border-gray-200" />
                     </FormControl>
-                    <FloatingLabel htmlFor="confirm-password">Confirmer le nouveau mot de passe</FloatingLabel>
+                    <FloatingLabel htmlFor="confirm-password">Confirm new password</FloatingLabel>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -159,7 +159,7 @@ function RouteComponent() {
               style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff', color: 'white', border: 'none' }}
             >
               {changePassword.isPending && <Loader2 size={16} className="animate-spin mr-2" />}
-              Mettre à jour le mot de passe
+              Update password
             </Button>
           </form>
         </Form>

@@ -13,10 +13,10 @@ import { RefreshCw } from 'lucide-react'
 
 /* ── Loading ──────────────────────────────────────────────────────────── */
 
-/** Shimmering placeholder rows — use instead of "Chargement…" text. */
+/** Shimmering placeholder rows — use instead of "Loading…" text. */
 export function SkeletonRows({ rows = 3, height = 16 }: { rows?: number; height?: number }) {
   return (
-    <div className="space-y-3 w-full" role="status" aria-label="Chargement en cours">
+    <div className="space-y-3 w-full" role="status" aria-label="Loading">
       {Array.from({ length: rows }).map((_, i) => (
         <div
           key={i}
@@ -24,7 +24,7 @@ export function SkeletonRows({ rows = 3, height = 16 }: { rows?: number; height?
           style={{ height, width: `${100 - (i % 3) * 12}%` }}
         />
       ))}
-      <span className="sr-only">Chargement en cours…</span>
+      <span className="sr-only">Loading…</span>
     </div>
   )
 }
@@ -35,12 +35,12 @@ export function SkeletonCards({ count = 3, height = 110 }: { count?: number; hei
     <div
       className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full"
       role="status"
-      aria-label="Chargement en cours"
+      aria-label="Loading"
     >
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="skeleton" style={{ height }} />
       ))}
-      <span className="sr-only">Chargement en cours…</span>
+      <span className="sr-only">Loading…</span>
     </div>
   )
 }
@@ -104,7 +104,7 @@ export function ErrorState({
       {onRetry && (
         <button type="button" onClick={onRetry} className="btn-secondary">
           <RefreshCw size={13} />
-          Réessayer
+          Retry
         </button>
       )}
     </div>

@@ -38,7 +38,7 @@ function RouteComponent() {
         scenario_secheresse: secheresse,
         choc_prix_alimentaires_pct: chocPrix,
       },
-      { onError: () => toast.error('La simulation a échoué.') },
+      { onError: () => toast.error('Simulation failed.') },
     )
   }
 
@@ -53,7 +53,7 @@ function RouteComponent() {
         <div className="flex items-center gap-2 mb-4">
           <FlaskConical className="w-5 h-5" style={{ color: 'var(--primary)' }} />
           <h2 className="font-semibold text-base" style={{ color: 'var(--texte-extra-black)' }}>
-            Simuler un scénario what-if
+            Simulate a what-if scenario
           </h2>
         </div>
 
@@ -65,7 +65,7 @@ function RouteComponent() {
               ? { backgroundColor: '#eff6ff', borderColor: '#0ea5e9', color: '#0ea5e9' }
               : { borderColor: 'var(--stroke-dark)', color: 'var(--texte-gray)' }}
           >
-            <CloudRain size={16} /> Cyclone tropical
+            <CloudRain size={16} /> Tropical cyclone
           </button>
           <button
             onClick={() => { setSecheresse(!secheresse); setCyclone(false) }}
@@ -74,14 +74,14 @@ function RouteComponent() {
               ? { backgroundColor: '#fff7ed', borderColor: '#f97316', color: '#f97316' }
               : { borderColor: 'var(--stroke-dark)', color: 'var(--texte-gray)' }}
           >
-            <Sun size={16} /> Sécheresse sévère
+            <Sun size={16} /> Severe drought
           </button>
         </div>
 
         {!cyclone && !secheresse && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             <label className="text-xs" style={{ color: 'var(--texte-gray)' }}>
-              Variation température ({deltaTemp > 0 ? '+' : ''}{deltaTemp}°C)
+              Temperature variation ({deltaTemp > 0 ? '+' : ''}{deltaTemp}°C)
               <input
                 type="range" min={-10} max={10} step={0.5} value={deltaTemp}
                 onChange={(e) => setDeltaTemp(Number(e.target.value))}
@@ -89,7 +89,7 @@ function RouteComponent() {
               />
             </label>
             <label className="text-xs" style={{ color: 'var(--texte-gray)' }}>
-              Multiplicateur précipitations (×{precipMultiplier})
+              Precipitation multiplier (×{precipMultiplier})
               <input
                 type="range" min={0} max={5} step={0.1} value={precipMultiplier}
                 onChange={(e) => setPrecipMultiplier(Number(e.target.value))}
@@ -100,7 +100,7 @@ function RouteComponent() {
         )}
 
         <label className="text-xs block mb-4" style={{ color: 'var(--texte-gray)' }}>
-          <span className="flex items-center gap-1"><Coins size={13} /> Choc prix alimentaires ({chocPrix > 0 ? '+' : ''}{chocPrix}%)</span>
+          <span className="flex items-center gap-1"><Coins size={13} /> Food price shock ({chocPrix > 0 ? '+' : ''}{chocPrix}%)</span>
           <input
             type="range" min={-50} max={200} step={5} value={chocPrix}
             onChange={(e) => setChocPrix(Number(e.target.value))}
@@ -115,7 +115,7 @@ function RouteComponent() {
           style={{ background: 'linear-gradient(135deg, #023047 0%, #206ebb 100%)', color: '#ffffff' }}
         >
           {simulate.isPending ? <Loader2 size={16} className="animate-spin" /> : <Play size={16} />}
-          Lancer la simulation
+          Run simulation
         </button>
       </div>
 
@@ -124,27 +124,27 @@ function RouteComponent() {
           className="rounded-2xl border p-5"
           style={{ backgroundColor: 'var(--background-white-color)', borderColor: 'var(--stroke-dark)' }}
         >
-          <h3 className="font-semibold text-base mb-3" style={{ color: 'var(--texte-extra-black)' }}>Résultats</h3>
+          <h3 className="font-semibold text-base mb-3" style={{ color: 'var(--texte-extra-black)' }}>Results</h3>
           <p className="text-sm mb-4" style={{ color: 'var(--texte-black)' }}>{result.analyse_impact}</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
             <div>
-              <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Δ Risque paludisme</p>
+              <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Δ Malaria risk</p>
               <p className="text-lg font-bold" style={{ color: result.delta_score_paludisme >= 0 ? '#ef4444' : '#22c55e' }}>
                 {result.delta_score_paludisme >= 0 ? '+' : ''}{(result.delta_score_paludisme * 100).toFixed(1)}%
               </p>
             </div>
             <div>
-              <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Δ Risque nutrition</p>
+              <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Δ Nutrition risk</p>
               <p className="text-lg font-bold" style={{ color: result.delta_score_nutrition >= 0 ? '#ef4444' : '#22c55e' }}>
                 {result.delta_score_nutrition >= 0 ? '+' : ''}{(result.delta_score_nutrition * 100).toFixed(1)}%
               </p>
             </div>
             <div>
-              <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Cas additionnels</p>
+              <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Additional cases</p>
               <p className="text-lg font-bold" style={{ color: 'var(--texte-extra-black)' }}>{result.cas_additionnels_paludisme}</p>
             </div>
             <div>
-              <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Enfants malnutris add.</p>
+              <p className="text-xs" style={{ color: 'var(--texte-gray)' }}>Additional malnourished children</p>
               <p className="text-lg font-bold" style={{ color: 'var(--texte-extra-black)' }}>{result.enfants_additionnels_malnutris}</p>
             </div>
           </div>
